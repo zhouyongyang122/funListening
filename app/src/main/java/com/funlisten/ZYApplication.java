@@ -68,9 +68,9 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
         ZYDBManager.getInstance();
         initFileDir();
 
-//        ZYUncaughtExceptionHandler crashHandler = ZYUncaughtExceptionHandler.getInstance();
-//        crashHandler.init(this, APP_ROOT_DIR, BuildConfig.DEBUG);
-//        crashHandler.setListener(this);
+        ZYUncaughtExceptionHandler crashHandler = ZYUncaughtExceptionHandler.getInstance();
+        crashHandler.init(this, APP_ROOT_DIR, BuildConfig.DEBUG);
+        crashHandler.setListener(this);
 
         //在这里初始化
         initBugTags();

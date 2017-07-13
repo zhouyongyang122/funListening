@@ -1,0 +1,78 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
+    package="com.funlisten">
+
+    <application
+        android:name=".ZYApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".business.splash.activity.ZYSplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".business.main.activity.ZYMainActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".base.activity.ZYWebViewActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".business.album.activity.ZYAlbumListHomeActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".business.album.activity.ZYAlbumHomeActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".business.login.activity.ZYLoginActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".business.login.activity.ZYRegistActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".business.download.activity.ZYDownloadHomeActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".business.download.activity.ZYDownloadedActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".business.download.activity.ZYDownloadingActivity"
+            android:screenOrientation="portrait" />
+
+    </application>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+</manifest>

@@ -1,0 +1,25 @@
+微信
+sec:3661eb56e04171cbfb74b698be6cc295
+appID:wx2ce9b87064d829d5
+
+微信开放开台：
+ID:mingjiang8000@163.com  PW：hzmingjiang2017
+
+QQ开发平台
+APP ID：1106127950
+APP KEY： A9E27dkGME0rfzUg
+
+微博登陆：
+App Key：2955025736
+App Secret：7031a58b5675133a3b0412e153b42ead
+
+ZePlin
+ID:mingjiang8000@163.com	PW：hzmingjiang2017
+ID:mingjiang8000@163.com PW：hzmingjiang2017
+
+原型图
+https://app.zeplin.io/project/590954f22c0c7066252d1cdc/screen/590c2947bb850b23b21659a9
+
+
+手机api接口  维护在这里
+http://120.27.226.195:8080/dashboard/index.html#!/project/3Afan37hE

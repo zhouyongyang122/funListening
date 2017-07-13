@@ -1,0 +1,20 @@
+ /album/list专辑列表接口
+ 少了 专辑描述属性
+
+ sys/sendCode接口
+ 返回的 data:true
+
+ 登录接口/user/doLogin
+ 没有fans和follow
+ 文档为userinfo 实际为 userDto
+
+ 专辑详情接口
+ cover
+ coverUrl有什么区别
+ 少了 专辑描述属性
+ 少了 是否订阅的属性
+ 少了 发布人的头像
+ 少了 是否关注发布者属性
+
+ audio/list音频列表接口
+ 少了 当前音频是第几期的属性

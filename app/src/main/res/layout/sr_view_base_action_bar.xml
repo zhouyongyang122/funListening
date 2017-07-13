@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/c1"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvLeftTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="?attr/actionBarItemBackground"
+        android:clickable="true"
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="左标题"
+        android:textColor="@color/c1"
+        android:textSize="@dimen/f2"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/ivLeftImg"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="?attr/actionBarItemBackground"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:src="@drawable/back2" />
+
+    <TextView
+        android:id="@+id/tvCenterTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="测试"
+        android:textColor="@color/white"
+        android:textSize="@dimen/f2" />
+
+    <TextView
+        android:id="@+id/tvRightTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="?attr/actionBarItemBackground"
+        android:clickable="true"
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:text="sss"
+        android:paddingRight="15dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/f2"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/ivRightImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/btn_list_n"
+        android:layout_marginRight="10dp"
+        tools:visibility="visible"
+        android:background="?attr/actionBarItemBackground"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/ivRightImg2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/ivRightImg"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/btn_list_n"
+        tools:visibility="visible"
+        android:background="?attr/actionBarItemBackground"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:background="@color/c6" />
+
+</RelativeLayout>

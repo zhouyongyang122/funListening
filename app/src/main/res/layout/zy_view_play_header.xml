@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imgBg"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:src="@color/transparent30" />
+
+    <RelativeLayout
+        android:id="@+id/layoutPlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgBg"
+        android:layout_marginTop="-8dp">
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:maxHeight="5dp"
+            android:minHeight="5dp"
+            android:paddingEnd="-12dp"
+            android:paddingStart="-12dp"
+            android:progressDrawable="@drawable/bar_player_seek"
+            android:thumb="@drawable/bar_seek_point_selector" />
+
+        <TextView
+            android:id="@+id/textStartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekBar"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="00:00"
+            android:textColor="@color/c4"
+            android:textSize="@dimen/f9" />
+
+        <TextView
+            android:id="@+id/textEndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/seekBar"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="0:30"
+            android:textColor="@color/c4"
+            android:textSize="@dimen/f9" />
+
+        <LinearLayout
+            android:id="@+id/layoutAction"
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:layout_below="@+id/textStartTime"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:id="@+id/textPlayType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/btn_change_or_cycle_n"
+                android:gravity="center"
+                android:text="循环"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/f9" />
+
+            <ImageView
+                android:id="@+id/textPre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/btn_pre_track_n" />
+
+            <ImageView
+                android:id="@+id/textPlay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/btn_zantingbofang_n" />
+
+            <ImageView
+                android:id="@+id/textNext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/btn_text_track_n" />
+
+            <TextView
+                android:id="@+id/textPlayList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/icon_shuffle_playback"
+                android:gravity="center"
+                android:text="列表"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/f9" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@+id/layoutAction"
+            android:background="@color/c6" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutUInfo"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:layout_below="@+id/layoutPlay">
+
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/def_avatar" />
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imgAvatar"
+            android:layout_toLeftOf="@+id/textSubscribe"
+            android:layout_toRightOf="@+id/imgAvatar"
+            android:singleLine="true"
+            android:text="我是标题"
+            android:textColor="@color/c2"
+            android:textSize="@dimen/f3" />
+
+        <TextView
+            android:id="@+id/textInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imgAvatar"
+            android:layout_marginBottom="4dp"
+            android:layout_toLeftOf="@+id/textSubscribe"
+            android:layout_toRightOf="@+id/imgAvatar"
+            android:singleLine="true"
+            android:text="100人订阅 | 1.2万关注"
+            android:textColor="@color/c4"
+            android:textSize="@dimen/f7" />
+
+        <TextView
+            android:id="@+id/textSubscribe"
+            android:layout_width="88dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/zy_bg_corner360_c1"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="订阅"
+            android:textColor="@color/white"
+            android:textSize="@dimen/f2" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/viewBottomLine"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@+id/layoutUInfo"
+        android:background="@color/c6" />
+
+    <TextView
+        android:id="@+id/textComment"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/viewBottomLine"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="评论"
+        android:textColor="@color/c2"
+        android:textSize="@dimen/f3" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/textComment"
+        android:background="@color/c5" />
+</RelativeLayout>

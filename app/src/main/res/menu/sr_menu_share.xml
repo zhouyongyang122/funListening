@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/wechat"
+        android:icon="@drawable/btn_share_wechat"
+        android:title="@string/text_wechat" />
+    <item
+        android:id="@+id/friends"
+        android:icon="@drawable/btn_share_moments"
+        android:title="@string/text_friends_circle" />
+    <item
+        android:id="@+id/qq"
+        android:icon="@drawable/btn_share_qq"
+        android:title="@string/text_qq" />
+
+    <item
+        android:id="@+id/qzone"
+        android:icon="@drawable/btn_share_qzone"
+        android:title="@string/text_qzone" />
+
+    <!--<item-->
+        <!--android:id="@+id/weibo"-->
+        <!--android:visible="false"-->
+        <!--android:icon="@drawable/btn_share_weibo"-->
+        <!--android:title="@string/text_sina_weibo" />-->
+
+</menu>

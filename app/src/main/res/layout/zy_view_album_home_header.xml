@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/c1"
+        android:paddingTop="45dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:layout_marginLeft="154dp"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="标题标题"
+                android:textColor="@color/c8"
+                android:textSize="@dimen/f2" />
+
+            <TextView
+                android:id="@+id/textSubTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="开心一听,开心一听"
+                android:textColor="@color/c8"
+                android:textSize="@dimen/f7" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:layout_marginLeft="154dp"
+                android:paddingTop="10dp"
+                android:layout_marginRight="110dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textCate"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text="类别: 情感"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:textColor="@color/c3"
+                    android:textSize="@dimen/f7" />
+
+                <TextView
+                    android:id="@+id/textAnchor"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text="主播: 咏炀"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:textColor="@color/c3"
+                    android:textSize="@dimen/f7" />
+
+                <TextView
+                    android:id="@+id/textPlayNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text="播放: 1万"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:textColor="@color/c3"
+                    android:textSize="@dimen/f7" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textSubscribe"
+                android:layout_width="88dp"
+                android:layout_height="30dp"
+                android:text="订阅"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:background="@drawable/zy_bg_corner360_c1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/f2" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="124dp"
+            android:layout_height="155dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/zy_bg_boder1dp_c7"
+            android:src="@color/c9" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/c5" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:layout_height="70dp">
+        
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:src="@drawable/def_avatar"
+            android:layout_width="40dp"
+            android:layout_centerVertical="true"
+            android:layout_height="40dp" />
+
+        <TextView
+            android:id="@+id/textName"
+            android:layout_toRightOf="@+id/imgAvatar"
+            android:layout_width="match_parent"
+            android:layout_alignTop="@+id/imgAvatar"
+            android:layout_height="wrap_content"
+            android:text="标题标题"
+            android:singleLine="true"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/c2"
+            android:textSize="@dimen/f4" />
+
+        <TextView
+            android:id="@+id/textFans"
+            android:layout_toRightOf="@+id/imgAvatar"
+            android:layout_width="match_parent"
+            android:layout_alignBottom="@+id/imgAvatar"
+            android:layout_height="wrap_content"
+            android:text="粉丝: 899"
+            android:layout_marginRight="40dp"
+            android:singleLine="true"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/c3"
+            android:textSize="@dimen/f7" />
+
+        <TextView
+            android:id="@+id/textFollow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="加关注"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:drawableTop="@drawable/zy_selector_follow"
+            android:drawablePadding="4dp"
+            android:textColor="@color/c4"
+            android:textSize="@dimen/f7" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/c7" />
+
+</LinearLayout>

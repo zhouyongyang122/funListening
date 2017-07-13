@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c2">
+
+    <EditText
+        android:id="@+id/editDesc"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:gravity="top|left"
+        android:lineSpacingExtra="2dp"
+        android:padding="15dp"
+        android:textColor="@color/c6"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/textMax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="185dp"
+        android:text="30"
+        android:textColor="@color/c6" />
+
+</RelativeLayout>

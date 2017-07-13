@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">听谁说</string>
+    <string name="default_loading_error">加载出错,请重试尝试</string>
+
+    <string name="default_no_more">没有更多数据了</string>
+
+    <string name="picker_all_picture">所有图片</string>
+    <string name="picker_send">发送</string>
+    <string name="picker_send_count">发送(%1$d/%2$d)</string>
+    <string name="picker_preview">预览</string>
+    <string name="picker_preview_count">预览(%d)</string>
+    <string name="picker_count">%d张</string>
+    <string name="picker_select_max">你最多只能选择%d张图片</string>
+    <string name="picture_preview">图片预览</string>
+    <string name="picture_preview_index">图片预览(%1$d/%2$d)</string>
+
+    <!-- WXEntryActivity -->
+    <string name="text_errcode_success">发送成功</string>
+    <string name="text_errcode_cancel">发送取消</string>
+    <string name="text_errcode_deny">发送被拒绝</string>
+    <string name="text_errcode_unknown">发送返回</string>
+    <string name="text_errcode_fail">发送返回</string>
+
+    <string name="text_wechat">微信</string>
+    <string name="text_friends_circle">朋友圈</string>
+    <string name="text_sina_weibo">新浪微博</string>
+    <string name="text_qzone">QQ空间</string>
+    <string name="text_qq">QQ</string>
+
+    <string name="toast_no_wechat">尚未安装微信，无法分享</string>
+</resources>

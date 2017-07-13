@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="c1">#16b998</color>
+    <color name="c2">#212121</color>
+    <color name="c3">#757575</color>
+    <color name="c4">#999999</color>
+    <color name="c5">#e0e0e0</color>
+    <color name="c6">#ededed</color>
+    <color name="c7">#f2f2f2</color>
+    <color name="c8">#ffffff</color>
+    <color name="c9">#fa3a27</color>
+    <color name="c10">#187aff</color>
+    <color name="home_bannar_bg">#5F44FE</color>
+    <color name="def_bg">#52ACF5</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="blue">#205ba9</color>
+    <color name="blue_press">#3e8fe0</color>
+    <color name="blue_disable">#aebece</color>
+    <color name="transparent_grey">#88000000</color>
+    <color name="yellow">#ffc535</color>
+    <color name="yellow_press">#ff9702</color>
+    <color name="half_white">#7fffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent20">#22000000</color>
+    <color name="transparent30">#44000000</color>
+    <color name="transparent40">#66000000</color>
+    <color name="transparent50">#88000000</color>
+    <color name="transparent60">#aa000000</color>
+    <color name="transparent80">#cc000000</color>
+</resources>

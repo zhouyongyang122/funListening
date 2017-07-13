@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="15dp">
+
+    <LinearLayout
+        android:id="@+id/layoutInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <ImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/def_avatar" />
+
+            <TextView
+                android:id="@+id/textName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/imgAvatar"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/textSuport"
+                android:layout_toRightOf="@+id/imgAvatar"
+                android:singleLine="true"
+                android:text="周咏炀"
+                android:textColor="@color/c3"
+                android:textSize="@dimen/f7" />
+
+
+            <TextView
+                android:id="@+id/textTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/imgAvatar"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/textSuport"
+                android:layout_toRightOf="@+id/imgAvatar"
+                android:singleLine="true"
+                android:text="一天前"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/f10" />
+
+            <TextView
+                android:id="@+id/textSuport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:drawableRight="@drawable/zy_selector_like"
+                android:gravity="center"
+                android:text="40"
+                android:textColor="@color/c3"
+                android:textSize="@dimen/f7" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/textDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:text="你的录音真不错，我每天都会听"
+            android:textColor="@color/c2"
+            android:textSize="@dimen/f7" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/c6" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textMore"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="查看更多内容>>"
+        android:textColor="@color/c1"
+        android:textSize="@dimen/f7" />
+</LinearLayout>

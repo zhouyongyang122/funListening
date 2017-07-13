@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c7"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textTip"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="15dp"
+        android:text="已向手机号 17706515876 发送短信验证码"
+        android:textColor="@color/c3"
+        android:textSize="@dimen/f6" />
+
+    <LinearLayout
+        android:id="@+id/layoutEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal">
+        <com.funlisten.base.view.ZYClearEditView
+            android:id="@+id/editCode"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:hint="请输入验证码"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/c2"
+            android:textSize="@dimen/f2" />
+        <TextView
+            android:id="@+id/textReSend"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@color/c5"
+            android:gravity="center"
+            android:text="重新发送"
+            android:textColor="@color/white"
+            android:textSize="@dimen/f1" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textNext"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/zy_c5_to_c1"
+        android:gravity="center"
+        android:text="下一步"
+        android:textColor="@color/white"
+        android:textSize="@dimen/f1" />
+
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.funlisten.base.event;
 
 import com.funlisten.base.bean.ZYIBaseBean;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
+import com.funlisten.service.downNet.down.ZYIDownBase;
 
 /**
  * Created by ZY on 17/7/12.
@@ -9,9 +10,9 @@ import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 
 public class ZYEventDowloadUpdate implements ZYIBaseBean {
 
-    public ZYDownloadEntity downloadEntity;
+    public ZYIDownBase downloadEntity;
 
-    public ZYEventDowloadUpdate(ZYDownloadEntity downloadEntity) {
+    public ZYEventDowloadUpdate(ZYIDownBase downloadEntity) {
         this.downloadEntity = downloadEntity;
     }
 }

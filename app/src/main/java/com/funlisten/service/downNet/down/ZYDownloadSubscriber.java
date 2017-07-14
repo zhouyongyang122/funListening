@@ -1,6 +1,7 @@
 package com.funlisten.service.downNet.down;
 
 import com.funlisten.base.event.ZYEventDowloadUpdate;
+import com.funlisten.utils.ZYLog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -24,12 +25,14 @@ public class ZYDownloadSubscriber<T> extends Subscriber<T> implements ZYDownload
 
     @Override
     public void onStart() {
+        ZYLog.e(getClass().getSimpleName(), "onStart: " + downEntity.getUrl());
         downEntity.setState(ZYDownState.START);
         EventBus.getDefault().post(new ZYEventDowloadUpdate(downEntity));
     }
 
     @Override
     public void onCompleted() {
+        ZYLog.e(getClass().getSimpleName(), "onCompleted: " + downEntity.getCurrent() + ":" + downEntity.getTotal());
         ZYDownloadManager.getInstance().removeTask(downEntity.getId());
         downEntity.setState(ZYDownState.FINISH);
         downEntity.setCurrent(downEntity.getTotal());
@@ -39,6 +42,7 @@ public class ZYDownloadSubscriber<T> extends Subscriber<T> implements ZYDownload
 
     @Override
     public void onError(Throwable e) {
+        ZYLog.e(getClass().getSimpleName(), "onError: " + e.getMessage());
         ZYDownloadManager.getInstance().removeTask(downEntity.getId());
         downEntity.setState(ZYDownState.ERROR);
         downEntity.update();
@@ -52,6 +56,7 @@ public class ZYDownloadSubscriber<T> extends Subscriber<T> implements ZYDownload
     @Override
     public void update(long current, long total, boolean done) {
         downEntity.setTotal(total);
+        ZYLog.e(getClass().getSimpleName(), "update: " + current + ":" + total + ":" + done);
         if (done) {
             downEntity.setCurrent(total);
             downEntity.setState(ZYDownState.FINISH);

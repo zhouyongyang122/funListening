@@ -3,6 +3,7 @@ package com.funlisten.service.net;
 
 import com.funlisten.ZYApplication;
 import com.funlisten.base.bean.ZYResponse;
+import com.funlisten.business.login.activity.ZYLoginActivity;
 import com.funlisten.utils.ZYLog;
 import com.funlisten.utils.ZYToast;
 
@@ -53,8 +54,8 @@ public class ZYNetSubscriber<R extends ZYResponse> extends rx.Subscriber<R> {
             } else if (response.status.equals(ZYResponse.CODE_TOKEN_EXPIRE)) {
                 //token失效
                 try {
-//                        ZYToast.show(SRApplication.getInstance(), "登录信息失效,请重新登录");
-//                        ZYApplication.getInstance().getCurrentActivity().startActivity(SRLoginActivity.createIntent(SRApplication.getInstance().getCurrentActivity()));
+                    ZYToast.show(ZYApplication.getInstance(), "登录信息失效,请重新登录");
+                    ZYApplication.getInstance().getCurrentActivity().startActivity(ZYLoginActivity.createIntent(ZYApplication.getInstance().getCurrentActivity()));
                 } catch (Exception e) {
                     ZYLog.e(getClass().getSimpleName(), "onNext:" + e.getMessage());
                 }

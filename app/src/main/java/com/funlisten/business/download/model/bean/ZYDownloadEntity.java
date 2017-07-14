@@ -3,6 +3,8 @@ package com.funlisten.business.download.model.bean;
 import com.funlisten.service.db.ZYDBManager;
 import com.funlisten.service.db.entity.ZYBaseEntity;
 import com.funlisten.service.db.entity.ZYDownloadEntityDao;
+import com.funlisten.service.downNet.down.ZYDownState;
+import com.funlisten.service.downNet.down.ZYIDownBase;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
@@ -16,10 +18,14 @@ import java.util.List;
  */
 
 @Entity
-public class ZYDownloadEntity extends ZYBaseEntity {
+public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
+
+
+    //音频id + 专辑id 作为主键(audioId_albumId)
+    @Id
+    public String id;
 
     //音频id
-    @Id
     public int audioId;
 
     //专辑id
@@ -56,22 +62,25 @@ public class ZYDownloadEntity extends ZYBaseEntity {
     public int audioSort;
 
     //单个音频大小
-    public long size;
+    public long total;
 
     //当前下载的大小
-    public long currentSize;
+    public long current;
 
     public String url;
 
-    public String path;
+    public String savePath;
+
+    public int stateValue;
 
     @Transient
     public boolean isEdit;
 
-    @Generated(hash = 1064862213)
-    public ZYDownloadEntity(int audioId, int albumId, String albumName, String albumCoverUrl, String albumPublisher, int albumDownloadedSize, int audioUpatedCount,
-            int audioDowloadedCount, int audioCount, String audioName, String audioCreateTime, int audioSort, long size, long currentSize, String url,
-            String path) {
+    @Generated(hash = 591050772)
+    public ZYDownloadEntity(String id, int audioId, int albumId, String albumName, String albumCoverUrl, String albumPublisher, int albumDownloadedSize,
+                            int audioUpatedCount, int audioDowloadedCount, int audioCount, String audioName, String audioCreateTime, int audioSort, long total, long current,
+                            String url, String savePath, int stateValue) {
+        this.id = id;
         this.audioId = audioId;
         this.albumId = albumId;
         this.albumName = albumName;
@@ -84,10 +93,11 @@ public class ZYDownloadEntity extends ZYBaseEntity {
         this.audioName = audioName;
         this.audioCreateTime = audioCreateTime;
         this.audioSort = audioSort;
-        this.size = size;
-        this.currentSize = currentSize;
+        this.total = total;
+        this.current = current;
         this.url = url;
-        this.path = path;
+        this.savePath = savePath;
+        this.stateValue = stateValue;
     }
 
     @Generated(hash = 944722397)
@@ -114,23 +124,23 @@ public class ZYDownloadEntity extends ZYBaseEntity {
 
     public static List<ZYDownloadEntity> queryDownloadings() {
         ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
-        return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.CurrentSize.notEq(ZYDownloadEntityDao.Properties.Size)).build().list();
+        return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.Current.notEq(ZYDownloadEntityDao.Properties.Total)).build().list();
     }
 
-    public static ZYDownloadEntity queryById(int audioId) {
+    public static ZYDownloadEntity queryById(int audioId, int albumId) {
         ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
-        ZYDownloadEntity entity = downloadEntityDao.load(audioId);
+        ZYDownloadEntity entity = downloadEntityDao.load(audioId + "_" + albumId);
         return entity;
     }
 
-    public static boolean isDowloading(int audioId) {
-        ZYDownloadEntity entity = queryById(audioId);
-        return entity != null && (entity.currentSize != entity.size);
+    public static boolean isDowloading(int audioId, int albumId) {
+        ZYDownloadEntity entity = queryById(audioId, albumId);
+        return entity != null && (entity.current != entity.total);
     }
 
-    public static boolean isDowloaded(int audioId) {
-        ZYDownloadEntity entity = queryById(audioId);
-        return entity != null && (entity.currentSize == entity.size);
+    public static boolean isDowloaded(int audioId, int albumId) {
+        ZYDownloadEntity entity = queryById(audioId, albumId);
+        return entity != null && (entity.current == entity.total);
     }
 
     public int getAudioId() {
@@ -205,22 +215,6 @@ public class ZYDownloadEntity extends ZYBaseEntity {
         this.audioSort = audioSort;
     }
 
-    public long getSize() {
-        return this.size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
-    }
-
-    public long getCurrentSize() {
-        return this.currentSize;
-    }
-
-    public void setCurrentSize(long currentSize) {
-        this.currentSize = currentSize;
-    }
-
     public int getAlbumDownloadedSize() {
         return this.albumDownloadedSize;
     }
@@ -253,11 +247,97 @@ public class ZYDownloadEntity extends ZYBaseEntity {
         this.url = url;
     }
 
-    public String getPath() {
-        return this.path;
+    public ZYDownState getState() {
+        switch (stateValue) {
+            case 0:
+                return ZYDownState.WAIT;
+            case 1:
+                return ZYDownState.START;
+            case 2:
+                return ZYDownState.DOWNING;
+            case 3:
+                return ZYDownState.PAUSE;
+            case 4:
+                return ZYDownState.STOP;
+            case 5:
+                return ZYDownState.ERROR;
+            case 6:
+                return ZYDownState.FINISH;
+            default:
+                return ZYDownState.WAIT;
+        }
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public String getStateString() {
+        switch (stateValue) {
+            case 0:
+                return "准备下载";
+            case 1:
+                return "准备下载";
+            case 2:
+                return "下载中";
+            case 3:
+                return "已暂停";
+            case 4:
+                return "已暂停";
+            case 5:
+                return "下载出错";
+            case 6:
+                return "下载完成";
+            case 7:
+                return "解压中";
+            case 8:
+                return "解压出错";
+            default:
+                return "准备下载";
+        }
+    }
+
+    public boolean isFinished() {
+        return stateValue == ZYDownState.FINISH.getState();
+    }
+
+    public void setState(ZYDownState state) {
+        this.stateValue = state.getState();
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public long getTotal() {
+        return this.total;
+    }
+
+    public void setTotal(long total) {
+        this.total = total;
+    }
+
+    public long getCurrent() {
+        return this.current;
+    }
+
+    public void setCurrent(long current) {
+        this.current = current;
+    }
+
+    public String getSavePath() {
+        return this.savePath;
+    }
+
+    public void setSavePath(String savePath) {
+        this.savePath = savePath;
+    }
+
+    public int getStateValue() {
+        return this.stateValue;
+    }
+
+    public void setStateValue(int stateValue) {
+        this.stateValue = stateValue;
     }
 }

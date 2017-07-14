@@ -39,7 +39,7 @@ public class ZYDownloadedItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
         if (data != null) {
             mData = data;
             textName.setText(mData.audioName);
-            textSize.setText(String.format("%.2fM", ((float) mData.size / 1204.0f)));
+            textSize.setText(String.format("%.2fM", ((float) mData.total / 1204.0f)));
 
         }
     }

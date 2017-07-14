@@ -18,8 +18,6 @@ public interface ZYIDownBase {
 
     void setCurrent(long current);
 
-    int getConnectonTime();
-
     int getStateValue();
 
     void setStateValue(int stateValue);

@@ -57,8 +57,8 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     }
 
     private void updateProgress() {
-        long total = mData.size;
-        long currentSize = mData.currentSize;
+        long total = mData.total;
+        long currentSize = mData.current;
         float totalM = (float) total / 1024.0f;
         float currentSizeM = (float) currentSize / 1024.0f;
         textSize.setText(String.format("%.2fM", currentSizeM) + " / " + String.format("%.2fM", totalM));
@@ -74,10 +74,11 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ZYEventDowloadUpdate dowloadUpdate) {
         if (dowloadUpdate.downloadEntity != null) {
-            mData = dowloadUpdate.downloadEntity;
-            if (dowloadUpdate.downloadEntity.audioId == mData.audioId) {
+            if (dowloadUpdate.downloadEntity.getId().equals(mData.id)) {
+                mData = (ZYDownloadEntity) dowloadUpdate.downloadEntity;
                 updateProgress();
             } else {
+                mData = (ZYDownloadEntity) dowloadUpdate.downloadEntity;
                 updateView(mData, 0);
             }
         }

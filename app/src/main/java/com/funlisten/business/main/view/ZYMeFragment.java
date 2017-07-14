@@ -1,5 +1,6 @@
 package com.funlisten.business.main.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.funlisten.base.event.ZYEventLoginOutSuc;
 import com.funlisten.base.event.ZYEventLoginSuc;
 import com.funlisten.base.event.ZYEventUpdateUserInfo;
 import com.funlisten.base.mvp.ZYBaseFragment;
+import com.funlisten.business.followfans.activity.GDFollowActivity;
 import com.funlisten.business.main.contract.ZYMeContract;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.business.login.model.ZYUserManager;
@@ -95,6 +97,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
+                mActivity.startActivity(new Intent(mActivity, GDFollowActivity.class));
                 break;
             case R.id.textFans:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {

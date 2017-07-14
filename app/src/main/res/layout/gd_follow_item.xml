@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:background="@color/c8"
+    >
+    <ImageView
+        android:layout_centerVertical="true"
+        android:id="@+id/head_image"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/icon_avatar_pre_n"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/head_image"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="7.5dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_marginTop="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/nick_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="路过的朋友"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                />
+            <ImageView
+                android:layout_marginLeft="3.5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tags_huiyuan_d"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/album_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="专辑： 20 "
+                android:textSize="11dp"
+                android:textColor="@color/c4"
+                />
+            <TextView
+                android:id="@+id/fans"
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="粉丝： 20 "
+                android:textSize="11dp"
+                android:textColor="@color/c4"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/follow_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="14dp"
+        >
+        <ImageView
+            android:id="@+id/icon_attention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_attention_n"/>
+        <TextView
+            android:id="@+id/follow_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textSize="8dp"
+            android:text="已关注"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginTop="9dp"
+        android:layout_below="@id/head_image"
+        android:background="@color/c6"
+        android:layout_height="1px"/>
+
+</RelativeLayout>

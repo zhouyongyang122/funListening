@@ -1,5 +1,6 @@
 package com.funlisten.utils;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ public class ZYDateUtils {
     public static final String YYMMDDHHMM24 = "yyyy-MM-dd HH:mm";
     public static final String YYMMDDHHMM12 = "yyyy-MM-dd hh:mm";
     public static final String YYMMDDHH = "yyyy-MM-dd";
+    public static final String HHMM24 = "HH:mm";
 
     /**
      * 获取传入的时间差的天时分  传入时间为秒
@@ -50,6 +52,19 @@ public class ZYDateUtils {
             }
             SimpleDateFormat formatter = new SimpleDateFormat(format);
             return formatter.format(date);
+        } catch (Exception e) {
+
+        }
+        return "";
+    }
+
+    public static String getTimeString(String time, String inFormat, String outFormat) {
+        try {
+            DateFormat dateInFormat = new SimpleDateFormat(inFormat);
+            Date date = dateInFormat.parse(time);
+
+            SimpleDateFormat dateOutFormat = new SimpleDateFormat(outFormat);
+            return dateOutFormat.format(date);
         } catch (Exception e) {
 
         }

@@ -1,6 +1,7 @@
 package com.funlisten.business.album.model.bean;
 
 import com.funlisten.base.bean.ZYIBaseBean;
+import com.funlisten.base.mvp.ZYBaseModel;
 
 import java.util.List;
 
@@ -63,6 +64,10 @@ public class ZYAlbumDetail implements ZYIBaseBean {
     public List<ZYCategory> categoryList;
 
     public String backgoundUrl;//背景
+
+    public boolean isFavorite;
+
+    public String followSate = ZYBaseModel.FOLLOW_NO_STATE;
 
     public String getCategoryNames() {
         String names = "";

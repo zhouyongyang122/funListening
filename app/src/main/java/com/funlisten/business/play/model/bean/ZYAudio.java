@@ -12,7 +12,7 @@ public class ZYAudio implements ZYIBaseBean {
 
     public int id;
 
-    public String name;
+    public String title;
 
     public int position;
 

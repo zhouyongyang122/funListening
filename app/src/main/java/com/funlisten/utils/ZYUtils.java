@@ -1,6 +1,8 @@
 package com.funlisten.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -9,6 +11,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.orhanobut.logger.Logger;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -58,5 +67,49 @@ public class ZYUtils {
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
         }
+    }
+
+    /**
+     * 压缩到指定大小
+     *
+     * @param filePath 原图路径
+     * @param toFile   保存路径
+     * @param size     指定大小
+     * @return
+     */
+    public static boolean compressToSize(String filePath, File toFile, int size) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            Bitmap bm = BitmapFactory.decodeFile(filePath);
+            int quality = 100;
+
+            bm.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+
+            Logger.d("compress size = " + baos.toByteArray().length);
+            while (baos.toByteArray().length > size) {
+                baos.reset();
+                quality -= 10;
+                bm.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                Logger.d("compress size = " + baos.toByteArray().length);
+            }
+            baos.writeTo(new FileOutputStream(toFile));
+            bm.recycle();
+            bm = null;
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                baos.flush();
+                baos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 }

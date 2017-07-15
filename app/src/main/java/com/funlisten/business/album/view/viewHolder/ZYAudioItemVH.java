@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.funlisten.R;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.play.model.bean.ZYAudio;
+import com.funlisten.utils.ZYDateUtils;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -38,8 +39,10 @@ public class ZYAudioItemVH extends ZYBaseViewHolder<ZYAudio> {
     public void updateView(ZYAudio data, int position) {
         if (data != null) {
             mData = data;
-            textName.setText("第 " + mData.position + " 期 | " + mData.name);
+            textName.setText("第 " + mData.sort + " 期 | " + mData.title);
             textPlayNum.setText(mData.playCount + "");
+            textTimeDay.setText(ZYDateUtils.getTimeString(mData.gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.YYMMDDHH));
+            textTimeHours.setText(ZYDateUtils.getTimeString(mData.gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.HHMM24));
         }
     }
 

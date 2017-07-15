@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:drawableLeft="@drawable/icon_play_amount_d"
+                android:gravity="center"
                 android:text="30万"
                 android:textColor="@color/c4"
                 android:textSize="@dimen/f7" />
@@ -65,4 +66,10 @@
         android:layout_marginRight="15dp"
         android:src="@drawable/zy_selector_dowload" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="15dp"
+        android:background="@color/c5" />
 </RelativeLayout>

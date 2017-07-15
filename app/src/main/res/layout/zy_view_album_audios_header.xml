@@ -33,7 +33,7 @@
         android:layout_height="match_parent"
         android:drawableLeft="@drawable/icon_anthology_n"
         android:gravity="center"
-        android:text="正序"
+        android:text="选集"
         android:textColor="@color/c3"
         android:textSize="@dimen/f5" />
 

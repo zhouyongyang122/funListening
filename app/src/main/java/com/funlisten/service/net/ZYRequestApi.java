@@ -240,6 +240,7 @@ public interface ZYRequestApi {
 
     /**
      * 音频列表
+     *
      * @param pageIndex
      * @param pageSize
      * @param albumId
@@ -252,6 +253,7 @@ public interface ZYRequestApi {
 
     /**
      * 获取音频对象url
+     *
      * @param id
      * @return
      */
@@ -260,6 +262,7 @@ public interface ZYRequestApi {
 
     /**
      * 获取音频对象
+     *
      * @param id
      * @return
      */
@@ -282,19 +285,19 @@ public interface ZYRequestApi {
      * 关注列表
      */
     @POST("user/follower")
-    Observable<ZYResponse<ZYListResponse<ZYUserList>>> follows(@Query("userId")String userId,@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+    Observable<ZYResponse<ZYListResponse<ZYUserList>>> follows(@Query("userId") String userId, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 
     /**
      * 粉丝列表
      */
     @POST("user/fan")
-    Observable<ZYResponse<ZYListResponse<ZYUserList>>> fans(@Query("userId")String userId,@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+    Observable<ZYResponse<ZYListResponse<ZYUserList>>> fans(@Query("userId") String userId, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 
     /**
      * 相册列表
      */
     @POST("user/photo/list")
-    Observable<ZYResponse<ZYListResponse<ZYPhoto>>> photos(@Query("userId")String userId, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+    Observable<ZYResponse<ZYListResponse<ZYPhoto>>> photos(@Query("userId") String userId, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 
     /**
      * 添加照片
@@ -305,6 +308,7 @@ public interface ZYRequestApi {
 
     /**
      * 添加照片
+     *
      * @param ids 照片id 多个用,号隔开
      */
     @POST("user/photo/delete")
@@ -321,5 +325,20 @@ public interface ZYRequestApi {
      */
     @POST("province/listAll")
     Observable<ZYResponse<ZYListResponse<ZYProvince>>> getCities();
+
+    /**
+     * 是否订阅查询
+     *
+     * @param type album：专辑，audio：单集
+     */
+    @POST("favorite/isFavorite")
+    Observable<ZYResponse<Boolean>> isFavorite(@Query("type") String type, @Query("objectId") int objectId);
+
+    /**
+     * 是否订阅查询
+     * 关注状态（no_follow：未关注，following：关注中，be_follow：被关注，mutually_followed：互相关注）
+     */
+    @POST("user/followStatus")
+    Observable<ZYResponse<String>> isFollowStatus(@Query("toUserId") int toUserId);
 
 }

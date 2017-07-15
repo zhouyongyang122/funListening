@@ -82,8 +82,8 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
     }
 
     private void initHeaderView() {
-        homeHeaderVH = new ZYAlbumHomeHeaderVH();
-        homeHeaderVH.attachTo(layoutTop);
+//        homeHeaderVH = new ZYAlbumHomeHeaderVH();
+//        homeHeaderVH.attachTo(layoutTop);
     }
 
     private void initTopBar() {
@@ -133,6 +133,16 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
     public void showDetail(ZYAlbumDetail albumDetail) {
         homeHeaderVH.updateView(albumDetail, 0);
         ((ZYAlbumDetailFragment) adapter.getItem(0)).loadComments(albumDetail.details);
+    }
+
+    @Override
+    public void refreshFavorite(ZYAlbumDetail albumDetail) {
+
+    }
+
+    @Override
+    public void refreshFollow(ZYAlbumDetail albumDetail) {
+
     }
 
     @Override

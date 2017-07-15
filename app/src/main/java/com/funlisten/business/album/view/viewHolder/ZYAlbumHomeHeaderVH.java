@@ -1,6 +1,5 @@
 package com.funlisten.business.album.view.viewHolder;
 
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import com.funlisten.R;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
+import com.funlisten.utils.ZYToast;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -20,6 +20,9 @@ import butterknife.OnClick;
  */
 
 public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
+
+    @Bind(R.id.imgBg)
+    ImageView imgBg;
 
     @Bind(R.id.textTitle)
     TextView textTitle;
@@ -53,6 +56,12 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
 
     ZYAlbumDetail mData;
 
+    HeaderListener mListener;
+
+    public ZYAlbumHomeHeaderVH(HeaderListener listener) {
+        mListener = listener;
+    }
+
     @Override
     public void updateView(ZYAlbumDetail data, int position) {
         if (data != null) {
@@ -63,9 +72,12 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
             textAnchor.setText("主播: " + mData.publisher.nickname);
             textPlayNum.setText("播放: " + mData.playCount);
 
-            ZYImageLoadHelper.getImageLoader().loadImage(this,imgAvatar,mData.publisher.avatarUrl);
+            ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, mData.coverUrl);
+            ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, mData.publisher.avatarUrl);
             textName.setText(mData.publisher.nickname);
             textFans.setText(mData.publisher.fans + " 粉丝");
+
+//            if(data.publisher.follow)
         }
     }
 
@@ -84,13 +96,30 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
         switch (view.getId()) {
             case R.id.textFollow:
                 //关注
+                mListener.onFollowClick(mData);
                 break;
             case R.id.textSubscribe:
                 //订阅
+                mListener.onSubscribeClick(mData);
                 break;
             case R.id.imgAvatar:
                 //个人主页
+                ZYToast.show(mContext, "还没有实现!");
                 break;
         }
+    }
+
+    public void updateFollowState(){
+
+    }
+
+    public void updateSubscribeState(){
+
+    }
+
+    public interface HeaderListener {
+        void onSubscribeClick(ZYAlbumDetail mData);
+
+        void onFollowClick(ZYAlbumDetail mData);
     }
 }

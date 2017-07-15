@@ -13,6 +13,8 @@ public interface ZYAlbumHomeContract {
 
     interface IView extends ZYIBaseView<IPresenter> {
         void showDetail(ZYAlbumDetail albumDetail);
+        void refreshFavorite(ZYAlbumDetail albumDetail);
+        void refreshFollow(ZYAlbumDetail albumDetail);
     }
 
     interface IPresenter extends ZYIBasePresenter {
@@ -20,6 +22,10 @@ public interface ZYAlbumHomeContract {
         int getAlbumId();
 
         ZYAlbumDetail getAlbumDetail();
+
+        void followState();
+
+        void isFavorite();
 
         void load();
     }

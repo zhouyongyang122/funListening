@@ -25,15 +25,9 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
 
     public static ZYApplication mInstance;
 
-    public static final String APP_ROOT_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "smartreader";
+    public static final String APP_ROOT_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "funlistening";
 
-    public static final String BOOK_ROOT_DIR = APP_ROOT_DIR + File.separator + "course" + File.separator;
-
-    public static final String BOOK_ZIP_ROOT_DIR = APP_ROOT_DIR + File.separator + "courseZip" + File.separator;
-
-    public static final String TRACT_AUDIO_ROOT_DIR = APP_ROOT_DIR + File.separator + "tractAudio" + File.separator;
-
-    public static final String CACHE_ROOT_DIR = APP_ROOT_DIR + File.separator + "cache" + File.separator;
+    public static final String IMG_CACHE_DIR = APP_ROOT_DIR + File.separator + "imgCache" + File.separator;
 
     private Activity currentActivity;
 
@@ -80,24 +74,9 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
     }
 
     private void initFileDir() {
-        File file = new File(BOOK_ROOT_DIR);
+        File file = new File(IMG_CACHE_DIR);
         if (!file.exists()) {
             ZYLog.e(getClass().getSimpleName(), "initFileDir: " + file.mkdirs() + file.getAbsolutePath());
-        }
-
-        file = new File(BOOK_ZIP_ROOT_DIR);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-
-        file = new File(TRACT_AUDIO_ROOT_DIR);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-
-        file = new File(CACHE_ROOT_DIR);
-        if (!file.exists()) {
-            file.mkdirs();
         }
     }
 

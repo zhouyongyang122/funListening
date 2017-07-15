@@ -49,7 +49,18 @@ public class ZYPicSelect implements View.OnClickListener {
 
     protected float maxHeight = 1000.0f;
 
+    boolean isAvatarSel;
+
     public ZYPicSelect(Activity context, PicSelectListener selectListener) {
+        init(context, selectListener, false);
+    }
+
+    public ZYPicSelect(Activity context, PicSelectListener selectListener, boolean isAvatarSel) {
+        init(context, selectListener, isAvatarSel);
+    }
+
+    private void init(Activity context, PicSelectListener selectListener, boolean isAvatarSel) {
+        this.isAvatarSel = isAvatarSel;
         mContext = context;
         mDialog = new Dialog(context, R.style.SRDialogStyle);
         mSelectListener = selectListener;
@@ -158,11 +169,11 @@ public class ZYPicSelect implements View.OnClickListener {
 
     private void cropPic(Uri uri) {
         UCrop.Options options = new UCrop.Options();
-        options.setCircleDimmedLayer(true);
+        options.setCircleDimmedLayer(isAvatarSel);
         options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
         options.setHideBottomControls(true);
         options.setShowCropGrid(false);
-        options.setCompressionQuality(50);
+        options.setCompressionQuality(80);
         options.setStatusBarColor(mContext.getResources().getColor(R.color.c2));
         options.setToolbarColor(mContext.getResources().getColor(R.color.c2));
         options.setToolbarWidgetColor(mContext.getResources().getColor(R.color.white));

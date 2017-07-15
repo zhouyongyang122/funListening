@@ -5,8 +5,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.funlisten.R;
+import com.funlisten.base.activity.picturePicker.ZYAlbum;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.play.model.bean.ZYAudio;
+import com.funlisten.service.downNet.down.ZYDownloadManager;
 import com.funlisten.utils.ZYDateUtils;
 
 import butterknife.Bind;
@@ -35,6 +38,14 @@ public class ZYAudioItemVH extends ZYBaseViewHolder<ZYAudio> {
 
     ZYAudio mData;
 
+    ZYDownloadEntity mDownloadEntity;
+
+    AudioItemListener listener;
+
+    public ZYAudioItemVH(AudioItemListener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public void updateView(ZYAudio data, int position) {
         if (data != null) {
@@ -43,6 +54,12 @@ public class ZYAudioItemVH extends ZYBaseViewHolder<ZYAudio> {
             textPlayNum.setText(mData.playCount + "");
             textTimeDay.setText(ZYDateUtils.getTimeString(mData.gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.YYMMDDHH));
             textTimeHours.setText(ZYDateUtils.getTimeString(mData.gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.HHMM24));
+            mDownloadEntity = ZYDownloadEntity.queryById(mData.id, mData.albumId);
+            if (mDownloadEntity != null) {
+                imgDownload.setSelected(true);
+            } else {
+                imgDownload.setSelected(false);
+            }
         }
     }
 
@@ -55,7 +72,15 @@ public class ZYAudioItemVH extends ZYBaseViewHolder<ZYAudio> {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgDownload:
+                if (!imgDownload.isSelected()) {
+                    listener.onDownloadClick(mData);
+                    imgDownload.setSelected(true);
+                }
                 break;
         }
+    }
+
+    public interface AudioItemListener {
+        void onDownloadClick(ZYAudio audio);
     }
 }

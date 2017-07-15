@@ -10,6 +10,8 @@ import com.funlisten.business.photo.model.ZYPhotoModel;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 
+import java.io.File;
+
 /**
  * Created by Administrator on 2017/7/15.
  */
@@ -36,7 +38,7 @@ public class ZYPhotoPresenter extends ZYListDataPresenter<ZYPhotoContract.IView,
     }
 
     @Override
-    public void upLoadPhoto(byte[] data) {
+    public void upLoadPhoto(File data) {
         mView.showProgress();
         mSubscriptions.add(ZYNetSubscription.subscription(mModel.addPhoto(data),new ZYNetSubscriber<ZYResponse<ZYPhoto>>(){
 

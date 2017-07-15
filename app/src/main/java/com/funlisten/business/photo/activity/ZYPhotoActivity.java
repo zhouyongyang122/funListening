@@ -29,20 +29,21 @@ import java.io.IOException;
  * Created by gd on 2017/7/14.
  */
 
-public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> implements  ZYPicSelect.PicSelectListener{
+public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> implements ZYPicSelect.PicSelectListener {
 
     ZYPicSelect picSelect;
     Button button;
     ZYPhotoPresenter zyPhotoPresenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showTitle("我的相册");
 
-        zyPhotoPresenter = new ZYPhotoPresenter(mFragment,new ZYPhotoModel());
-        button = (Button) LayoutInflater.from(this).inflate(R.layout.photo_delete,null);
+        zyPhotoPresenter = new ZYPhotoPresenter(mFragment, new ZYPhotoModel());
+        button = (Button) LayoutInflater.from(this).inflate(R.layout.photo_delete, null);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,RelativeLayout.TRUE );
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
         button.setLayoutParams(layoutParams);
         mRootView.addView(button);
         button.setVisibility(View.GONE);
@@ -67,7 +68,7 @@ public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> imp
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        picSelect.onActivityResult(requestCode,resultCode,data);
+        picSelect.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -82,12 +83,10 @@ public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> imp
 
     @Override
     public void onPicSelected(Uri uri) {
-        File file = new File(ZYApplication.IMG_CACHE_DIR+"temp.png");
-        ZYUtils.compressToSize(uri.getPath(),file,100*1024);
-        try {
-            zyPhotoPresenter.upLoadPhoto(ZYUtils.toByteArray(file));
-        } catch (IOException e) {
-           ZYLog.e("上传失败！");
+        File file = new File(ZYApplication.IMG_CACHE_DIR + "temp.png");
+        ZYUtils.compressToSize(uri.getPath(), file, 100 * 1024);
+        if (file.exists()) {
+            zyPhotoPresenter.upLoadPhoto(file);
         }
     }
 }

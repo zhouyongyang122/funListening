@@ -134,6 +134,7 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
     public void showDetail(ZYAlbumDetail albumDetail) {
         homeHeaderVH.updateView(albumDetail, 0);
         ((ZYAlbumDetailFragment) adapter.getItem(0)).loadComments(albumDetail.details);
+        ((ZYAlbumAudiosFragment) adapter.getItem(1)).setAlbumDetail(albumDetail);
     }
 
     @Override

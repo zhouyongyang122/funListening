@@ -113,4 +113,9 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayPresenter> implements Z
     public void suport(ZYComment comment) {
 
     }
+
+    @Override
+    public void suportCancle(ZYComment comment) {
+
+    }
 }

@@ -83,7 +83,7 @@ public class ZYUtils {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             Bitmap bm = BitmapFactory.decodeFile(filePath);
-            int quality = 100;
+            int quality = 90;
 
             bm.compress(Bitmap.CompressFormat.JPEG, quality, baos);
 

@@ -84,11 +84,12 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
         }));
     }
 
-    public void suport(int commentId) {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.suport(commentId + "", ZYBaseModel.COMMENT_TYPE), new ZYNetSubscriber<ZYResponse>() {
+    @Override
+    public void suport(ZYComment comment) {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.suport(comment.id + "", ZYBaseModel.COMMENT_TYPE), new ZYNetSubscriber<ZYResponse>() {
             @Override
             public void onSuccess(ZYResponse response) {
-
+                mView.showDatas(mDatas);
             }
 
             @Override
@@ -99,13 +100,18 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
     }
 
     @Override
-    public void suport(ZYComment comment) {
-
-    }
-
-    @Override
     public void suportCancle(ZYComment comment) {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.suportCanlce(comment.id + "", ZYBaseModel.COMMENT_TYPE), new ZYNetSubscriber<ZYResponse>() {
+            @Override
+            public void onSuccess(ZYResponse response) {
+                mView.showDatas(mDatas);
+            }
 
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
+            }
+        }));
     }
 
     public ArrayList<Object> getDatas() {

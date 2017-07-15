@@ -96,22 +96,17 @@ public class ZYAlbumDetailFragment extends ZYBaseRecyclerFragment<ZYAlbumDetailC
     }
 
     @Override
-    public void suportOk() {
-
-    }
-
-    @Override
-    public void suortCancle() {
-
-    }
-
-    @Override
     public void showDatas(ArrayList<Object> datas) {
         showList(false);
     }
 
     @Override
     public void suport(ZYComment comment) {
+        mPresenter.suport(comment);
+    }
 
+    @Override
+    public void suportCancle(ZYComment comment) {
+        mPresenter.suportCancle(comment);
     }
 }

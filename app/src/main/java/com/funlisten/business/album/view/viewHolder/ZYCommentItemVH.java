@@ -63,7 +63,7 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
             ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, mData.user.avatarUrl);
             textName.setText(mData.user.nickname);
             textTime.setText(mData.gmtCreate);
-            textSuport.setText(mData.likeCount + "");
+            refreshSuport();
             textDesc.setText(mData.content);
         }
     }
@@ -76,8 +76,21 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
                 ZYToast.show(mContext, "进入个人主页");
                 break;
             case R.id.textSuport:
-                mListener.suport(mData);
+                if (mData.isLiked) {
+                    mListener.suportCancle(mData);
+                } else {
+                    mListener.suport(mData);
+                }
                 break;
+        }
+    }
+
+    public void refreshSuport() {
+        textSuport.setText(mData.likeCount + "");
+        if (mData.isLiked) {
+            textSuport.setSelected(true);
+        } else {
+            textSuport.setSelected(false);
         }
     }
 
@@ -88,5 +101,7 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
 
     public interface CommentItemListener {
         void suport(ZYComment comment);
+
+        void suportCancle(ZYComment comment);
     }
 }

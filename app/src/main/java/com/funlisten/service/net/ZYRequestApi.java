@@ -20,10 +20,14 @@ import com.funlisten.business.user.model.ZYUserList;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import rx.Observable;
@@ -302,9 +306,9 @@ public interface ZYRequestApi {
     /**
      * 添加照片
      */
-    @FormUrlEncoded
     @POST("user/photo/insert")
-    Observable<ZYResponse<ZYPhoto>> addPhoto(@Field("photo") byte[] photo);
+    @Multipart
+    Observable<ZYResponse<ZYPhoto>> addPhoto(@Part MultipartBody.Part photo);
 
     /**
      * 添加照片

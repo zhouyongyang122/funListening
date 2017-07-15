@@ -38,9 +38,6 @@ public class ZYNetConfig {
         if (ZYUserManager.getInstance().getUser().id != null) {
             params.put("userId", ZYUserManager.getInstance().getUser().id);
         }
-        if (ZYUserManager.getInstance().getUser().token != null) {
-            params.put("token", ZYUserManager.getInstance().getUser().token);
-        }
         return params;
     }
 

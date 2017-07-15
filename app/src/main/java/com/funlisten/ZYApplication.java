@@ -29,6 +29,8 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
 
     public static final String IMG_CACHE_DIR = APP_ROOT_DIR + File.separator + "imgCache" + File.separator;
 
+    public static final String AUDIO_CACHE_DIR = APP_ROOT_DIR + File.separator + "audioCache" + File.separator;
+
     private Activity currentActivity;
 
     private ArrayList<Activity> allActivities = new ArrayList<Activity>();
@@ -76,7 +78,12 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
     private void initFileDir() {
         File file = new File(IMG_CACHE_DIR);
         if (!file.exists()) {
-            ZYLog.e(getClass().getSimpleName(), "initFileDir: " + file.mkdirs() + file.getAbsolutePath());
+            ZYLog.e(getClass().getSimpleName(), "IMG_CACHE_DIR: " + file.mkdirs() + file.getAbsolutePath());
+        }
+
+        file = new File(AUDIO_CACHE_DIR);
+        if (!file.exists()) {
+            ZYLog.e(getClass().getSimpleName(), "AUDIO_CACHE_DIR: " + file.mkdirs() + file.getAbsolutePath());
         }
     }
 

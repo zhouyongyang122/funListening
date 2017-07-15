@@ -1,16 +1,22 @@
 package com.funlisten.business.download.model.bean;
 
+import com.funlisten.ZYApplication;
+import com.funlisten.base.activity.picturePicker.ZYAlbum;
+import com.funlisten.business.album.model.bean.ZYAlbumDetail;
+import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.service.db.ZYDBManager;
 import com.funlisten.service.db.entity.ZYBaseEntity;
 import com.funlisten.service.db.entity.ZYDownloadEntityDao;
 import com.funlisten.service.downNet.down.ZYDownState;
 import com.funlisten.service.downNet.down.ZYIDownBase;
+import com.funlisten.utils.ZYLog;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Transient;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -102,6 +108,33 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
 
     @Generated(hash = 944722397)
     public ZYDownloadEntity() {
+    }
+
+    public static ZYDownloadEntity createEntityByAudio(ZYAlbumDetail albumDetail, ZYAudio audio) {
+        ZYDownloadEntity downloadEntity = new ZYDownloadEntity();
+        downloadEntity.id = audio.id + "_" + audio.albumId;
+        downloadEntity.audioId = audio.id;
+        downloadEntity.albumId = audio.albumId;
+        downloadEntity.albumName = albumDetail.name;
+        downloadEntity.albumCoverUrl = albumDetail.coverUrl;
+        downloadEntity.albumPublisher = albumDetail.publisher.nickname;
+        downloadEntity.audioUpatedCount = albumDetail.audioCount;
+        downloadEntity.audioCount = albumDetail.audioCount;
+        downloadEntity.audioName = audio.title;
+        downloadEntity.audioCreateTime = audio.gmtCreate;
+        downloadEntity.audioSort = audio.sort;
+        downloadEntity.total = audio.fileLength;
+        downloadEntity.url = audio.fileUrl;
+        File file = new File(ZYApplication.AUDIO_CACHE_DIR + albumDetail.id + "/" + audio.id);
+        file.mkdirs();
+        try {
+            file.createNewFile();
+            ZYLog.e(ZYDownloadEntity.class.getSimpleName(), "createEntityByAudio: " + file.getAbsolutePath());
+        } catch (Exception e) {
+            ZYLog.e(ZYDownloadEntity.class.getSimpleName(), "createEntityByAudio-error: " + e.getMessage());
+        }
+        downloadEntity.savePath = file.getAbsolutePath();
+        return downloadEntity;
     }
 
     @Override

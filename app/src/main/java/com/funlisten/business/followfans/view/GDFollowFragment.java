@@ -55,7 +55,7 @@ public class GDFollowFragment extends ZYListDateFragment<GDFollowContract.IPrese
                 @Override
                 public void onFail(String message) {
                     ZYLog.d(message);
-                    
+
                 }
             }));
         }

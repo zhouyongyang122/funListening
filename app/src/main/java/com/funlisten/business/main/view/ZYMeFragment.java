@@ -1,6 +1,7 @@
 package com.funlisten.business.main.view;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,8 +16,11 @@ import com.funlisten.base.event.ZYEventLoginOutSuc;
 import com.funlisten.base.event.ZYEventLoginSuc;
 import com.funlisten.base.event.ZYEventUpdateUserInfo;
 import com.funlisten.base.mvp.ZYBaseFragment;
+import com.funlisten.base.view.ZYPicSelect;
+import com.funlisten.base.view.ZYPicker;
 import com.funlisten.business.followfans.activity.GDFollowActivity;
 import com.funlisten.business.main.contract.ZYMeContract;
+import com.funlisten.business.photo.activity.ZYPhotoActivity;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.business.login.model.bean.ZYUser;
@@ -32,7 +36,7 @@ import butterknife.OnClick;
  * Created by ZY on 17/5/11.
  */
 
-public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implements ZYMeContract.IView {
+public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implements ZYMeContract.IView,ZYPicSelect.PicSelectListener {
 
     @Bind(R.id.imgAvatar)
     ImageView imgAvatar;
@@ -108,6 +112,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
+                mActivity.startActivity(new Intent(mActivity, ZYPhotoActivity.class));
                 break;
             case R.id.layoutDowload:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
@@ -176,5 +181,10 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ZYEventUpdateUserInfo updateUserInfo) {
         initUserInfo();
+    }
+
+    @Override
+    public void onPicSelected(Uri uri) {
+
     }
 }

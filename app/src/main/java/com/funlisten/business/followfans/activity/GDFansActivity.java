@@ -3,7 +3,6 @@ package com.funlisten.business.followfans.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.funlisten.R;
 import com.funlisten.base.mvp.ZYBaseFragmentActivity;
 import com.funlisten.business.followfans.model.GDFollowModel;
 import com.funlisten.business.followfans.presenter.GDFollowPresenter;
@@ -14,7 +13,7 @@ import com.funlisten.business.login.model.ZYUserManager;
  * Created by gd on 2017/7/12.
  */
 
-public class GDFollowActivity extends ZYBaseFragmentActivity<GDFollowFragment> {
+public class GDFansActivity extends ZYBaseFragmentActivity<GDFollowFragment> {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

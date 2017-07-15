@@ -1,0 +1,18 @@
+package com.funlisten.business.photo.contract;
+
+import com.funlisten.base.mvp.ZYListDataContract;
+import com.funlisten.business.photo.ZYPhoto;
+
+/**
+ * Created by Administrator on 2017/7/15.
+ */
+
+public interface ZYPhotoContract {
+    interface IView extends ZYListDataContract.View<ZYPhotoContract.IPresenter> {
+    }
+
+    interface IPresenter extends ZYListDataContract.Presenter<ZYPhoto> {
+        void upLoadPhoto(byte[] data);
+    }
+
+}

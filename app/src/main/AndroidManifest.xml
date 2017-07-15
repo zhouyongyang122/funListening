@@ -57,6 +57,16 @@
         <activity android:name=".business.followfans.activity.GDFollowActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".base.activity.picturePicker.ZYPicturePickerActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".business.photo.activity.ZYPhotoActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait" />
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

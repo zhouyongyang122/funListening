@@ -13,7 +13,9 @@ public interface ZYAlbumHomeContract {
 
     interface IView extends ZYIBaseView<IPresenter> {
         void showDetail(ZYAlbumDetail albumDetail);
+
         void refreshFavorite(ZYAlbumDetail albumDetail);
+
         void refreshFollow(ZYAlbumDetail albumDetail);
     }
 
@@ -26,6 +28,14 @@ public interface ZYAlbumHomeContract {
         void followState();
 
         void isFavorite();
+
+        void favorite();
+
+        void favoriteCancel();
+
+        void follow();
+
+        void followCancle();
 
         void load();
     }

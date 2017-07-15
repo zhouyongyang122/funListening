@@ -33,7 +33,7 @@ public class ZYPicSelect implements View.OnClickListener {
 
     private final String PIC_NAME = "pic_select.jpg";
 
-    private final String PIC_DIR = ZYApplication.CACHE_ROOT_DIR;
+    private final String PIC_DIR = ZYApplication.IMG_CACHE_DIR;
 
     private final String PIC_PATH = PIC_DIR + File.separator + PIC_NAME;
 

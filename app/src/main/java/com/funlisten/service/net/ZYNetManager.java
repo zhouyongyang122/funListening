@@ -3,6 +3,7 @@ package com.funlisten.service.net;
 import android.text.TextUtils;
 
 import com.funlisten.ZYPreferenceHelper;
+import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.utils.ZYLog;
 import com.funlisten.utils.ZYStringUtils;
 import com.google.gson.Gson;
@@ -102,6 +103,9 @@ public class ZYNetManager {
             if (mHeaders != null) {
                 for (Map.Entry<String, String> entry : mHeaders.entrySet()) {
                     builder.addHeader(entry.getKey(), entry.getValue());
+                }
+                if (ZYUserManager.getInstance().getUser().token != null) {
+                    builder.addHeader("token", ZYUserManager.getInstance().getUser().token);
                 }
             }
             Request request = builder.build();

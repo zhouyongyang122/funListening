@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.funlisten.R;
 import com.funlisten.base.adapter.ZYFragmentAdapter;
 import com.funlisten.base.mvp.ZYBaseFragment;
+import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.view.ZYLoadingView;
 import com.funlisten.base.view.ZYTopTabBar;
 import com.funlisten.business.album.contract.ZYAlbumHomeContract;
@@ -30,7 +31,7 @@ import butterknife.ButterKnife;
  * Created by ZY on 17/7/4.
  */
 
-public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPresenter> implements ZYAlbumHomeContract.IView {
+public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPresenter> implements ZYAlbumHomeContract.IView, ZYAlbumHomeHeaderVH.HeaderListener {
 
     @Bind(R.id.layoutRoot)
     RelativeLayout layoutRoot;
@@ -82,8 +83,8 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
     }
 
     private void initHeaderView() {
-//        homeHeaderVH = new ZYAlbumHomeHeaderVH();
-//        homeHeaderVH.attachTo(layoutTop);
+        homeHeaderVH = new ZYAlbumHomeHeaderVH(this);
+        homeHeaderVH.attachTo(layoutTop);
     }
 
     private void initTopBar() {
@@ -137,12 +138,30 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
 
     @Override
     public void refreshFavorite(ZYAlbumDetail albumDetail) {
-
+        homeHeaderVH.updateSubscribeState();
     }
 
     @Override
     public void refreshFollow(ZYAlbumDetail albumDetail) {
+        homeHeaderVH.updateFollowState();
+    }
 
+    @Override
+    public void onSubscribeClick(ZYAlbumDetail mData) {
+        if (mData.isFavorite) {
+            mPresenter.favoriteCancel();
+        } else {
+            mPresenter.favorite();
+        }
+    }
+
+    @Override
+    public void onFollowClick(ZYAlbumDetail mData) {
+        if (mData.followSate == ZYBaseModel.FOLLOW_HAS_STATE || mData.followSate == ZYBaseModel.FOLLOW_MUTUALLY_STATE) {
+            mPresenter.followCancle();
+        } else {
+            mPresenter.follow();
+        }
     }
 
     @Override

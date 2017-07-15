@@ -9,6 +9,7 @@ import com.funlisten.R;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
+import com.funlisten.utils.ZYToast;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -52,7 +53,7 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
     public void updateView(Object obj, int position) {
         if (obj != null && obj instanceof ZYComment) {
             mData = (ZYComment) obj;
-            if(mData.id < 0){
+            if (mData.id < 0) {
                 textMore.setVisibility(View.VISIBLE);
                 layoutInfo.setVisibility(View.GONE);
                 return;
@@ -71,6 +72,8 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgAvatar:
+                //个人主页
+                ZYToast.show(mContext, "进入个人主页");
                 break;
             case R.id.textSuport:
                 mListener.suport(mData);

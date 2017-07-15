@@ -9,6 +9,8 @@ import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 
+import rx.Observable;
+
 /**
  * Created by ZY on 17/7/5.
  */
@@ -44,6 +46,8 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
                 mView.hideLoading();
                 mAlbumDetail = response.data;
                 mView.showDetail(mAlbumDetail);
+                followState();
+                isFavorite();
             }
 
             @Override
@@ -80,6 +84,67 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
 
             @Override
             public void onFail(String message) {
+            }
+        }));
+    }
+
+    public void favorite() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favorite(ZYBaseModel.ALBUM_TYPE, mAlbumDetail.id + ""), new ZYNetSubscriber<ZYResponse<Object>>() {
+            @Override
+            public void onSuccess(ZYResponse<Object> response) {
+                mAlbumDetail.isFavorite = true;
+                mView.refreshFavorite(mAlbumDetail);
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
+            }
+        }));
+    }
+
+
+    public void favoriteCancel() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favoriteCancel(ZYBaseModel.ALBUM_TYPE, mAlbumDetail.id + ""), new ZYNetSubscriber<ZYResponse<Object>>() {
+            @Override
+            public void onSuccess(ZYResponse<Object> response) {
+                mAlbumDetail.isFavorite = false;
+                mView.refreshFavorite(mAlbumDetail);
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
+            }
+        }));
+    }
+
+    public void follow() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.follow(mAlbumDetail.publisher.id + ""), new ZYNetSubscriber<ZYResponse<Object>>() {
+            @Override
+            public void onSuccess(ZYResponse<Object> response) {
+                mAlbumDetail.followSate = ZYBaseModel.FOLLOW_HAS_STATE;
+                mView.refreshFollow(mAlbumDetail);
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
+            }
+        }));
+    }
+
+    public void followCancle() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.followCancle(mAlbumDetail.publisher.id + ""), new ZYNetSubscriber<ZYResponse<Object>>() {
+            @Override
+            public void onSuccess(ZYResponse<Object> response) {
+                mAlbumDetail.followSate = ZYBaseModel.FOLLOW_NO_STATE;
+                mView.refreshFollow(mAlbumDetail);
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
             }
         }));
     }

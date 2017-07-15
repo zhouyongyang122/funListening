@@ -30,9 +30,6 @@ public class ZYNetConfig {
         headers.put("_v", "1.0.0");
         headers.put("imei", ZYDeviceIDUtil.getInstance().getDeviceID(ZYApplication.getInstance()));
         headers.put("versionCode", BuildConfig.VERSION_CODE + "");
-        if (ZYUserManager.getInstance().getUser().token != null) {
-            headers.put("token", ZYUserManager.getInstance().getUser().token);
-        }
         return headers;
     }
 

@@ -2,6 +2,7 @@ package com.funlisten.business.album.presenter;
 
 import com.funlisten.base.bean.ZYListResponse;
 import com.funlisten.base.bean.ZYResponse;
+import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.mvp.ZYBasePresenter;
 import com.funlisten.business.album.contract.ZYAlbumDetailContract;
 import com.funlisten.business.album.model.ZYAlbumModel;
@@ -81,6 +82,30 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
                 mView.showError();
             }
         }));
+    }
+
+    public void suport(int commentId) {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.suport(commentId + "", ZYBaseModel.COMMENT_TYPE), new ZYNetSubscriber<ZYResponse>() {
+            @Override
+            public void onSuccess(ZYResponse response) {
+
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
+            }
+        }));
+    }
+
+    @Override
+    public void suport(ZYComment comment) {
+
+    }
+
+    @Override
+    public void suportCancle(ZYComment comment) {
+
     }
 
     public ArrayList<Object> getDatas() {

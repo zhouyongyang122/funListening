@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.funlisten.R;
+import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
@@ -76,8 +77,6 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, mData.publisher.avatarUrl);
             textName.setText(mData.publisher.nickname);
             textFans.setText(mData.publisher.fans + " 粉丝");
-
-//            if(data.publisher.follow)
         }
     }
 
@@ -109,12 +108,22 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
         }
     }
 
-    public void updateFollowState(){
-
+    public void updateFollowState() {
+        if (mData.followSate == ZYBaseModel.FOLLOW_NO_STATE || mData.followSate == ZYBaseModel.FOLLOW_BE_STATE) {
+            textFollow.setSelected(false);
+            textFollow.setText("关注");
+        } else {
+            textFollow.setSelected(true);
+            textFollow.setText("已关注");
+        }
     }
 
-    public void updateSubscribeState(){
-
+    public void updateSubscribeState() {
+        if (mData.isFavorite) {
+            textSubscribe.setText("已订阅");
+        } else {
+            textSubscribe.setText("订阅");
+        }
     }
 
     public interface HeaderListener {

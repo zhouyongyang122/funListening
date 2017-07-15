@@ -104,4 +104,18 @@ public class ZYBaseModel {
         return mApi.favoriteCancel(objectId, type);
     }
 
+    /**
+     * 关注
+     */
+    public Observable<ZYResponse> follow(String toUserId){
+        return mApi.follow(toUserId);
+    }
+
+    /**
+     * 关注
+     */
+    public Observable<ZYResponse> followCancle(String toUserId){
+        return mApi.followCancle(toUserId);
+    }
+
 }

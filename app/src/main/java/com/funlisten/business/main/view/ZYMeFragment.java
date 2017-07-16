@@ -18,6 +18,7 @@ import com.funlisten.base.event.ZYEventUpdateUserInfo;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.view.ZYPicSelect;
 import com.funlisten.base.view.ZYPicker;
+import com.funlisten.business.download.activity.ZYDownloadHomeActivity;
 import com.funlisten.business.followfans.activity.GDFollowActivity;
 import com.funlisten.business.main.contract.ZYMeContract;
 import com.funlisten.business.photo.activity.ZYPhotoActivity;
@@ -36,7 +37,7 @@ import butterknife.OnClick;
  * Created by ZY on 17/5/11.
  */
 
-public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implements ZYMeContract.IView,ZYPicSelect.PicSelectListener {
+public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implements ZYMeContract.IView, ZYPicSelect.PicSelectListener {
 
     @Bind(R.id.imgAvatar)
     ImageView imgAvatar;
@@ -118,6 +119,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
+                mActivity.startActivity(ZYDownloadHomeActivity.createIntent(mActivity));
                 break;
             case R.id.layoutAlbum:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {

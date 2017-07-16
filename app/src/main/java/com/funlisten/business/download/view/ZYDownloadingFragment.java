@@ -13,7 +13,7 @@ import com.funlisten.business.download.view.viewholder.ZYDownloadingHeaderVH;
  * Created by ZY on 17/7/13.
  */
 
-public class ZYDownloadingFragment extends ZYListDateFragment<ZYDownloadedContract.IPresenter, ZYDownloadEntity> implements ZYDownloadedContract.IView {
+public class ZYDownloadingFragment extends ZYListDateFragment<ZYDownloadedContract.IPresenter, ZYDownloadEntity> implements ZYDownloadedContract.IView, ZYDownloadedItemVH.DownloadedItemListener {
 
     ZYDownloadingHeaderVH headerVH;
 
@@ -31,6 +31,11 @@ public class ZYDownloadingFragment extends ZYListDateFragment<ZYDownloadedContra
 
     @Override
     protected ZYBaseViewHolder<ZYDownloadEntity> createViewHolder() {
-        return new ZYDownloadedItemVH();
+        return new ZYDownloadedItemVH(this);
+    }
+
+    @Override
+    public void onItemDelClick(ZYDownloadEntity data) {
+
     }
 }

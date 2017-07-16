@@ -87,7 +87,7 @@ public class ZYLoadingView implements ZYILoadingView {
 
             }
         });
-//        mEmptyRoot.setBackgroundResource(R.color.c7);
+        mEmptyRoot.setBackgroundResource(R.color.c8);
         mEmptyRoot.setLayoutParams(lpEmptyRoot);
         mEmptyRoot.addView(mViewEmpty, lp);
         mEmptyRoot.addView(mViewError, lp);

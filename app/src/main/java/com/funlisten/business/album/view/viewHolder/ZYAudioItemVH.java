@@ -2,6 +2,7 @@ package com.funlisten.business.album.view.viewHolder;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
@@ -11,6 +12,7 @@ import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.service.downNet.down.ZYDownloadManager;
 import com.funlisten.utils.ZYDateUtils;
+import com.funlisten.utils.ZYToast;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -68,13 +70,16 @@ public class ZYAudioItemVH extends ZYBaseViewHolder<ZYAudio> {
         return R.layout.zy_view_audio_item;
     }
 
-    @OnClick({R.id.imgDownload})
+    @OnClick({R.id.layoutDownload})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.imgDownload:
+            case R.id.layoutDownload:
                 if (!imgDownload.isSelected()) {
+                    ZYToast.show(mContext, "开始下载!");
                     listener.onDownloadClick(mData);
                     imgDownload.setSelected(true);
+                } else {
+                    ZYToast.show(mContext, "已经下载!");
                 }
                 break;
         }

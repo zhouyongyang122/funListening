@@ -42,7 +42,9 @@ public class ZYDownloadedHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     public void updateView(ZYDownloadEntity data, int position) {
         if (data != null) {
             mData = data;
-            ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, data.albumCoverUrl);
+        }
+        if (mData != null && textDownCount != null) {
+            ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, mData.albumCoverUrl);
             textTitle.setText(mData.albumName);
             textName.setText(mData.albumPublisher);
             textUpdateCount.setText("已经更新到" + mData.audioUpatedCount + "集");

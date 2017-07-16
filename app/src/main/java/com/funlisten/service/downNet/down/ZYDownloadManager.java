@@ -151,8 +151,6 @@ public class ZYDownloadManager {
                     .build();
             ZYDownloadService downloadService = retrofit.create(ZYDownloadService.class);
             downloadService.download("bytes=" + entity.getCurrent() + "-", entity.getUrl())
-                    .subscribeOn(Schedulers.io())
-                    .unsubscribeOn(Schedulers.io())
                     .map(new Func1<ResponseBody, ZYIDownBase>() {
                         @Override
                         public ZYIDownBase call(ResponseBody responseBody) {
@@ -165,7 +163,6 @@ public class ZYDownloadManager {
                             return entity;
                         }
                     })
-                    .observeOn(Schedulers.io())
                     .subscribe(downloadSubscriber);
         }
 

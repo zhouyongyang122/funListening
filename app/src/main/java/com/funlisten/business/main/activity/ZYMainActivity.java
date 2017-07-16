@@ -6,15 +6,20 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
+import com.funlisten.ZYPreferenceHelper;
 import com.funlisten.base.adapter.ZYFragmentAdapter;
 import com.funlisten.base.mvp.ZYBaseActivity;
+import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.main.presenter.ZYMePresenter;
+import com.funlisten.business.play.activity.ZYPlayActivity;
+import com.funlisten.business.play.model.ZYPLayManager;
 import com.funlisten.service.ZYUpdateService;
 import com.funlisten.business.main.contract.ZYMainContract;
 import com.funlisten.business.main.model.bean.ZYVersion;
@@ -22,6 +27,7 @@ import com.funlisten.business.main.presenter.ZYHomePresenter;
 import com.funlisten.business.main.presenter.ZYMainPresenter;
 import com.funlisten.business.main.view.ZYHomeFragment;
 import com.funlisten.business.main.view.ZYMeFragment;
+import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.utils.ZYStatusBarUtils;
 import com.funlisten.utils.ZYToast;
 import com.umeng.analytics.MobclickAgent;
@@ -64,6 +70,12 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
 
     @Bind(R.id.layoutPlayer)
     RelativeLayout layoutPlayer;
+
+    @Bind(R.id.imgAvatar)
+    ImageView imgAvatar;
+
+    @Bind(R.id.imgPlayer)
+    ImageView imgPlayer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,7 +136,14 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
                 break;
             case R.id.meBtn:
                 mainViewPager.setCurrentItem(1);
-
+                break;
+            case R.id.layoutPlayer:
+                int lastPlayAudioId = ZYPLayManager.getInstance().getLastPlayAudioId();
+                if (lastPlayAudioId > 0) {
+                    ZYPlayActivity.toPlayActivity(mActivity, ZYPLayManager.getInstance().getLastPlayAlbumId(), lastPlayAudioId);
+                } else {
+                    ZYToast.show(mActivity, "您还没有播放过任何音频哦,请先去选择要播放的音频!");
+                }
                 break;
         }
     }
@@ -180,6 +199,11 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
     public void onResume() {
         super.onResume();
         mPresenter.getVersion();
+        refreshPlay();
+    }
+
+    private void refreshPlay() {
+        ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, ZYPLayManager.getInstance().getLastPlayImg(), R.drawable.def_avatar, R.drawable.def_avatar);
     }
 
     @Override

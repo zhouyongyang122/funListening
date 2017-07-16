@@ -9,11 +9,11 @@ import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 
 public interface ZYDownloadHomeContract {
 
-    interface IView extends ZYListDataContract.View<IPresenter>{
-
+    interface IView extends ZYListDataContract.View<IPresenter> {
+        void refresh(Object object);
     }
 
-    interface IPresenter extends ZYListDataContract.Presenter<ZYDownloadEntity>{
+    interface IPresenter extends ZYListDataContract.Presenter<ZYDownloadEntity> {
 
     }
 }

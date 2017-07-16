@@ -17,8 +17,8 @@ public class DataStatistics {
     public static void init(Context context){
 
         //友盟统计
-        MobclickAgent.setDebugMode(BuildConfig.DEBUG);
-        MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(context,U_MENT_KEY, ZYChannelUtil.getChannel(context),MobclickAgent.EScenarioType.E_UM_NORMAL));
+//        MobclickAgent.setDebugMode(BuildConfig.DEBUG);
+//        MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(context,U_MENT_KEY, ZYChannelUtil.getChannel(context),MobclickAgent.EScenarioType.E_UM_NORMAL));
     }
 
     public static void onResume(Context context){

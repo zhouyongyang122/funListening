@@ -1,5 +1,6 @@
 package com.funlisten.business.main.view;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
@@ -56,9 +57,11 @@ public class ZYHomeFragment extends ZYBaseFragment<ZYHomeContract.IPresenter> im
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.zy_fragment_home, container, false);
         ButterKnife.bind(this, view);
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewTop.getLayoutParams();
-        layoutParams.height = ZYStatusBarUtils.getStatusBarHeight(mActivity);
-        viewTop.setLayoutParams(layoutParams);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewTop.getLayoutParams();
+            layoutParams.height = ZYStatusBarUtils.getStatusBarHeight(mActivity);
+            viewTop.setLayoutParams(layoutParams);
+        }
         initLoadingView();
         layout_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

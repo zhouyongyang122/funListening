@@ -271,7 +271,7 @@ public interface ZYRequestApi {
      * @return
      */
     @POST("audio/detail")
-    Observable<ZYResponse> getAudio(@Query("id") String id);
+    Observable<ZYResponse<ZYAudio>> getAudio(@Query("id") String id);
 
     /**
      * 关注

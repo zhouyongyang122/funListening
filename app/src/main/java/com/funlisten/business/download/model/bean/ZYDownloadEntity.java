@@ -15,6 +15,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Transient;
+import org.greenrobot.greendao.query.WhereCondition;
 
 import java.io.File;
 import java.util.List;
@@ -125,9 +126,11 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
         downloadEntity.audioSort = audio.sort;
         downloadEntity.total = audio.fileLength;
         downloadEntity.url = audio.fileUrl;
-        File file = new File(ZYApplication.AUDIO_CACHE_DIR + albumDetail.id + "/" + audio.id);
-        file.mkdirs();
+        File file = new File(ZYApplication.AUDIO_CACHE_DIR + albumDetail.id + "/" + audio.id + ".mp3");
         try {
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
             file.createNewFile();
             ZYLog.e(ZYDownloadEntity.class.getSimpleName(), "createEntityByAudio: " + file.getAbsolutePath());
         } catch (Exception e) {
@@ -155,6 +158,16 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
         downloadEntityDao.delete(this);
     }
 
+    public static List<ZYDownloadEntity> queryAlbums() {
+        ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+        return downloadEntityDao.queryBuilder().where(new WhereCondition.StringCondition("1 GROUP BY " + ZYDownloadEntityDao.Properties.AlbumId.columnName)).list();
+    }
+
+    public static List<ZYDownloadEntity> queryAlbumAudios(int albumId) {
+        ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+        return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.AlbumId.eq(albumId)).build().list();
+    }
+
     public static List<ZYDownloadEntity> queryDownloadings() {
         ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
         return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.Current.notEq(ZYDownloadEntityDao.Properties.Total)).build().list();
@@ -163,6 +176,12 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
     public static ZYDownloadEntity queryById(int audioId, int albumId) {
         ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
         ZYDownloadEntity entity = downloadEntityDao.load(audioId + "_" + albumId);
+        return entity;
+    }
+
+    public static ZYDownloadEntity queryById(String id) {
+        ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+        ZYDownloadEntity entity = downloadEntityDao.load(id);
         return entity;
     }
 

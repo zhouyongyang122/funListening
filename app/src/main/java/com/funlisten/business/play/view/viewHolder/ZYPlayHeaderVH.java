@@ -5,6 +5,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.funlisten.R;
+import com.funlisten.ZYApplication;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.play.model.bean.ZYAudio;
@@ -72,10 +73,14 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> {
 
     @Override
     public void updateView(ZYPlay data, int position) {
+
         if (data != null) {
+            mData = data;
+        }
+
+        if (imgBg != null && mData != null) {
             mFormatBuilder = new StringBuilder();
             mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
-            mData = data;
             ZYAlbumDetail albumDetail = mData.albumDetail;
             ZYAudio audio = mData.audio;
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, albumDetail.coverUrl);
@@ -85,6 +90,8 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> {
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, albumDetail.publisher.avatarUrl);
             textTitle.setText(albumDetail.title);
             textInfo.setText(albumDetail.favoriteCount + "人订阅 | " + albumDetail.playCount + "播放");
+
+            ZYApplication.getInstance().playService.play(mData.audio);
         }
     }
 

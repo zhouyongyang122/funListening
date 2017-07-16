@@ -12,4 +12,9 @@ public class ZYPlay implements ZYIBaseBean {
     public ZYAlbumDetail albumDetail;
 
     public ZYAudio audio;
+
+    public ZYPlay(ZYAlbumDetail albumDetail, ZYAudio audio) {
+        this.albumDetail = albumDetail;
+        this.audio = audio;
+    }
 }

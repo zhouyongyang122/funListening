@@ -48,7 +48,7 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     @Override
     protected void onItemClick(View view, int position) {
         ZYAudio data = mAdapter.getItem(position);
-        mActivity.startActivity(ZYPlayActivity.createIntent(mActivity, data.id + ""));
+        ZYPlayActivity.toPlayActivity(mActivity, albumDetail.id, data.id);
     }
 
     public void setAlbumDetail(ZYAlbumDetail albumDetail) {

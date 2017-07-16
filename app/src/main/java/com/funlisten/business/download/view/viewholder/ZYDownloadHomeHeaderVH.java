@@ -48,10 +48,12 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     public void updateView(ZYDownloadEntity data, int position) {
         if (data != null) {
             mData = data;
+        }
+        if (mData != null && textName != null) {
             mItemView.setVisibility(View.VISIBLE);
-            ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, data.albumCoverUrl);
-            textPublisher.setText("超级演说家: " + data.albumPublisher);
-            textName.setText(data.audioName);
+            ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, mData.albumCoverUrl);
+            textPublisher.setText("超级演说家: " + mData.albumPublisher);
+            textName.setText(mData.audioName);
             updateProgress();
         }
     }

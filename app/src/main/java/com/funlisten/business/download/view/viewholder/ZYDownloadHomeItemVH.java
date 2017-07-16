@@ -2,6 +2,8 @@ package com.funlisten.business.download.view.viewholder;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
@@ -36,8 +38,8 @@ public class ZYDownloadHomeItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     @Bind(R.id.textSize)
     TextView textSize;
 
-    @Bind(R.id.imgDel)
-    ImageView imgDel;
+    @Bind(R.id.layoutDel)
+    RelativeLayout layoutDel;
 
     ZYDownloadEntity mData;
 
@@ -51,18 +53,13 @@ public class ZYDownloadHomeItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
             textUpdateCount.setText("已经更新到" + mData.audioUpatedCount + "集");
             textDownCount.setText("已经下载" + mData.audioDowloadedCount + "集");
             textSize.setText(String.format("%.2f", ((float) mData.albumDownloadedSize / 1024.0f)));
-            if (mData.isEdit) {
-                imgDel.setVisibility(View.VISIBLE);
-            } else {
-                imgDel.setVisibility(View.GONE);
-            }
         }
     }
 
-    @OnClick({R.id.imgDel})
+    @OnClick({R.id.layoutDel})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.imgDel:
+            case R.id.layoutDel:
                 break;
         }
     }

@@ -10,6 +10,7 @@ import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.mvp.ZYListDateFragment;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.business.download.activity.ZYDownloadedActivity;
 import com.funlisten.business.download.contract.ZYDownloadHomeContract;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.download.view.viewholder.ZYDownloadHomeHeaderVH;
@@ -39,7 +40,13 @@ public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeCon
 
     @Override
     protected void onItemClick(View view, int position) {
+        ZYDownloadEntity downloadEntity = mAdapter.getItem(position);
+        mActivity.startActivity(ZYDownloadedActivity.createIntent(mActivity, downloadEntity.albumId,downloadEntity.albumName));
+    }
 
+    @Override
+    public void refresh(Object object) {
+        homeHeaderVH.updateView((ZYDownloadEntity) object, 0);
     }
 
     @Override

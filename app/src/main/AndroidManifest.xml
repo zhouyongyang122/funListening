@@ -10,7 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".business.splash.activity.ZYSplashActivity">
+        <activity
+            android:name=".business.splash.activity.ZYSplashActivity"
+            android:theme="@style/splashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,6 +22,7 @@
 
         <activity
             android:name=".business.main.activity.ZYMainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
@@ -54,19 +57,27 @@
             android:name=".business.download.activity.ZYDownloadingActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".business.followfans.activity.GDFollowActivity"
+        <activity
+            android:name=".business.followfans.activity.GDFollowActivity"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".base.activity.picturePicker.ZYPicturePickerActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".business.photo.activity.ZYPhotoActivity"
+        <activity
+            android:name=".business.photo.activity.ZYPhotoActivity"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".business.play.activity.ZYPlayActivity"
+            android:screenOrientation="portrait" />
+
+        <service android:name=".business.play.ZYPlayService" />
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

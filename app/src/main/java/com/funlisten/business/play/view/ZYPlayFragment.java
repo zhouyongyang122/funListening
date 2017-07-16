@@ -2,6 +2,7 @@ package com.funlisten.business.play.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,22 +13,26 @@ import android.widget.TextView;
 import com.funlisten.R;
 import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
 import com.funlisten.base.mvp.ZYBaseFragment;
+import com.funlisten.base.view.ZYLoadingView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
+import com.funlisten.business.play.contract.ZYPlayContract;
+import com.funlisten.business.play.model.bean.ZYPlay;
 import com.funlisten.business.play.presenter.ZYPlayPresenter;
 import com.funlisten.business.play.view.viewHolder.ZYPlayActionBarVH;
 import com.funlisten.business.play.view.viewHolder.ZYPlayAudiosVH;
 import com.funlisten.business.play.view.viewHolder.ZYPlayHeaderVH;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * Created by ZY on 17/7/10.
  */
 
-public class ZYPlayFragment extends ZYBaseFragment<ZYPlayPresenter> implements ZYPlayActionBarVH.PlayActionListener, ZYCommentItemVH.CommentItemListener {
+public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> implements ZYPlayContract.IView, ZYPlayActionBarVH.PlayActionListener, ZYCommentItemVH.CommentItemListener {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -52,26 +57,39 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayPresenter> implements Z
 
     ZYBaseRecyclerAdapter<Object> adapter;
 
+    ZYLoadingView loadingView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         RelativeLayout rootView = (RelativeLayout) inflater.inflate(R.layout.zy_fragment_play, container, false);
+
+        ButterKnife.bind(this, rootView);
+
         actionBarVH = new ZYPlayActionBarVH(this);
         actionBarVH.attachTo(rootView);
 
-        headerVH = new ZYPlayHeaderVH();
-        headerVH.attachTo(rootView);
-
         audiosVH = new ZYPlayAudiosVH();
 
-        adapter = new ZYBaseRecyclerAdapter<Object>() {
+        headerVH = new ZYPlayHeaderVH();
+        adapter = new ZYBaseRecyclerAdapter<Object>(mPresenter.getComments()) {
             @Override
             public ZYBaseViewHolder<Object> createViewHolder(int type) {
                 return new ZYCommentItemVH(ZYPlayFragment.this);
             }
         };
-
+        adapter.addHeader(headerVH);
         recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
+
+        loadingView = new ZYLoadingView(mActivity);
+        loadingView.attach(rootView);
+        loadingView.setRetryListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.subscribe();
+            }
+        });
         return rootView;
     }
 
@@ -90,8 +108,15 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayPresenter> implements Z
     }
 
     @Override
+    public void refreshView() {
+        adapter.notifyDataSetChanged();
+        headerVH.updateView(new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getAudio()), 0);
+    }
+
+    @Override
     public void onBackPressed() {
         finish();
+        mActivity.overridePendingTransition(0, R.anim.slide_down);
     }
 
     @Override
@@ -117,5 +142,23 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayPresenter> implements Z
     @Override
     public void suportCancle(ZYComment comment) {
 
+    }
+
+    @Override
+    public void showLoading() {
+        super.showLoading();
+        loadingView.showLoading();
+    }
+
+    @Override
+    public void hideLoading() {
+        super.hideLoading();
+        loadingView.showNothing();
+    }
+
+    @Override
+    public void showError() {
+        super.showError();
+        loadingView.showError();
     }
 }

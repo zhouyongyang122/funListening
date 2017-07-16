@@ -57,7 +57,7 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
-    <style name="AblumTabLayoutTextAppearance" >
+    <style name="AblumTabLayoutTextAppearance">
         <item name="android:textSize">@dimen/f2</item>
         <item name="textAllCaps">false</item>
     </style>
@@ -68,5 +68,4 @@
         <item name="android:minHeight">2dip</item>
         <item name="android:maxHeight">4dip</item>
     </style>
-
 </resources>

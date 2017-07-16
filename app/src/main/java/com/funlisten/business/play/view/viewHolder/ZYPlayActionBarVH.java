@@ -1,6 +1,7 @@
 package com.funlisten.business.play.view.viewHolder;
 
 import android.app.Activity;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.funlisten.R;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.utils.ZYStatusBarUtils;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -19,6 +21,9 @@ import butterknife.OnClick;
  */
 
 public class ZYPlayActionBarVH extends ZYBaseViewHolder<Object> {
+
+    @Bind(R.id.layoutInfo)
+    LinearLayout layoutInfo;
 
     @Bind(R.id.imgBack)
     ImageView imgBack;
@@ -42,6 +47,16 @@ public class ZYPlayActionBarVH extends ZYBaseViewHolder<Object> {
 
     public ZYPlayActionBarVH(PlayActionListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void findView(View view) {
+        super.findView(view);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layoutInfo.getLayoutParams();
+            layoutParams.topMargin = ZYStatusBarUtils.getStatusBarHeight(mContext);
+        }
     }
 
     @Override

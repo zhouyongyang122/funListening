@@ -35,14 +35,10 @@ public class ZYMainPresenter extends ZYBasePresenter implements ZYMainContract.I
             mSubscriptions.add(ZYNetSubscription.subscription(mModel.getVersion(), new ZYNetSubscriber<ZYResponse<ZYVersion>>() {
                         @Override
                         public void onSuccess(ZYResponse<ZYVersion> response) {
-//                            super.onSuccess(response);
                             if (response.data == null) {
                                 lastGetVersionTime = 0;
                             } else {
                                 ZYVersion version = response.data;
-                                long timeInMillis = System.currentTimeMillis() / 1000L;
-                                long timeRange = version.timestamp - timeInMillis;
-                                ZYPreferenceHelper.getInstance().setTimeOffset(timeRange);
                                 if (version.versioncode > ZYSystemUtils.getAppVersionCode(ZYApplication.getInstance().getCurrentActivity())) {
                                     mIView.showUpdateView(version);
                                 }
@@ -51,7 +47,6 @@ public class ZYMainPresenter extends ZYBasePresenter implements ZYMainContract.I
 
                         @Override
                         public void onFail(String message) {
-//                            super.onFail(message);
                             lastGetVersionTime = 0;
                         }
                     }

@@ -11,18 +11,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
+import com.funlisten.ZYApplication;
 import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
+import com.funlisten.base.event.ZYEventPlayState;
 import com.funlisten.base.mvp.ZYBaseFragment;
+import com.funlisten.base.player.FZIPlayer;
 import com.funlisten.base.view.ZYLoadingView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
 import com.funlisten.business.play.contract.ZYPlayContract;
+import com.funlisten.business.play.model.ZYPLayManager;
 import com.funlisten.business.play.model.bean.ZYPlay;
 import com.funlisten.business.play.presenter.ZYPlayPresenter;
 import com.funlisten.business.play.view.viewHolder.ZYPlayActionBarVH;
 import com.funlisten.business.play.view.viewHolder.ZYPlayAudiosVH;
 import com.funlisten.business.play.view.viewHolder.ZYPlayHeaderVH;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -108,9 +115,16 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     }
 
     @Override
-    public void refreshView() {
+    public void refreshView(boolean needPlay) {
         adapter.notifyDataSetChanged();
-        headerVH.updateView(new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getAudio()), 0);
+        ZYPlay play = new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getAudio());
+        headerVH.updateView(play, 0);
+        ZYPLayManager.getInstance().setPlay(play);
+        ZYPLayManager.getInstance().setComments(mPresenter.getComments());
+
+        if (needPlay) {
+            ZYApplication.getInstance().playService.play(play.audio);
+        }
     }
 
     @Override
@@ -160,5 +174,23 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     public void showError() {
         super.showError();
         loadingView.showError();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ZYEventPlayState playState) {
+        if (playState != null) {
+            switch (playState.state) {
+                case FZIPlayer.STATE_PREPARED:
+                    break;
+                case FZIPlayer.STATE_COMPLETED:
+                    break;
+                case FZIPlayer.STATE_ERROR:
+                    break;
+                case FZIPlayer.STATE_PLAYING:
+                    headerVH.refreshProgress(playState.currentDuration, playState.duration);
+                    break;
+            }
+            headerVH.refreshPlayState(playState.state);
+        }
     }
 }

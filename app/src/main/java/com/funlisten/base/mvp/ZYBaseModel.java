@@ -35,6 +35,10 @@ public class ZYBaseModel {
 
     public static final String COMMENT_TYPE = "comment";
 
+    public static final String SORT_DESC = "desc";//倒序
+
+    public static final String SORT_ASC = "asc";//正序
+
     public ZYBaseModel() {
         mApi = ZYNetManager.shareInstance().getApi();
     }
@@ -107,14 +111,14 @@ public class ZYBaseModel {
     /**
      * 关注
      */
-    public Observable<ZYResponse> follow(String toUserId){
+    public Observable<ZYResponse> follow(String toUserId) {
         return mApi.follow(toUserId);
     }
 
     /**
      * 关注
      */
-    public Observable<ZYResponse> followCancle(String toUserId){
+    public Observable<ZYResponse> followCancle(String toUserId) {
         return mApi.followCancle(toUserId);
     }
 

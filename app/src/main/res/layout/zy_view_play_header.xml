@@ -74,21 +74,21 @@
                 android:textSize="@dimen/f9" />
 
             <ImageView
-                android:id="@+id/textPre"
+                android:id="@+id/imgPre"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/btn_pre_track_n" />
 
             <ImageView
-                android:id="@+id/textPlay"
+                android:id="@+id/imgPlay"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/btn_zantingbofang_n" />
 
             <ImageView
-                android:id="@+id/textNext"
+                android:id="@+id/imgNext"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

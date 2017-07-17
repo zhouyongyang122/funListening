@@ -6,6 +6,9 @@ import com.funlisten.ZYApplication;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.play.model.bean.ZYPlay;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ZY on 17/7/16.
  */
@@ -26,6 +29,8 @@ public class ZYPLayManager {
 
     ZYPlay mPlay;
 
+    List<Object> mComments;
+
     private ZYPLayManager() {
 
     }
@@ -43,6 +48,14 @@ public class ZYPLayManager {
 
     public void setPlay(ZYPlay mPlay) {
         this.mPlay = mPlay;
+    }
+
+    public List<Object> getComments() {
+        return mComments;
+    }
+
+    public void setComments(List<Object> mComments) {
+        this.mComments = mComments;
     }
 
     public void saveLastPlayId(int albumId, int audioId) {

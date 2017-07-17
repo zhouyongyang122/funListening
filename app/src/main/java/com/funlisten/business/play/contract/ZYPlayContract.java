@@ -16,7 +16,7 @@ import java.util.List;
 public interface ZYPlayContract {
 
     interface IView extends ZYIBaseView<IPresenter> {
-        void refreshView();
+        void refreshView(boolean needPlay);
     }
 
     interface IPresenter extends ZYIBasePresenter {

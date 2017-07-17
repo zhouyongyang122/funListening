@@ -1,12 +1,18 @@
 package com.funlisten.business.play.model;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.IBinder;
 
 import com.funlisten.ZYApplication;
+import com.funlisten.business.play.ZYPlayService;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.play.model.bean.ZYPlay;
+import com.funlisten.utils.ZYLog;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +33,8 @@ public class ZYPLayManager {
 
     private SharedPreferences defPre;
 
+    public ZYPlayService playService;
+
     ZYPlay mPlay;
 
     List<Object> mComments;
@@ -34,6 +42,46 @@ public class ZYPLayManager {
     private ZYPLayManager() {
 
     }
+
+    public void startPlaySer() {
+        try {
+            Intent intent = new Intent();
+            intent.setClass(ZYApplication.getInstance(), ZYPlayService.class);
+            ZYApplication.getInstance().startService(intent);
+            ZYApplication.getInstance().bindService(intent, conn, Context.BIND_AUTO_CREATE);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void stopPlaySer() {
+        try {
+            Intent intent = new Intent();
+            intent.setClass(ZYApplication.getInstance(), ZYPlayService.class);
+            ZYApplication.getInstance().stopService(intent);
+            ZYApplication.getInstance().unbindService(conn);
+        } catch (Exception e) {
+
+        }
+    }
+
+    //使用ServiceConnection来监听Service状态的变化
+    private ServiceConnection conn = new ServiceConnection() {
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            // TODO Auto-generated method stub
+            playService = null;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            //这里我们实例化audioService,通过binder来实现
+            ZYLog.e(ServiceConnection.class.getSimpleName(), "onServiceConnected");
+            playService = ((ZYPlayService.PlayBinder) binder).getService();
+
+        }
+    };
 
     public static ZYPLayManager getInstance() {
         if (instance == null) {
@@ -78,6 +126,34 @@ public class ZYPLayManager {
 
     public String getLastPlayImg() {
         return getDefPre().getString(LAST_PLAY_IMG, null);
+    }
+
+    public void play(ZYAudio audio) {
+        playService.play(audio);
+    }
+
+    public void startOrPuase() {
+        playService.startOrPuase();
+    }
+
+    public void start() {
+        playService.start();
+    }
+
+    public void puase() {
+        playService.puase();
+    }
+
+    public void seekTo(float proportion) {
+        playService.seekTo(proportion);
+    }
+
+    public void nextAudio() {
+        playService.nextAudio();
+    }
+
+    public void preAudio() {
+        playService.preAudio();
     }
 
     public SharedPreferences getDefPre() {

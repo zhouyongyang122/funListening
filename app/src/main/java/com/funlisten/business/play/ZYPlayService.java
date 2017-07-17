@@ -100,8 +100,8 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         audioPlayer.pause();
     }
 
-    public void seekTo(int seek) {
-        audioPlayer.seekTo(seek);
+    public void seekTo(float proportion) {
+        audioPlayer.seekTo((int) (audioPlayer.getDuration() * proportion));
     }
 
     public void nextAudio() {

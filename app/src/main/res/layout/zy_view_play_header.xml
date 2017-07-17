@@ -17,23 +17,35 @@
         android:layout_below="@+id/imgBg"
         android:layout_marginTop="-8dp">
 
-        <SeekBar
-            android:id="@+id/seekBar"
+        <RelativeLayout
+            android:id="@+id/layoutSeekBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="100"
-            android:maxHeight="5dp"
-            android:minHeight="5dp"
-            android:paddingEnd="-12dp"
-            android:paddingStart="-12dp"
-            android:progressDrawable="@drawable/bar_player_seek"
-            android:thumb="@drawable/bar_seek_point_selector" />
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="5dp"
+                android:layout_centerVertical="true"
+                android:background="@color/c9" />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="1000"
+                android:maxHeight="5dp"
+                android:minHeight="5dp"
+                android:paddingEnd="0dp"
+                android:paddingStart="6dp"
+                android:progressDrawable="@drawable/bar_player_seek"
+                android:thumb="@drawable/bar_seek_point_selector" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/textStartTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/seekBar"
+            android:layout_below="@+id/layoutSeekBar"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="00:00"
@@ -45,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/seekBar"
+            android:layout_below="@+id/layoutSeekBar"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="0:30"

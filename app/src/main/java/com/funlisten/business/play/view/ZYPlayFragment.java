@@ -123,7 +123,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         ZYPLayManager.getInstance().setComments(mPresenter.getComments());
 
         if (needPlay) {
-            ZYApplication.getInstance().playService.play(play.audio);
+            ZYPLayManager.getInstance().play(play.audio);
         }
     }
 

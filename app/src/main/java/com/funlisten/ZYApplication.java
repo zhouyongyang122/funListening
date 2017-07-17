@@ -13,6 +13,7 @@ import android.os.IBinder;
 import com.bugtags.library.Bugtags;
 import com.bugtags.library.BugtagsOptions;
 import com.funlisten.business.play.ZYPlayService;
+import com.funlisten.business.play.model.ZYPLayManager;
 import com.funlisten.service.db.ZYDBManager;
 import com.funlisten.thirdParty.statistics.DataStatistics;
 import com.funlisten.utils.ZYLog;
@@ -39,8 +40,6 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
     private Activity currentActivity;
 
     private ArrayList<Activity> allActivities = new ArrayList<Activity>();
-
-    public ZYPlayService playService;
 
     @Override
     public void onCreate() {
@@ -81,7 +80,7 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
         //富文本缓存
         RichText.initCacheDir(this);
 
-        startPlaySer();
+        ZYPLayManager.getInstance().startPlaySer();
     }
 
     private void initFileDir() {
@@ -138,44 +137,4 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
     @Override
     public void onUncaughtExceptionHappen(Thread thread, Throwable ex) {
     }
-
-    public void startPlaySer() {
-        try {
-            Intent intent = new Intent();
-            intent.setClass(this, ZYPlayService.class);
-            startService(intent);
-            bindService(intent, conn, Context.BIND_AUTO_CREATE);
-        } catch (Exception e) {
-
-        }
-    }
-
-    public void stopPlaySer() {
-        try {
-            Intent intent = new Intent();
-            intent.setClass(this, ZYPlayService.class);
-            stopService(intent);
-            unbindService(conn);
-        } catch (Exception e) {
-
-        }
-    }
-
-    //使用ServiceConnection来监听Service状态的变化
-    private ServiceConnection conn = new ServiceConnection() {
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            // TODO Auto-generated method stub
-            playService = null;
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder binder) {
-            //这里我们实例化audioService,通过binder来实现
-            ZYLog.e(ServiceConnection.class.getSimpleName(),"onServiceConnected");
-            playService = ((ZYPlayService.PlayBinder) binder).getService();
-
-        }
-    };
 }

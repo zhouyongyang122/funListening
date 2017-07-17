@@ -128,7 +128,7 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
     protected void onSaveInstanceState(Bundle outState) {
     }
 
-    @OnClick({R.id.homeBtn, R.id.meBtn})
+    @OnClick({R.id.homeBtn, R.id.meBtn, R.id.layoutPlayer})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.homeBtn:
@@ -140,7 +140,7 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
             case R.id.layoutPlayer:
                 int lastPlayAudioId = ZYPLayManager.getInstance().getLastPlayAudioId();
                 if (lastPlayAudioId > 0) {
-                    ZYPlayActivity.toPlayActivity(mActivity, ZYPLayManager.getInstance().getLastPlayAlbumId(), lastPlayAudioId);
+                    ZYPlayActivity.toPlayActivity(mActivity, ZYPLayManager.getInstance().getLastPlayAlbumId(), lastPlayAudioId, ZYPLayManager.getInstance().getPlay() == null);
                 } else {
                     ZYToast.show(mActivity, "您还没有播放过任何音频哦,请先去选择要播放的音频!");
                 }

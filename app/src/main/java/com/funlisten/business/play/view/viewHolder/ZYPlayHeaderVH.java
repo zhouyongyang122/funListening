@@ -10,6 +10,7 @@ import com.funlisten.ZYApplication;
 import com.funlisten.base.player.FZIPlayer;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
+import com.funlisten.business.play.model.ZYPLayManager;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.play.model.bean.ZYPlay;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
@@ -24,7 +25,7 @@ import butterknife.OnClick;
  * Created by ZY on 17/7/10.
  */
 
-public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> {
+public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.OnSeekBarChangeListener {
 
     @Bind(R.id.imgBg)
     ImageView imgBg;
@@ -75,6 +76,13 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> {
     private Formatter mFormatter;
 
     @Override
+    public void findView(View view) {
+        super.findView(view);
+        seekBar.setOnSeekBarChangeListener(this);
+        mFormatBuilder = new StringBuilder();
+    }
+
+    @Override
     public void updateView(ZYPlay data, int position) {
 
         if (data != null) {
@@ -82,7 +90,6 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> {
         }
 
         if (imgBg != null && mData != null) {
-            mFormatBuilder = new StringBuilder();
             mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
             ZYAlbumDetail albumDetail = mData.albumDetail;
             ZYAudio audio = mData.audio;
@@ -105,13 +112,13 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgPre:
-                ZYApplication.getInstance().playService.preAudio();
+                ZYPLayManager.getInstance().preAudio();
                 break;
             case R.id.imgPlay:
-                ZYApplication.getInstance().playService.startOrPuase();
+                ZYPLayManager.getInstance().startOrPuase();
                 break;
             case R.id.imgNext:
-                ZYApplication.getInstance().playService.nextAudio();
+                ZYPLayManager.getInstance().nextAudio();
                 break;
         }
     }
@@ -137,7 +144,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> {
 
     public void refreshProgress(int currentPosition, int totalPosition) {
         if (textStartTime != null) {
-            textStartTime.setText(stringForTime(currentPosition));
+            textStartTime.setText(stringForTime(currentPosition / 1000));
             float progress = ((float) currentPosition / (float) totalPosition) * 1000;
             seekBar.setProgress((int) progress);
         }
@@ -152,5 +159,21 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> {
         } else if (state == FZIPlayer.STATE_PLAYING || state == FZIPlayer.STATE_PREPARED || state == FZIPlayer.STATE_PREPARING) {
             imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
         }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        int progress = seekBar.getProgress();
+        ZYPLayManager.getInstance().seekTo((float) progress / 1000.0f);
     }
 }

@@ -42,13 +42,13 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
 
     boolean isNewPlay;
 
-    public ZYPlayPresenter(ZYPlayContract.IView iView, int mAlbumId, int mAudioId) {
+    public ZYPlayPresenter(ZYPlayContract.IView iView, int mAlbumId, int mAudioId, boolean isNewPlay) {
         mView = iView;
         mModel = new ZYPlayModel();
         mView.setPresenter(this);
         this.mAudioId = mAudioId;
         this.mAlbumId = mAlbumId;
-        isNewPlay = ZYPLayManager.getInstance().getPlay() == null;
+        this.isNewPlay = isNewPlay;
     }
 
     @Override
@@ -97,6 +97,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
             ZYPlay play = ZYPLayManager.getInstance().getPlay();
             albumDetail = play.albumDetail;
             audio = play.audio;
+            mView.hideLoading();
             mView.refreshView(false);
         }
     }

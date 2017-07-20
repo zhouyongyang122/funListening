@@ -1,6 +1,7 @@
 package com.funlisten.service.downNet.down;
 
 import com.funlisten.base.bean.ZYIBaseBean;
+import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.utils.ZYFileUtils;
 import com.funlisten.utils.ZYLog;
 import com.funlisten.utils.ZYUrlUtils;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -86,7 +88,44 @@ public class ZYDownloadManager {
     }
 
     public void startAllAudio() {
+        new Thread() {
+            @Override
+            public void run() {
+                List<ZYDownloadEntity> list = ZYDownloadEntity.queryAudioByPauseState();
+                if (list != null && list.size() > 0) {
+                    for (ZYDownloadEntity downloadEntity : list) {
+                        downloadEntity.setState(ZYDownState.WAIT);
+                    }
+                    ZYDownloadEntity.updateAudios(list);
+                    ArrayList<ZYIDownBase> audios = new ArrayList<ZYIDownBase>();
+                    audios.addAll(list);
+                    addAudios(audios);
+                }
+            }
+        }.start();
+    }
 
+    public void puaseAllAudio(boolean needCancle) {
+        if (needCancle) {
+            cancleAll();
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                List<ZYDownloadEntity> list = ZYDownloadEntity.queryAudiosByDowloadState();
+                if (list != null && list.size() > 0) {
+                    for (ZYDownloadEntity downloadEntity : list) {
+                        downloadEntity.setState(ZYDownState.PAUSE);
+                    }
+                    ZYDownloadEntity.updateAudios(list);
+                }
+            }
+        }.start();
+    }
+
+    public void deleteAllAudio() {
+        cancleAll();
+        ZYDownloadEntity.deleteAudiosNotFinishedState();
     }
 
     public void delAudio(ZYIDownBase downBase) {

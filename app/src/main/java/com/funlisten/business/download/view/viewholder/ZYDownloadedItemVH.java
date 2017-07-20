@@ -37,6 +37,8 @@ public class ZYDownloadedItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
 
     DownloadedItemListener listener;
 
+    final float SIZE_M = 1024 * 1204.0f;
+
     public ZYDownloadedItemVH(DownloadedItemListener listener) {
         this.listener = listener;
     }
@@ -46,7 +48,7 @@ public class ZYDownloadedItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
         if (data != null) {
             mData = data;
             textName.setText("第 " + data.audioSort + " 期 | " + mData.audioName);
-            textSize.setText(String.format("%.2fM", ((float) mData.total / 1204.0f)));
+            textSize.setText(String.format("%.2fM", ((float) mData.total / SIZE_M)));
             textDay.setText(ZYDateUtils.getTimeString(mData.audioCreateTime, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.YYMMDDHH));
             textTime.setText(ZYDateUtils.getTimeString(mData.audioCreateTime, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.HHMM24));
 

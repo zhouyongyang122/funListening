@@ -28,6 +28,8 @@ public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeCon
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        mRefreshRecyclerView.setRefreshEnable(false);
+        mRefreshRecyclerView.setLoadMoreEnable(false);
         return view;
     }
 
@@ -41,7 +43,7 @@ public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeCon
     @Override
     protected void onItemClick(View view, int position) {
         ZYDownloadEntity downloadEntity = mAdapter.getItem(position);
-        mActivity.startActivity(ZYDownloadedActivity.createIntent(mActivity, downloadEntity.albumId,downloadEntity.albumName));
+        mActivity.startActivity(ZYDownloadedActivity.createIntent(mActivity, downloadEntity.albumId, downloadEntity.albumName));
     }
 
     @Override
@@ -52,5 +54,13 @@ public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeCon
     @Override
     protected ZYBaseViewHolder<ZYDownloadEntity> createViewHolder() {
         return new ZYDownloadHomeItemVH();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (homeHeaderVH != null) {
+            homeHeaderVH.unAttachTo();
+        }
     }
 }

@@ -9,9 +9,8 @@ public enum ZYDownState {
     START(1),
     DOWNING(2),
     PAUSE(3),
-    STOP(4),
-    ERROR(5),
-    FINISH(6);
+    ERROR(4),
+    FINISH(5);
     private int state = 0;
 
     public int getState() {

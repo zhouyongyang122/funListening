@@ -1,5 +1,7 @@
 package com.funlisten.business.download.view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.View;
 
 import com.funlisten.base.mvp.ZYListDateFragment;
@@ -44,8 +46,21 @@ public class ZYDownloadedFragment extends ZYListDateFragment<ZYDownloadHomeContr
     }
 
     @Override
-    public void onItemDelClick(ZYDownloadEntity data) {
-        data.delete();
-        mPresenter.getDataList().remove(data);
+    public void onItemDelClick(final ZYDownloadEntity data) {
+        new AlertDialog.Builder(mActivity).setTitle("删除").setMessage("是否删除音频?")
+                .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        data.delete();
+                        mPresenter.getDataList().remove(data);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).create().show();
     }
 }

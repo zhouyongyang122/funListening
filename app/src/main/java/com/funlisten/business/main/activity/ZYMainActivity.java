@@ -34,6 +34,8 @@ import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
+import pl.com.salsoft.sqlitestudioremote.internal.SQLiteStudioDbService;
 
 /**
  * Created by ZY on 17/4/27.
@@ -90,6 +92,8 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
         if (ZYStatusBarUtils.isCanLightStatusBar()) {
             ZYStatusBarUtils.tintStatusBar(this, Color.TRANSPARENT, 0);
         }
+
+        SQLiteStudioService.instance().start(this);
     }
 
     private void initView() {
@@ -224,5 +228,11 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
 
                     }
                 }).create().show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SQLiteStudioService.instance().stop();
     }
 }

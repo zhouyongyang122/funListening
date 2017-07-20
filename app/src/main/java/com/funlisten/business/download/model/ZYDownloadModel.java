@@ -19,7 +19,11 @@ public class ZYDownloadModel extends ZYBaseModel {
         return ZYDownloadEntity.queryAlbumAudios(albumId);
     }
 
-    public List<ZYDownloadEntity> getDownloadingAudios() {
-        return ZYDownloadEntity.queryDownloadings();
+    public ZYDownloadEntity queryAudioByNotFinishedState() {
+        return ZYDownloadEntity.queryAudioByNotFinishedState();
+    }
+
+    public List<ZYDownloadEntity> queryAudiosByNotFinishedState() {
+        return ZYDownloadEntity.queryAudiosByNotFinishedState();
     }
 }

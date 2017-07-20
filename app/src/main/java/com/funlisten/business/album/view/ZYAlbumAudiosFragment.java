@@ -2,6 +2,7 @@ package com.funlisten.business.album.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,12 @@ import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.service.downNet.down.ZYDownloadManager;
+import com.funlisten.utils.ZYLog;
 import com.funlisten.utils.ZYScreenUtils;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 
 /**
  * Created by ZY on 17/7/5.
@@ -28,6 +34,8 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     ZYAlbumAudiosHeaderVH homeHeaderVH;
 
     ZYAlbumDetail albumDetail;
+
+    ArrayList<ZYBaseViewHolder> viewHolders = new ArrayList<ZYBaseViewHolder>();
 
     @Nullable
     @Override
@@ -61,7 +69,27 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     }
 
     @Override
-    public void onDownloadClick(ZYAudio audio) {
-        ZYDownloadManager.getInstance().addAudio(ZYDownloadEntity.createEntityByAudio(albumDetail, audio));
+    public ZYDownloadEntity onDownloadClick(ZYAudio audio) {
+        ZYDownloadEntity downloadEntity = ZYDownloadEntity.createEntityByAudio(albumDetail, audio);
+        ZYDownloadManager.getInstance().addAudio(downloadEntity);
+        return downloadEntity;
+    }
+
+    @Override
+    public void addEvents(ZYBaseViewHolder viewHolder) {
+        viewHolders.add(viewHolder);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        try {
+            for (ZYBaseViewHolder viewHolder : viewHolders) {
+                EventBus.getDefault().unregister(viewHolder);
+                ZYLog.e(getClass().getSimpleName(), "onDestroyView-eventBus: ");
+            }
+        } catch (Exception e) {
+
+        }
     }
 }

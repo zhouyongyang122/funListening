@@ -18,7 +18,10 @@ import org.greenrobot.greendao.annotation.Transient;
 import org.greenrobot.greendao.query.WhereCondition;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZY on 17/7/12.
@@ -47,7 +50,7 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
     //专辑作者
     public String albumPublisher;
 
-    //专辑下载大小
+    //专辑已经下载的大小
     public int albumDownloadedSize;
 
     //已经更新到多少集
@@ -82,6 +85,9 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
 
     @Transient
     public boolean isEdit;
+
+    @Transient
+    public static Object object = new Object();
 
     @Generated(hash = 591050772)
     public ZYDownloadEntity(String id, int audioId, int albumId, String albumName, String albumCoverUrl, String albumPublisher, int albumDownloadedSize,
@@ -137,62 +143,185 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
             ZYLog.e(ZYDownloadEntity.class.getSimpleName(), "createEntityByAudio-error: " + e.getMessage());
         }
         downloadEntity.savePath = file.getAbsolutePath();
+        downloadEntity.save();
         return downloadEntity;
     }
 
     @Override
     public long save() {
-        ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getWritableDaoSession().getZYDownloadEntityDao();
-        return downloadEntityDao.insertOrReplace(this);
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getWritableDaoSession().getZYDownloadEntityDao();
+            return downloadEntityDao.insertOrReplace(this);
+        }
     }
 
     @Override
     public long update() {
-        ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getWritableDaoSession().getZYDownloadEntityDao();
-        return downloadEntityDao.insertOrReplace(this);
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getWritableDaoSession().getZYDownloadEntityDao();
+            return downloadEntityDao.insertOrReplace(this);
+        }
     }
 
     @Override
     public void delete() {
-        ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getWritableDaoSession().getZYDownloadEntityDao();
-        downloadEntityDao.delete(this);
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getWritableDaoSession().getZYDownloadEntityDao();
+            downloadEntityDao.delete(this);
+        }
     }
 
     public static List<ZYDownloadEntity> queryAlbums() {
-        ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
-        return downloadEntityDao.queryBuilder().where(new WhereCondition.StringCondition("1 GROUP BY " + ZYDownloadEntityDao.Properties.AlbumId.columnName)).list();
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+            List<ZYDownloadEntity> downloadedAudios = downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.Current.eq(ZYDownloadEntityDao.Properties.Total)).build().list();
+            if (downloadedAudios == null || downloadedAudios.size() <= 0) {
+                return null;
+            }
+            Map<Integer, ZYDownloadEntity> albums = new HashMap<Integer, ZYDownloadEntity>();
+            for (ZYDownloadEntity downloadEntity : downloadedAudios) {
+                if (albums.containsKey(downloadEntity.albumId)) {
+                    ZYDownloadEntity albumEntity = albums.get(downloadEntity.albumId);
+                    albumEntity.audioDowloadedCount++;
+                    albumEntity.albumDownloadedSize += downloadEntity.total;
+                } else {
+                    albums.put(downloadEntity.albumId, downloadEntity);
+                }
+            }
+
+            List<ZYDownloadEntity> resutls = new ArrayList<ZYDownloadEntity>();
+            resutls.addAll(albums.values());
+            return resutls;
+        }
     }
 
     public static List<ZYDownloadEntity> queryAlbumAudios(int albumId) {
-        ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
-        return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.AlbumId.eq(albumId)).build().list();
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+            return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.AlbumId.eq(albumId)).build().list();
+        }
     }
 
-    public static List<ZYDownloadEntity> queryDownloadings() {
-        ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
-        return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.Current.notEq(ZYDownloadEntityDao.Properties.Total)).build().list();
+    public static List<ZYDownloadEntity> queryDownloaded() {
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+            return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.Current.eq(ZYDownloadEntityDao.Properties.Total)).build().list();
+        }
     }
 
     public static ZYDownloadEntity queryById(int audioId, int albumId) {
-        ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
-        ZYDownloadEntity entity = downloadEntityDao.load(audioId + "_" + albumId);
-        return entity;
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+            ZYDownloadEntity entity = downloadEntityDao.load(audioId + "_" + albumId);
+            return entity;
+        }
     }
 
+    public static String getEntityId(int audioId, int albumId) {
+        return audioId + "_" + albumId;
+    }
+
+    public static List<ZYDownloadEntity> queryAudiosByDowloadState() {
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+            return downloadEntityDao.queryBuilder().whereOr(
+                    ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.WAIT.getState()),
+                    ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.DOWNING.getState()),
+                    ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.START.getState())
+            ).build().list();
+        }
+    }
+
+    public static List<ZYDownloadEntity> queryAudiosByNotFinishedState() {
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+            return downloadEntityDao.queryBuilder().where(
+                    ZYDownloadEntityDao.Properties.StateValue.notEq(ZYDownState.FINISH.getState())
+            ).build().list();
+        }
+    }
+
+    /**
+     * 查询正在下载的音频 没有 则查询暂停的音频 没有 则查询出错的
+     *
+     * @return
+     */
+    public static ZYDownloadEntity queryAudioByNotFinishedState() {
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+            List<ZYDownloadEntity> results = downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.DOWNING.getState())).build().list();
+            if (results != null && results.size() > 0) {
+                return results.get(0);
+            }
+            results = downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.START.getState())).build().list();
+            if (results != null && results.size() > 0) {
+                return results.get(0);
+            }
+            results = downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.WAIT.getState())).build().list();
+            if (results != null && results.size() > 0) {
+                return results.get(0);
+            }
+            results = downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.PAUSE.getState())).build().list();
+            if (results != null && results.size() > 0) {
+                return results.get(0);
+            }
+            results = downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.ERROR.getState())).build().list();
+            if (results != null && results.size() > 0) {
+                return results.get(0);
+            }
+            return null;
+        }
+    }
+
+    public static boolean deleteAudiosNotFinishedState() {
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getWritableDaoSession().getZYDownloadEntityDao();
+            List<ZYDownloadEntity> results = downloadEntityDao.queryBuilder().where(
+                    ZYDownloadEntityDao.Properties.StateValue.notEq(ZYDownState.FINISH.getState())
+            ).build().list();
+            if (results != null && results.size() > 0) {
+                downloadEntityDao.deleteInTx(results);
+            }
+            return true;
+        }
+    }
+
+    public static List<ZYDownloadEntity> queryAudioByPauseState() {
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+            return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.PAUSE.getState())
+            ).build().list();
+        }
+    }
+
+    public static void updateAudios(List<ZYDownloadEntity> audios) {
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+            downloadEntityDao.updateInTx(audios);
+        }
+    }
+
+
     public static ZYDownloadEntity queryById(String id) {
-        ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
-        ZYDownloadEntity entity = downloadEntityDao.load(id);
-        return entity;
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+            ZYDownloadEntity entity = downloadEntityDao.load(id);
+            return entity;
+        }
     }
 
     public static boolean isDowloading(int audioId, int albumId) {
-        ZYDownloadEntity entity = queryById(audioId, albumId);
-        return entity != null && (entity.current != entity.total);
+        synchronized (object) {
+            ZYDownloadEntity entity = queryById(audioId, albumId);
+            return entity != null && (entity.current != entity.total);
+        }
     }
 
     public static boolean isDowloaded(int audioId, int albumId) {
-        ZYDownloadEntity entity = queryById(audioId, albumId);
-        return entity != null && (entity.current == entity.total);
+        synchronized (object) {
+            ZYDownloadEntity entity = queryById(audioId, albumId);
+            return entity != null && (entity.current == entity.total);
+        }
     }
 
     public int getAudioId() {
@@ -310,10 +439,8 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
             case 3:
                 return ZYDownState.PAUSE;
             case 4:
-                return ZYDownState.STOP;
-            case 5:
                 return ZYDownState.ERROR;
-            case 6:
+            case 5:
                 return ZYDownState.FINISH;
             default:
                 return ZYDownState.WAIT;
@@ -323,23 +450,17 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
     public String getStateString() {
         switch (stateValue) {
             case 0:
-                return "准备下载";
+                return "等待下载";
             case 1:
-                return "准备下载";
+                return "等待下载";
             case 2:
                 return "下载中";
             case 3:
                 return "已暂停";
             case 4:
-                return "已暂停";
-            case 5:
                 return "下载出错";
-            case 6:
+            case 5:
                 return "下载完成";
-            case 7:
-                return "解压中";
-            case 8:
-                return "解压出错";
             default:
                 return "准备下载";
         }

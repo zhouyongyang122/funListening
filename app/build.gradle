@@ -108,4 +108,5 @@ dependencies {
     compile files('libs/weibosdkcore_v3.1.1.jar')
     //富文本
     compile 'com.zzhoujay.richtext:richtext:2.5.2'
+    compile files('libs/SQLiteStudioRemote.jar')
 }

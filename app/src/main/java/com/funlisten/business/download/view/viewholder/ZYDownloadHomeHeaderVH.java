@@ -8,7 +8,9 @@ import android.widget.TextView;
 import com.funlisten.R;
 import com.funlisten.base.event.ZYEventDowloadUpdate;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.business.download.activity.ZYDownloadingActivity;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
+import com.funlisten.service.downNet.down.ZYDownState;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,8 +42,21 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
 
     ZYDownloadEntity mData;
 
+    static float SIZE_M = 1024.0f * 1024.0f;
+
     public ZYDownloadHomeHeaderVH() {
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void findView(View view) {
+        super.findView(view);
+        mItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(ZYDownloadingActivity.createIntent(mContext));
+            }
+        });
     }
 
     @Override
@@ -61,8 +76,8 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     private void updateProgress() {
         long total = mData.total;
         long currentSize = mData.current;
-        float totalM = (float) total / 1024.0f;
-        float currentSizeM = (float) currentSize / 1024.0f;
+        float totalM = (float) total / SIZE_M;
+        float currentSizeM = (float) currentSize / SIZE_M;
         textSize.setText(String.format("%.2fM", currentSizeM) + " / " + String.format("%.2fM", totalM));
         float progress = (float) currentSize / (float) total;
         progressBar.setProgress((int) progress);
@@ -75,13 +90,13 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ZYEventDowloadUpdate dowloadUpdate) {
-        if (dowloadUpdate.downloadEntity != null) {
-            if (dowloadUpdate.downloadEntity.getId().equals(mData.id)) {
-                mData = (ZYDownloadEntity) dowloadUpdate.downloadEntity;
-                updateProgress();
+        if (dowloadUpdate.downloadEntity != null && dowloadUpdate.downloadEntity.getId().equals(mData.id)) {
+            if (dowloadUpdate.downloadEntity.getState() == ZYDownState.FINISH) {
+                mData = ZYDownloadEntity.queryAudioByNotFinishedState();
+                updateView(mData, 0);
             } else {
                 mData = (ZYDownloadEntity) dowloadUpdate.downloadEntity;
-                updateView(mData, 0);
+                updateProgress();
             }
         }
     }

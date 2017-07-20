@@ -42,7 +42,7 @@
             android:drawableLeft="@drawable/icon_all_delete_n"
             android:drawablePadding="4dp"
             android:gravity="center"
-            android:text="全部下载" />
+            android:text="全部清除" />
     </LinearLayout>
 
 </LinearLayout>

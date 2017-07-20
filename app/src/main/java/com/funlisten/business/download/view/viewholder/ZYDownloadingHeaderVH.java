@@ -1,5 +1,7 @@
 package com.funlisten.business.download.view.viewholder;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,6 +23,14 @@ public class ZYDownloadingHeaderVH extends ZYBaseViewHolder<Object> {
     @Bind(R.id.textClearAll)
     TextView textClearAll;
 
+    boolean isAllDownloading;
+
+    DownloadingHeaderListener listener;
+
+    public ZYDownloadingHeaderVH(DownloadingHeaderListener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public void updateView(Object data, int position) {
 
@@ -30,8 +40,11 @@ public class ZYDownloadingHeaderVH extends ZYBaseViewHolder<Object> {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textClearAll:
+                listener.onClearAllClick();
                 break;
             case R.id.textDown:
+                listener.onDownAllClick(isAllDownloading);
+                isAllDownloading = !isAllDownloading;
                 break;
         }
     }
@@ -39,5 +52,11 @@ public class ZYDownloadingHeaderVH extends ZYBaseViewHolder<Object> {
     @Override
     public int getLayoutResId() {
         return R.layout.zy_view_downloading_header;
+    }
+
+    public interface DownloadingHeaderListener {
+        void onClearAllClick();
+
+        void onDownAllClick(boolean isDowAll);
     }
 }

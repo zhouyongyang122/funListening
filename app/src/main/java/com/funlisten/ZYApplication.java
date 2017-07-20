@@ -12,9 +12,11 @@ import android.os.IBinder;
 
 import com.bugtags.library.Bugtags;
 import com.bugtags.library.BugtagsOptions;
+import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.play.ZYPlayService;
 import com.funlisten.business.play.model.ZYPLayManager;
 import com.funlisten.service.db.ZYDBManager;
+import com.funlisten.service.downNet.down.ZYDownloadManager;
 import com.funlisten.thirdParty.statistics.DataStatistics;
 import com.funlisten.utils.ZYLog;
 import com.funlisten.utils.ZYUncaughtExceptionHandler;
@@ -81,6 +83,8 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
         RichText.initCacheDir(this);
 
         ZYPLayManager.getInstance().startPlaySer();
+
+        ZYDownloadManager.getInstance().puaseAllAudio(false);
     }
 
     private void initFileDir() {

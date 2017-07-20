@@ -46,6 +46,7 @@ public class ZYDownloadHomeItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     @Override
     public void updateView(ZYDownloadEntity data, int position) {
         if (data != null) {
+            mItemView.setVisibility(View.VISIBLE);
             mData = data;
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, data.albumCoverUrl);
             textTitle.setText(mData.albumName);
@@ -53,6 +54,8 @@ public class ZYDownloadHomeItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
             textUpdateCount.setText("已经更新到" + mData.audioUpatedCount + "集");
             textDownCount.setText("已经下载" + mData.audioDowloadedCount + "集");
             textSize.setText(String.format("%.2f", ((float) mData.albumDownloadedSize / 1024.0f)));
+        } else {
+            mItemView.setVisibility(View.GONE);
         }
     }
 

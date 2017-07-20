@@ -54,6 +54,9 @@ public class ZYNetSubscriber<R extends ZYResponse> extends rx.Subscriber<R> {
             } else if (response.status.equals(ZYResponse.CODE_TOKEN_EXPIRE)) {
                 //token失效
                 try {
+                    if (ZYApplication.getInstance().getCurrentActivity() instanceof ZYLoginActivity) {
+                        return;
+                    }
                     ZYToast.show(ZYApplication.getInstance(), "登录信息失效,请重新登录");
                     ZYApplication.getInstance().getCurrentActivity().startActivity(ZYLoginActivity.createIntent(ZYApplication.getInstance().getCurrentActivity()));
                 } catch (Exception e) {

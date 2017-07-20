@@ -24,19 +24,19 @@ public class ZYDownloadHomePresenter extends ZYListDataPresenter<ZYDownloadHomeC
     protected void loadData() {
         try {
             mDataList.clear();
-            List<ZYDownloadEntity> downloadingAudios = mModel.getDownloadingAudios();
+            ZYDownloadEntity downloadingAudio = mModel.queryAudioByNotFinishedState();
             List<ZYDownloadEntity> audios = mModel.getAlbums();
             if (audios != null && audios.size() > 0) {
                 mDataList.addAll(audios);
             } else {
-                if (downloadingAudios != null && downloadingAudios.size() > 0) {
+                if (downloadingAudio != null) {
                     mDataList.add(new ZYDownloadEntity());
                 }
             }
             if (mDataList.size() <= 0) {
                 mView.showEmpty();
             } else {
-                mView.refresh(downloadingAudios.get(0));
+                mView.refresh(downloadingAudio);
                 mView.showList(false);
             }
         } catch (Exception e) {

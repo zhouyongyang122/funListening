@@ -56,7 +56,13 @@ public class ZYDownloadSubscriber<T> extends Subscriber<T> implements ZYDownload
     @Override
     public void update(long current, long total, boolean done) {
         downEntity.setTotal(total);
-        ZYLog.e(getClass().getSimpleName(), "update: " + current + ":" + total + ":" + done);
+        if (done) {
+            ZYLog.e(getClass().getSimpleName(), "update: " + current + ":" + total + ":" + done);
+        } else {
+            if (current % 100 * 1024 == 0) {
+                ZYLog.e(getClass().getSimpleName(), "update: " + current + ":" + total + ":" + done);
+            }
+        }
         if (done) {
             downEntity.setCurrent(total);
             downEntity.setState(ZYDownState.FINISH);

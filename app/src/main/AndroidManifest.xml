@@ -78,6 +78,12 @@
             android:screenOrientation="portrait" />
 
         <service android:name=".business.play.ZYPlayService" />
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Translucent" />
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

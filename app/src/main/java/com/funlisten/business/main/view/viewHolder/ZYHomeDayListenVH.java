@@ -12,6 +12,7 @@ import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.business.main.model.bean.ZYHome;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by ZY on 17/5/24.
@@ -37,7 +38,7 @@ public class ZYHomeDayListenVH extends ZYBaseViewHolder<ZYHome.DayListening> imp
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, mData.imageUrl);
             textTitle.setText(mData.name);
             layoutAudio.removeAllViews();
-            if(mData.everyDayAudioListeningDtoList != null) {
+            if (mData.everyDayAudioListeningDtoList != null) {
                 for (ZYHome.DayListenAudio listenAudio : mData.everyDayAudioListeningDtoList) {
                     TextView view = (TextView) LayoutInflater.from(mContext).inflate(R.layout.zy_view_home_day_listen_audio, layoutAudio, false);
                     view.setTag(listenAudio.id + "");
@@ -49,13 +50,12 @@ public class ZYHomeDayListenVH extends ZYBaseViewHolder<ZYHome.DayListening> imp
         }
     }
 
-    @Override
-    public int getLayoutResId() {
-        return R.layout.zy_view_home_daylisten;
-    }
-
-    @Override
+    @OnClick({R.id.layoutTitle})
     public void onClick(View v) {
+        if (v.getId() == R.id.layoutTitle) {
+
+            return;
+        }
         try {
             int audioId = Integer.parseInt(v.getTag().toString());
             //跳转到音频详情页
@@ -63,4 +63,10 @@ public class ZYHomeDayListenVH extends ZYBaseViewHolder<ZYHome.DayListening> imp
 
         }
     }
+
+    @Override
+    public int getLayoutResId() {
+        return R.layout.zy_view_home_daylisten;
+    }
+
 }

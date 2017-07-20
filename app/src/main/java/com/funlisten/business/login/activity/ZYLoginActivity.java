@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.funlisten.base.event.ZYEventLoginSuc;
 import com.funlisten.base.mvp.ZYBaseFragmentActivity;
 import com.funlisten.business.login.presenter.ZYLoginPresenter;
 import com.funlisten.business.login.view.ZYLoginFragment;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by ZY on 17/6/30.
@@ -30,4 +34,10 @@ public class ZYLoginActivity extends ZYBaseFragmentActivity<ZYLoginFragment> {
     protected ZYLoginFragment createFragment() {
         return new ZYLoginFragment();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ZYEventLoginSuc loginSuc) {
+        finish();
+    }
+
 }

@@ -8,6 +8,8 @@ import com.funlisten.business.login.model.bean.ZYUser;
 import java.util.HashMap;
 import java.util.Map;
 
+import retrofit2.http.Body;
+import retrofit2.http.POST;
 import rx.Observable;
 
 /**
@@ -39,5 +41,23 @@ public class ZYLoginModel extends ZYBaseModel {
 
     public Observable<ZYResponse<ZYUser>> getUserInfo(String userId) {
         return mApi.getUserInfo(userId);
+    }
+
+    /**
+     * 第三方绑定注册
+     *
+     * @return
+     */
+    public Observable<ZYResponse> regWithOpenId(Map<String, String> params) {
+        return mApi.regWithOpenId(params);
+    }
+
+    /**
+     * 第三方id自动登录接口
+     *
+     * @return
+     */
+    public Observable<ZYResponse<ZYLoginUser>> autoLoginByOpenId(Map<String, String> params) {
+        return mApi.autoLoginByOpenId(params);
     }
 }

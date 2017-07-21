@@ -13,6 +13,8 @@ import com.funlisten.business.login.model.bean.ZYUser;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Map;
+
 /**
  * Created by ZY on 17/6/30.
  */
@@ -37,12 +39,7 @@ public class ZYLoginPresenter extends ZYBasePresenter implements ZYLoginContract
             public void onSuccess(ZYResponse<ZYLoginUser> response) {
                 super.onSuccess(response);
                 mView.hideProgress();
-                ZYLoginUser loginUser = response.data;
-                ZYUser user = response.data.userDto;
-                user.token = loginUser.token;
-                mView.loginSuc(response.data.userDto);
-                ZYUserManager.getInstance().setUser(user);
-                EventBus.getDefault().post(new ZYEventLoginSuc());
+                loginSuc(response);
             }
 
             @Override
@@ -51,5 +48,44 @@ public class ZYLoginPresenter extends ZYBasePresenter implements ZYLoginContract
                 mView.hideProgress();
             }
         }));
+    }
+
+    @Override
+    public void loginByThrid(final Map<String, String> params) {
+        mView.showProgress();
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.regWithOpenId(params), new ZYNetSubscriber<ZYResponse>() {
+            @Override
+            public void onSuccess(ZYResponse response) {
+                //注册成功-或者已经注册过
+                mSubscriptions.add(ZYNetSubscription.subscription(mModel.autoLoginByOpenId(params), new ZYNetSubscriber<ZYResponse<ZYLoginUser>>() {
+                    @Override
+                    public void onSuccess(ZYResponse<ZYLoginUser> response) {
+                        mView.hideProgress();
+                        loginSuc(response);
+                    }
+
+                    @Override
+                    public void onFail(String message) {
+                        super.onFail(message);
+                        mView.hideProgress();
+                    }
+                }));
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
+                mView.hideProgress();
+            }
+        }));
+    }
+
+    private void loginSuc(ZYResponse<ZYLoginUser> response) {
+        ZYLoginUser loginUser = response.data;
+        ZYUser user = response.data.userDto;
+        user.token = loginUser.token;
+        mView.loginSuc(response.data.userDto);
+        ZYUserManager.getInstance().setUser(user);
+        EventBus.getDefault().post(new ZYEventLoginSuc());
     }
 }

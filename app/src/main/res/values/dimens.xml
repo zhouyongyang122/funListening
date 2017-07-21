@@ -13,4 +13,7 @@
     <dimen name="f10">9sp</dimen>
     <dimen name="f11">8sp</dimen>
 
+    <dimen name="height_big_slip_btn">24dp</dimen>
+    <dimen name="space_big_slip_btn_height_half">12dp</dimen>
+
 </resources>

@@ -22,6 +22,7 @@ import com.funlisten.business.download.activity.ZYDownloadHomeActivity;
 import com.funlisten.business.followfans.activity.GDFollowActivity;
 import com.funlisten.business.main.contract.ZYMeContract;
 import com.funlisten.business.photo.activity.ZYPhotoActivity;
+import com.funlisten.business.user.activity.ZYSetActivity;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.business.login.model.bean.ZYUser;
@@ -160,6 +161,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
+                mActivity.startActivity(ZYSetActivity.createIntent(mActivity));
                 break;
         }
     }

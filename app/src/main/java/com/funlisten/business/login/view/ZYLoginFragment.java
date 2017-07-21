@@ -224,7 +224,7 @@ public class ZYLoginFragment extends ZYBaseFragment<ZYLoginContract.IPresenter> 
             thridLoginParamas.setAuth_url(WeChatManager.getInstance().getAuth_url());
             thridLoginParamas.setAvatar(weChatAuthor.mUserInfo.headimgurl);
             thridLoginParamas.setType(ZYThridLoginParamas.TYPE_WECHAT);
-//            mPresenter.loginByThrid(thridLoginParamas.getParamas());
+            mPresenter.loginByThrid(thridLoginParamas.getParamas());
         } else {
             //失败
             thirdLoginComplete = true;

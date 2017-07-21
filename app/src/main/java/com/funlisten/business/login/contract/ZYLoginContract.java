@@ -4,6 +4,8 @@ import com.funlisten.base.mvp.ZYIBasePresenter;
 import com.funlisten.base.mvp.ZYIBaseView;
 import com.funlisten.business.login.model.bean.ZYUser;
 
+import java.util.Map;
+
 /**
  * Created by ZY on 17/6/30.
  */
@@ -15,6 +17,9 @@ public interface ZYLoginContract {
     }
 
     interface IPresenter extends ZYIBasePresenter {
+
         void login(String phone, String pwd);
+
+        void loginByThrid(Map<String, String> params);
     }
 }

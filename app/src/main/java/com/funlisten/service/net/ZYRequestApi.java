@@ -22,6 +22,7 @@ import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -71,23 +72,17 @@ public interface ZYRequestApi {
     /**
      * 第三方绑定注册
      *
-     * @param openId       开放平台id
-     * @param nickName     昵称
-     * @param loginChannel 第三方类型(weChat/qq/weiBo)
      * @return
      */
     @POST("/user/regWithOpenId")
-    Observable<ZYResponse> regWithOpenId(@Query("openId") String openId, @Query("nickName") String nickName, @Query("loginChannel") String loginChannel);
+    Observable<ZYResponse> regWithOpenId(@QueryMap Map<String, String> params);
 
     /**
      * 第三方id自动登录接口
-     *
-     * @param openId           开放id
-     * @param openLoginChannel 第三方类型,(weChat/qq/weiBo)
      * @return
      */
     @POST("user/autoLoginByOpenId")
-    Observable<ZYResponse> autoLoginByOpenId(@Query("openId") String openId, @Query("openLoginChannel") String openLoginChannel);
+    Observable<ZYResponse<ZYLoginUser>> autoLoginByOpenId(@QueryMap Map<String, String> params);
 
     /**
      * 更换手机绑定接口
@@ -135,7 +130,7 @@ public interface ZYRequestApi {
      * @return
      */
     @POST("user/updateUserDetail")
-    Observable<ZYResponse> autoLoginByOpenId(@QueryMap Map<String, String> paramas);
+    Observable<ZYResponse> updateUserDetail(@QueryMap Map<String, String> paramas);
 
     /**
      * 更新头像

@@ -11,15 +11,15 @@ public class ZYThridLoginParamas {
 
     //1 qq登录 2 微博登录 3 微信登陆
 
-    public static final int TYPE_TENCENT = 1;
-    public static final int TYPE_SINA = 2;
-    public static final int TYPE_WECHAT = 3;
+    public static final String TYPE_TENCENT = "weiBo";
+    public static final String TYPE_SINA = "qq";
+    public static final String TYPE_WECHAT = "weChat";
 
     String token;
 
     String auth_url;
 
-    int type;
+    String type;
 
     String nickname;
 
@@ -31,13 +31,14 @@ public class ZYThridLoginParamas {
 
     public Map<String, String> getParamas() {
         Map<String, String> paramas = new HashMap<String, String>();
-        paramas.put("token", token);
-        paramas.put("auth_url", auth_url);
-        paramas.put("type", type + "");
-        paramas.put("nickname", nickname);
-        paramas.put("avatar", avatar);
-        paramas.put("sex", sex + "");
-        paramas.put("signature", signature);
+        paramas.put("openId", token + "");
+        paramas.put("loginChannel", type + "");
+        paramas.put("openLoginChannel",type + "");
+        paramas.put("nickName", nickname + "");
+//        paramas.put("auth_url", auth_url);
+//        paramas.put("avatar", avatar);
+//        paramas.put("sex", sex + "");
+//        paramas.put("signature", signature);
         return paramas;
     }
 
@@ -49,7 +50,7 @@ public class ZYThridLoginParamas {
         this.auth_url = auth_url;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 

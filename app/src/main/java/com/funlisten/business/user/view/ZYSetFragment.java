@@ -1,0 +1,85 @@
+package com.funlisten.business.user.view;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.funlisten.R;
+import com.funlisten.base.event.ZYEventLoginOutSuc;
+import com.funlisten.base.mvp.ZYBaseFragment;
+import com.funlisten.base.view.ZYSlipButton;
+import com.funlisten.business.login.model.ZYUserManager;
+
+import org.greenrobot.eventbus.EventBus;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+/**
+ * Created by ZY on 17/7/21.
+ */
+
+public class ZYSetFragment extends ZYBaseFragment {
+
+    @Bind(R.id.textCacheSize)
+    TextView textCacheSize;
+
+    @Bind(R.id.sbMsg)
+    ZYSlipButton sbMsg;
+
+    @Bind(R.id.sbPlay)
+    ZYSlipButton sbPlay;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fz_fragment_set, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @OnClick({R.id.layoutUserInfo, R.id.layoutNet, R.id.layoutMsg, R.id.layoutCache, R.id.layoutSuport, R.id.layoutAbout, R.id.layoutVerson, R.id.layoutLoginOut})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.layoutUserInfo:
+                break;
+            case R.id.layoutNet:
+                break;
+            case R.id.layoutMsg:
+                break;
+            case R.id.layoutCache:
+                break;
+            case R.id.layoutSuport:
+                break;
+            case R.id.layoutAbout:
+                break;
+            case R.id.layoutVerson:
+                break;
+            case R.id.layoutLoginOut:
+                new AlertDialog.Builder(mActivity).setTitle("退出").setMessage("是否退出登录?")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EventBus.getDefault().post(new ZYEventLoginOutSuc());
+                                ZYUserManager.getInstance().loginOut();
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).create().show();
+                break;
+        }
+    }
+
+}

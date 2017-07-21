@@ -7,8 +7,8 @@ package com.funlisten;
 public class ZYAppConstants {
 
     //微信
-    public static final String WECHAT_APP_KEY = "wx15ec71e80a828fbf";
-    public static final String WECHAT_APP_SECRET = "9d3bf81b96d7d866b5b1b2d93a2f2a34";
+    public static final String WECHAT_APP_KEY = "wx2ce9b87064d829d5";
+    public static final String WECHAT_APP_SECRET = "3661eb56e04171cbfb74b698be6cc295";
     public static final String WECHAT_GET_AUTH_TOKEN = "https://api.weixin.qq.com/sns/oauth2/access_token";
     public static final String WECHAT_GET_USER_INFO  = "https://api.weixin.qq.com/sns/userinfo";
 

@@ -193,6 +193,22 @@ public class ZYBaseActivity<P extends ZYIBasePresenter> extends AppCompatActivit
         mActionBar.showActionRightImg2(res,clickListener);
     }
 
+    public void showRightImg(boolean isShow){
+        mActionBar.showRightImg(isShow);
+    }
+
+    public void showRightImg2(boolean isShow){
+        mActionBar.showRightImg2(isShow);
+    }
+
+    public void setRighImgPhoto(int res){
+        mActionBar.setRighImgPhoto(res);
+    }
+
+    public void setRighImgPhoto2(int res){
+        mActionBar.setRighImgPhoto2(res);
+    }
+
     protected void showWaitDialog(String message) {
         if (mWaitDialog == null) {
             mWaitDialog = new ZYWaitDialog(this);

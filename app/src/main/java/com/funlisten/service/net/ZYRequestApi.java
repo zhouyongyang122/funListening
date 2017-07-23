@@ -306,7 +306,7 @@ public interface ZYRequestApi {
     Observable<ZYResponse<ZYPhoto>> addPhoto(@Part MultipartBody.Part photo);
 
     /**
-     * 添加照片
+     * 删除照片
      *
      * @param ids 照片id 多个用,号隔开
      */
@@ -318,6 +318,12 @@ public interface ZYRequestApi {
      */
     @POST("search/querySearchHotWords")
     Observable<ZYResponse<List<String>>> getSearchWords();
+
+    /***
+     * 搜索
+     * **/
+    @POST("search/albumAudio")
+    Observable<ZYResponse<ZYListResponse<ZYAlbumDetail>>> getSearch(@Query("type") String type, @Query("keyword") String keyword);
 
     /**
      * 省市信息接口

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/def_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/shape_c11"
+            android:text="免费"
+            android:textSize="16dp"
+            android:textColor="@color/c8"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv"
+            android:layout_marginLeft="4dp"
+            android:text="每日精听"
+            android:textSize="18dp"
+            android:textColor="@color/c8"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/nav_btn_dropdown_n"
+            />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/total_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c8"
+        android:padding="15dp"
+        android:text="已经更新 300"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/c4"/>
+
+</LinearLayout>

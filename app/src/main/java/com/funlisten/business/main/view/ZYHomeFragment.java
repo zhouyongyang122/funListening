@@ -1,5 +1,6 @@
 package com.funlisten.business.main.view;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.funlisten.business.main.model.bean.ZYHome;
 import com.funlisten.business.main.view.viewHolder.ZYHomeBannerVH;
 import com.funlisten.business.main.view.viewHolder.ZYHomeDayListenVH;
 import com.funlisten.business.main.view.viewHolder.ZYHomeModulVH;
+import com.funlisten.business.search.activity.ZYSearchActivity;
 import com.funlisten.utils.ZYStatusBarUtils;
 
 import java.util.List;
@@ -87,7 +89,7 @@ public class ZYHomeFragment extends ZYBaseFragment<ZYHomeContract.IPresenter> im
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layoutSearch:
-                //跳转到搜索界面
+                mActivity.startActivity(new Intent(mActivity, ZYSearchActivity.class));
                 break;
         }
     }

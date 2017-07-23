@@ -109,6 +109,28 @@ public class ZYActionBar extends RelativeLayout {
         ivRightImg2.setOnClickListener(clickListener);
     }
 
+    public void showRightImg(boolean isShow){
+        if(isShow)
+        mIvRightImg.setVisibility(View.VISIBLE);
+        else  mIvRightImg.setVisibility(View.GONE);
+    }
+
+    public void showRightImg2(boolean isShow){
+        if(isShow)
+            ivRightImg2.setVisibility(View.VISIBLE);
+        else  ivRightImg2.setVisibility(View.GONE);
+    }
+
+    public void setRighImgPhoto(int res){
+        if(res < 0)return;
+        mIvRightImg.setImageResource(res);
+    }
+
+    public void setRighImgPhoto2(int res){
+        if(res < 0)return;
+        ivRightImg2.setImageResource(res);
+    }
+
     public void onDestory() {
         try {
             ButterKnife.unbind(this);

@@ -77,6 +77,12 @@
             android:name=".business.play.activity.ZYPlayActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".business.profile.activity.ZYProFlieActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".business.search.activity.ZYSearchActivity"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".business.user.activity.ZYSetActivity"
             android:screenOrientation="portrait" />
@@ -129,6 +135,15 @@
             android:theme="@style/Translucent"></activity>
         <!-- wechat end -->
         <!-- end： 第三方登录，分享添加 -->
+        <activity android:name=".business.dailylisten.activity.ZYDailyListenActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".business.myorder.activity.ZYMyOrderActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".business.persondata.activity.ZYPersonDataActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

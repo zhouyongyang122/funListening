@@ -68,4 +68,11 @@
         <item name="android:minHeight">2dip</item>
         <item name="android:maxHeight">4dip</item>
     </style>
+
+    <style name="WarpLinearLayoutDefault">
+        <item name="grivate">center</item>
+        <item name="horizontal_Space">20dp</item>
+        <item name="vertical_Space">20dp</item>
+        <item name="isFull">true</item>
+    </style>
 </resources>

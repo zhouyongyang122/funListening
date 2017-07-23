@@ -16,11 +16,12 @@ import com.funlisten.business.photo.contract.ZYPhotoContract;
 import com.funlisten.business.photo.contract.ZYPhotoSelect;
 import com.funlisten.business.photo.view.viewholder.ZYPhotoItemVH;
 import com.funlisten.utils.ZYResourceUtils;
+import com.funlisten.utils.ZYScreenUtils;
 
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/7/14.
+ * Created by gd on 2017/7/14.
  */
 
 public class ZYPhotoFragment extends ZYListDateFragment<ZYPhotoContract.IPresenter,ZYPhoto> implements ZYPhotoContract.IView {
@@ -33,32 +34,40 @@ public class ZYPhotoFragment extends ZYListDateFragment<ZYPhotoContract.IPresent
 
         ZYPhotoItemVH.photoSelect = photoSelect;
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        mRefreshRecyclerView.setRefreshEnable(false);
         mRefreshRecyclerView.getRecyclerView().setBackgroundColor(ZYResourceUtils.getColor(R.color.c8));
+        mRefreshRecyclerView.getRecyclerView().setPadding(ZYScreenUtils.dp2px(mActivity,2),0,ZYScreenUtils.dp2px(mActivity,2),0);
         return view;
     }
 
     ZYPhotoSelect photoSelect = new ZYPhotoSelect() {
         @Override
         public void onSelect(ZYPhoto photo) {
-            if(photo.isSelect){
+            if(!photo.isSelect){
+                photo.isSelect = true;
                 photeList.add(photo);
-            }else photeList.remove(photo);
+            }else {
+                photo.isSelect= false;
+                photeList.remove(photo);
+            }
         }
     };
 
     @Override
     protected void onItemClick(View view, int position) {
-
+    }
+   public void  refreshPhoto(boolean isEdit){
+       ZYPhotoItemVH.isEdit = isEdit;
+       mAdapter.notifyDataSetChanged();
     }
 
     public void clearPhoto(){
+        for(ZYPhoto photo:photeList)photo.isSelect = false;
         photeList.clear();
     }
-
-    public void upPhotoSuccess(ZYPhoto photo){
-
+    public ArrayList<ZYPhoto> getPhoteList(){
+        return photeList;
     }
-
     public ArrayList<ZYPhoto> getPhoto(){
         return photeList;
     }

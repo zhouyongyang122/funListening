@@ -29,29 +29,57 @@ import java.io.IOException;
  * Created by gd on 2017/7/14.
  */
 
-public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> implements ZYPicSelect.PicSelectListener {
+public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> implements  ZYPicSelect.PicSelectListener{
 
     ZYPicSelect picSelect;
     Button button;
     ZYPhotoPresenter zyPhotoPresenter;
-
+    private boolean isEdit = false;
+    private String userId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showTitle("我的相册");
-
-        zyPhotoPresenter = new ZYPhotoPresenter(mFragment, new ZYPhotoModel());
-        button = (Button) LayoutInflater.from(this).inflate(R.layout.photo_delete, null);
+        userId = getIntent().getStringExtra("userId");
+        zyPhotoPresenter = new ZYPhotoPresenter(mFragment,new ZYPhotoModel(),userId);
+        button = (Button) LayoutInflater.from(this).inflate(R.layout.photo_delete,null);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,RelativeLayout.TRUE );
         button.setLayoutParams(layoutParams);
         mRootView.addView(button);
         button.setVisibility(View.GONE);
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                button.setVisibility(View.GONE);
+                showRightImg2(true);
+                setRighImgPhoto(R.drawable.icon_select_n);
+                isEdit = !isEdit;
+                mFragment.refreshPhoto(isEdit);
+                if(mFragment.getPhoteList().size() >0)
+                    zyPhotoPresenter.deletePhoto(mFragment.getPhoteList());
+            }
+        });
         showActionRightImg(R.drawable.icon_select_n, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFragment.clearPhoto();
+                if(!isEdit){
+                    mFragment.clearPhoto();
+                    button.setVisibility(View.VISIBLE);
+                    showRightImg2(false);
+                    setRighImgPhoto(R.drawable.icon_cancel_n);
+                    isEdit = !isEdit;
+                    mFragment.refreshPhoto(isEdit);
+                }else {
+                    mFragment.clearPhoto();
+                    button.setVisibility(View.GONE);
+                    showRightImg2(true);
+                    setRighImgPhoto(R.drawable.icon_select_n);
+                    isEdit = !isEdit;
+                    mFragment.refreshPhoto(isEdit);
+                }
+
             }
         });
         showActionRightImg2(R.drawable.icon_add_n, new View.OnClickListener() {
@@ -68,7 +96,7 @@ public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> imp
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        picSelect.onActivityResult(requestCode, resultCode, data);
+        picSelect.onActivityResult(requestCode,resultCode,data);
     }
 
     @Override
@@ -83,10 +111,8 @@ public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> imp
 
     @Override
     public void onPicSelected(Uri uri) {
-        File file = new File(ZYApplication.IMG_CACHE_DIR + "temp.png");
-        ZYUtils.compressToSize(uri.getPath(), file, 100 * 1024);
-        if (file.exists()) {
-            zyPhotoPresenter.upLoadPhoto(file);
-        }
+        File file = new File(ZYApplication.IMG_CACHE_DIR+"temp.png");
+        ZYUtils.compressToSize(uri.getPath(),file,100*1024);
+        zyPhotoPresenter.upLoadPhoto(file);
     }
 }

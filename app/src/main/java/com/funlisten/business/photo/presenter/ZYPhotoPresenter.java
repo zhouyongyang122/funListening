@@ -11,6 +11,7 @@ import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017/7/15.
@@ -18,13 +19,15 @@ import java.io.File;
 
 public class ZYPhotoPresenter extends ZYListDataPresenter<ZYPhotoContract.IView,ZYPhotoModel,ZYPhoto> implements ZYPhotoContract.IPresenter {
 
-    public ZYPhotoPresenter(ZYPhotoContract.IView view, ZYPhotoModel model) {
+    String userId;
+    public ZYPhotoPresenter(ZYPhotoContract.IView view, ZYPhotoModel model,String userId) {
         super(view, model);
+        this.userId = userId;
     }
 
     @Override
     protected void loadData() {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.photos(ZYUserManager.getInstance().getUser().userId,mPageIndex,mRows),new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYPhoto>>>(){
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.photos(userId,mPageIndex,mRows),new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYPhoto>>>(){
             @Override
             public void onSuccess(ZYResponse<ZYListResponse<ZYPhoto>> response) {
                success(response);
@@ -56,5 +59,26 @@ public class ZYPhotoPresenter extends ZYListDataPresenter<ZYPhotoContract.IView,
             }
         }));
 
+    }
+    @Override
+    public void deletePhoto(final ArrayList<ZYPhoto> list) {
+        String ids ="";
+        for (ZYPhoto photo:list) ids = photo.id+",";
+        mView.showProgress();
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.delPhoto(ids),new ZYNetSubscriber<ZYResponse>(){
+
+            @Override
+            public void onSuccess(ZYResponse response) {
+                mView.hideProgress();
+                for (ZYPhoto photo:list) mDataList.remove(photo);
+                mView.showList(true);
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
+                mView.hideProgress();
+            }
+        }));
     }
 }

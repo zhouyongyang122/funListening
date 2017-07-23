@@ -3,7 +3,6 @@ package com.funlisten.business.login.model;
 import android.text.TextUtils;
 
 import com.funlisten.ZYApplication;
-import com.funlisten.business.login.model.bean.ZYLoginUser;
 import com.funlisten.service.db.ZYDBManager;
 import com.funlisten.service.db.entity.ZYUserDao;
 import com.funlisten.business.login.activity.ZYLoginActivity;

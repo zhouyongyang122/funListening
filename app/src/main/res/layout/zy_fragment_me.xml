@@ -93,225 +93,225 @@
             <RelativeLayout
                 android:id="@+id/layoutPic"
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="55dp">
+                android:layout_height="55dp"
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/icon_my_picture_n"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/icon_my_picture_n" />
 
                 <ImageView
                     android:layout_width="17dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_rightx"
-                    android:layout_height="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_rightx" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|left"
                     android:layout_marginLeft="60dp"
+                    android:gravity="center_vertical|left"
                     android:text="我的相册"
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="60dp"
-                    android:background="@color/c6"
-                    android:layout_height="1px"/>
+                    android:background="@color/c6" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/layoutDowload"
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="55dp">
+                android:layout_height="55dp"
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/icon_my_download_n"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/icon_my_download_n" />
 
                 <ImageView
                     android:layout_width="17dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_rightx"
-                    android:layout_height="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_rightx" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|left"
                     android:layout_marginLeft="60dp"
+                    android:gravity="center_vertical|left"
                     android:text="我的下载"
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="60dp"
-                    android:background="@color/c6"
-                    android:layout_height="1px"/>
+                    android:background="@color/c6" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/layoutAlbum"
-                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="55dp">
+                android:layout_height="55dp"
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/icon_album_n"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/icon_album_n" />
 
                 <ImageView
                     android:layout_width="17dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_rightx"
-                    android:layout_height="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_rightx" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|left"
                     android:layout_marginLeft="60dp"
+                    android:gravity="center_vertical|left"
                     android:text="我的专辑"
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="60dp"
-                    android:background="@color/c6"
-                    android:layout_height="1px"/>
+                    android:background="@color/c6" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/layoutLove"
-                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="55dp">
+                android:layout_height="55dp"
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/icon_my_likes_n"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/icon_my_likes_n" />
 
                 <ImageView
                     android:layout_width="17dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_rightx"
-                    android:layout_height="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_rightx" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|left"
                     android:layout_marginLeft="60dp"
+                    android:gravity="center_vertical|left"
                     android:text="我喜欢的"
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="60dp"
-                    android:background="@color/c6"
-                    android:layout_height="1px"/>
+                    android:background="@color/c6" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/layoutSub"
-                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="55dp">
+                android:layout_height="55dp"
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/icon_my_subscription_n"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/icon_my_subscription_n" />
 
                 <ImageView
                     android:layout_width="17dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_rightx"
-                    android:layout_height="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_rightx" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|left"
                     android:layout_marginLeft="60dp"
+                    android:gravity="center_vertical|left"
                     android:text="我的订阅"
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="60dp"
-                    android:background="@color/c6"
-                    android:layout_height="1px"/>
+                    android:background="@color/c6" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/layoutStu"
-                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="55dp">
+                android:layout_height="55dp"
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/icon_learning_record_n"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/icon_learning_record_n" />
 
                 <ImageView
                     android:layout_width="17dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_rightx"
-                    android:layout_height="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_rightx" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|left"
                     android:layout_marginLeft="60dp"
+                    android:gravity="center_vertical|left"
                     android:text="学习记录"
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4" />
@@ -319,32 +319,32 @@
 
             <RelativeLayout
                 android:id="@+id/layoutBuy"
-                android:background="@color/white"
                 android:layout_width="match_parent"
+                android:layout_height="55dp"
                 android:layout_marginTop="10dp"
-                android:layout_height="55dp">
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/icon_order_record_n"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/icon_order_record_n" />
 
                 <ImageView
                     android:layout_width="17dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_rightx"
-                    android:layout_height="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_rightx" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|left"
                     android:layout_marginLeft="60dp"
+                    android:gravity="center_vertical|left"
                     android:text="订购记录"
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4" />
@@ -352,112 +352,112 @@
 
             <RelativeLayout
                 android:id="@+id/layoutAccountManager"
-                android:background="@color/white"
                 android:layout_width="match_parent"
+                android:layout_height="55dp"
                 android:layout_marginTop="10dp"
-                android:layout_height="55dp">
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/icon_account_management_n"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/icon_account_management_n" />
 
                 <ImageView
                     android:layout_width="17dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_rightx"
-                    android:layout_height="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_rightx" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|left"
                     android:layout_marginLeft="60dp"
+                    android:gravity="center_vertical|left"
                     android:text="帐号管理"
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="60dp"
-                    android:background="@color/c6"
-                    android:layout_height="1px"/>
+                    android:background="@color/c6" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/layoutHelper"
-                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="55dp">
+                android:layout_height="55dp"
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/icon_help_center_n"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/icon_help_center_n" />
 
                 <ImageView
                     android:layout_width="17dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_rightx"
-                    android:layout_height="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_rightx" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|left"
                     android:layout_marginLeft="60dp"
+                    android:gravity="center_vertical|left"
                     android:text="帮助中心"
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="60dp"
-                    android:background="@color/c6"
-                    android:layout_height="1px"/>
+                    android:background="@color/c6" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/layoutSet"
-                android:background="@color/white"
-                android:layout_marginBottom="30dp"
                 android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="30dp"
                 android:layout_marginTop="10dp"
-                android:layout_height="55dp">
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/icon_setting_n"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/icon_setting_n" />
 
                 <ImageView
                     android:layout_width="17dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_rightx"
-                    android:layout_height="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/arrow_rightx" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|left"
                     android:layout_marginLeft="60dp"
+                    android:gravity="center_vertical|left"
                     android:text="设置"
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4" />

@@ -82,6 +82,8 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         adapter = new ZYBaseRecyclerAdapter<Object>(mPresenter.getComments()) {
             @Override
             public ZYBaseViewHolder<Object> createViewHolder(int type) {
+
+
                 return new ZYCommentItemVH(ZYPlayFragment.this);
             }
         };

@@ -79,4 +79,7 @@ public class GDFollowPresenter extends ZYListDataPresenter<GDFollowContract.IVie
             }
         }));
     }
+    public void follow(){
+
+    }
 }

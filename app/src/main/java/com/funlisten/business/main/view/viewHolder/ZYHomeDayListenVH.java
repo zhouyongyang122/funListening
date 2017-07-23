@@ -1,5 +1,6 @@
 package com.funlisten.business.main.view.viewHolder;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -7,7 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
+import com.funlisten.ZYApplication;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.business.dailylisten.activity.ZYDailyListenActivity;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.business.main.model.bean.ZYHome;
 
@@ -31,10 +34,13 @@ public class ZYHomeDayListenVH extends ZYBaseViewHolder<ZYHome.DayListening> imp
 
     ZYHome.DayListening mData;
 
+    int albumId;
+
     @Override
     public void updateView(ZYHome.DayListening data, int position) {
         if (data != null) {
             mData = data;
+            albumId = data.id;
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, mData.imageUrl);
             textTitle.setText(mData.name);
             layoutAudio.removeAllViews();
@@ -53,7 +59,9 @@ public class ZYHomeDayListenVH extends ZYBaseViewHolder<ZYHome.DayListening> imp
     @OnClick({R.id.layoutTitle})
     public void onClick(View v) {
         if (v.getId() == R.id.layoutTitle) {
-
+            Intent intent = new Intent( ZYApplication.getInstance().getCurrentActivity(), ZYDailyListenActivity.class);
+            intent.putExtra("albumId",albumId);
+            ZYApplication.getInstance().getCurrentActivity().startActivity(intent);
             return;
         }
         try {

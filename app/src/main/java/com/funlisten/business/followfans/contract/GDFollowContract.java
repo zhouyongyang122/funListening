@@ -13,6 +13,5 @@ public interface GDFollowContract {
     }
 
     interface IPresenter extends ZYListDataContract.Presenter<ZYUserList> {
-
     }
 }

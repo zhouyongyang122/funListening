@@ -2,6 +2,7 @@ package com.funlisten.business.user.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import com.funlisten.base.event.ZYEventLoginOutSuc;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.view.ZYSlipButton;
 import com.funlisten.business.login.model.ZYUserManager;
+import com.funlisten.business.persondata.activity.ZYPersonDataActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -49,6 +51,7 @@ public class ZYSetFragment extends ZYBaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layoutUserInfo:
+                 mActivity.startActivity(new Intent(mActivity, ZYPersonDataActivity.class));
                 break;
             case R.id.layoutNet:
                 break;

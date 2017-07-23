@@ -25,6 +25,7 @@ import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -61,6 +62,7 @@ public class ZYNetManager {
     public OkHttpClient.Builder getOkHttpBuilder() {
         return new OkHttpClient.Builder()
                 .addInterceptor(new FZHeaderInterceptor(mNetConfig.getHeaders()))
+                .addInterceptor(new FZParamsInterceptor())
                 .addInterceptor(new HttpLoggingInterceptor(new ZYLog())
                         .setLevel(HttpLoggingInterceptor.Level.BODY));
 
@@ -112,104 +114,123 @@ public class ZYNetManager {
         }
     }
 
-//    /**
-//     * 参数拦截器，添加公共参数
-//     */
-//    public class FZParamsInterceptor implements Interceptor {
-//
-//        public FZParamsInterceptor() {
-//        }
-//
-//        @Override
-//        public Response intercept(Chain chain) throws IOException {
-//            HashMap<String, String> baseParams = new HashMap<>();
-//            baseParams = mNetConfig.getDefParams();
-//
-//            Request request = chain.request();
-//            if (isAddCommonParams(request.url().uri().getPath())) {
-//                Request.Builder builder = chain.request().newBuilder();
-//                if (request.method().equalsIgnoreCase("post")) {
-//                    RequestBody body = chain.request().body();
-//                    if (body != null) {
-//                        Buffer buffer = new Buffer();
-//                        body.writeTo(buffer);
-//                        HashMap<String, String> params = new HashMap<>(baseParams);
-//                        //合并参数
-//
-//                        boolean isForm = false;
-//                        try {
-//                            //如果post参数只有uid和auth_token 会报异常
-//                            String jsonString = buffer.readString(Charset.forName("UTF-8"));
-//                            JSONObject jsonObject = new JSONObject(jsonString);
-//                            Iterator<String> keys = jsonObject.keys();
-//                            while (keys.hasNext()) {
-//                                String key = keys.next();
-//                                String value = jsonObject.optString(key);
-//                                if (!TextUtils.isEmpty(value)) {
-//                                    params.put(key, value);
-//                                }
-//                            }
-//                        } catch (JSONException e) {
-//                            if (body instanceof FormBody) {
-//                                isForm = true;
-//                                FormBody formBody = (FormBody) body;
-//                                int size = formBody.size();
-//                                for (int i = 0; i < size; i++) {
-//                                    String key = formBody.name(i);
-//                                    String value = formBody.value(i);
-//                                    if (!TextUtils.isEmpty(value)) {
-//                                        params.put(key, value);
-//                                    }
-//                                }
-//                            }
-//                        }
-//
-//                        if (isForm) {
-//                            FormBody.Builder formBodyBuilder = new FormBody.Builder();
-//                            for (Map.Entry<String, String> entry : params.entrySet()) {
-//                                if (entry.getValue() != null) {
-//                                    formBodyBuilder.add(entry.getKey(), entry.getValue());
-//                                }
-//                            }
-//                            builder.post(formBodyBuilder.build());
-//                        } else {
-//                            //转成json字符串出入请求体
-//                            Gson gson = new GsonBuilder().create();
-//                            String json = gson.toJson(params);
-//                            body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
-//                            builder.post(body);
-//                        }
-//
-//                    }
-//                } else if (request.method().equalsIgnoreCase("get")) {
-//                    HttpUrl.Builder httpUrlBuilder = request.url().newBuilder();
-//                    for (Map.Entry<String, String> entry : baseParams.entrySet()) {
-//                        httpUrlBuilder.addQueryParameter(entry.getKey(), entry.getValue());
-//                    }
-//
-//                    HttpUrl url = httpUrlBuilder.build();
-//                    Map<String, String> map = new HashMap<>();
-//                    for (String name : url.queryParameterNames()) {
-//                        map.put(name, url.queryParameter(name));
-//                    }
-//
-//                    for (Map.Entry<String, String> entry : map.entrySet()) {
-//                        httpUrlBuilder.setQueryParameter(entry.getKey(), entry.getValue().trim());
-//                    }
-//
-//                    builder.url(httpUrlBuilder.build());
-//                }
-//                return chain.proceed(builder.build());
-//            } else {
-//                return chain.proceed(chain.request());
-//            }
-//        }
-//    }
+    /**
+     * 参数拦截器，添加公共参数
+     */
+    public class FZParamsInterceptor implements Interceptor {
 
-//    /**
-//     * 通过url判断是否需要添加公共参数
-//     */
-//    private boolean isAddCommonParams(String url) {
-//        return !(url == null || url.isEmpty());
-//    }
+        public FZParamsInterceptor() {
+        }
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            HashMap<String, String> baseParams = new HashMap<>();
+            baseParams = mNetConfig.getDefParams();
+            Request request = chain.request();
+            if (isAddCommonParams(request.url().uri().getPath())) {
+                Request.Builder builder = chain.request().newBuilder();
+                if (request.method().equalsIgnoreCase("post")) {
+                    RequestBody body = chain.request().body();
+                    if (body != null) {
+                        if (body instanceof MultipartBody) {
+                            //表单提交
+                            HttpUrl.Builder httpUrlBuilder = request.url().newBuilder();
+                            for (Map.Entry<String, String> entry : baseParams.entrySet()) {
+                                httpUrlBuilder.addQueryParameter(entry.getKey(), entry.getValue());
+                            }
+
+                            HttpUrl url = httpUrlBuilder.build();
+                            Map<String, String> map = new HashMap<>();
+                            for (String name : url.queryParameterNames()) {
+                                map.put(name, url.queryParameter(name));
+                            }
+
+                            for (Map.Entry<String, String> entry : map.entrySet()) {
+                                httpUrlBuilder.setQueryParameter(entry.getKey(), entry.getValue().trim());
+                            }
+
+                            builder.url(httpUrlBuilder.build());
+                            builder.post(body);
+                        } else {
+                            Buffer buffer = new Buffer();
+                            body.writeTo(buffer);
+                            HashMap<String, String> params = new HashMap<>(baseParams);
+                            //合并参数
+                            boolean isForm = false;
+                            try {
+                                //如果post参数只有uid和auth_token 会报异常
+                                String jsonString = buffer.readString(Charset.forName("UTF-8"));
+                                JSONObject jsonObject = new JSONObject(jsonString);
+                                Iterator<String> keys = jsonObject.keys();
+                                while (keys.hasNext()) {
+                                    String key = keys.next();
+                                    String value = jsonObject.optString(key);
+                                    if (!TextUtils.isEmpty(value)) {
+                                        params.put(key, value);
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                if (body instanceof FormBody) {
+                                    isForm = true;
+                                    FormBody formBody = (FormBody) body;
+                                    int size = formBody.size();
+                                    for (int i = 0; i < size; i++) {
+                                        String key = formBody.name(i);
+                                        String value = formBody.value(i);
+                                        if (!TextUtils.isEmpty(value)) {
+                                            params.put(key, value);
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (isForm) {
+                                FormBody.Builder formBodyBuilder = new FormBody.Builder();
+                                for (Map.Entry<String, String> entry : params.entrySet()) {
+                                    if (entry.getValue() != null) {
+                                        formBodyBuilder.add(entry.getKey(), entry.getValue());
+                                    }
+                                }
+                                builder.post(formBodyBuilder.build());
+                            } else {
+                                //转成json字符串出入请求体
+                                Gson gson = new GsonBuilder().create();
+                                String json = gson.toJson(params);
+                                body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+                                builder.post(body);
+                            }
+                        }
+
+                    }
+                } else if (request.method().equalsIgnoreCase("get")) {
+                    HttpUrl.Builder httpUrlBuilder = request.url().newBuilder();
+                    for (Map.Entry<String, String> entry : baseParams.entrySet()) {
+                        httpUrlBuilder.addQueryParameter(entry.getKey(), entry.getValue());
+                    }
+
+                    HttpUrl url = httpUrlBuilder.build();
+                    Map<String, String> map = new HashMap<>();
+                    for (String name : url.queryParameterNames()) {
+                        map.put(name, url.queryParameter(name));
+                    }
+
+                    for (Map.Entry<String, String> entry : map.entrySet()) {
+                        httpUrlBuilder.setQueryParameter(entry.getKey(), entry.getValue().trim());
+                    }
+
+                    builder.url(httpUrlBuilder.build());
+                }
+                return chain.proceed(builder.build());
+            } else {
+                return chain.proceed(chain.request());
+            }
+        }
+    }
+
+    /**
+     * 通过url判断是否需要添加公共参数
+     */
+    private boolean isAddCommonParams(String url) {
+        return !(url == null || url.isEmpty());
+    }
 }

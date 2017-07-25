@@ -11,8 +11,8 @@ public class ZYThridLoginParamas {
 
     //1 qq登录 2 微博登录 3 微信登陆
 
-    public static final String TYPE_TENCENT = "weiBo";
-    public static final String TYPE_SINA = "qq";
+    public static final String TYPE_TENCENT = "qq";
+    public static final String TYPE_SINA = "weiBo";
     public static final String TYPE_WECHAT = "weChat";
 
     String token;

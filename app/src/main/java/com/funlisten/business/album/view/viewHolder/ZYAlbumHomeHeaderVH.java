@@ -10,6 +10,9 @@ import com.funlisten.R;
 import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
+import com.funlisten.business.login.model.ZYUserManager;
+import com.funlisten.business.persondata.activity.ZYPersonDataActivity;
+import com.funlisten.business.profile.activity.ZYProFlieActivity;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.utils.ZYToast;
 
@@ -95,15 +98,21 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
         switch (view.getId()) {
             case R.id.textFollow:
                 //关注
+                if (ZYUserManager.getInstance().isGuesterUser(true)) {
+                    return;
+                }
                 mListener.onFollowClick(mData);
                 break;
             case R.id.textSubscribe:
                 //订阅
+                if (ZYUserManager.getInstance().isGuesterUser(true)) {
+                    return;
+                }
                 mListener.onSubscribeClick(mData);
                 break;
             case R.id.imgAvatar:
                 //个人主页
-                ZYToast.show(mContext, "还没有实现!");
+                mContext.startActivity(ZYProFlieActivity.createIntent(mContext, mData.publisherId));
                 break;
         }
     }

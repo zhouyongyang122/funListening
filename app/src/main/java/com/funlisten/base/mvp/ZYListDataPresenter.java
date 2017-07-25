@@ -21,7 +21,7 @@ public abstract class ZYListDataPresenter<V extends ZYListDataContract.View, M, 
     protected List<D> mDataList = new ArrayList<>();
 
     protected int mPageIndex = 1;
-    protected int mRows = 10;
+    protected int mRows = 20;
 
     protected boolean isFristLoad = true;
 

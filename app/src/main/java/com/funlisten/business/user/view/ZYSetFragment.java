@@ -70,8 +70,8 @@ public class ZYSetFragment extends ZYBaseFragment {
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                EventBus.getDefault().post(new ZYEventLoginOutSuc());
                                 ZYUserManager.getInstance().loginOut();
+                                EventBus.getDefault().post(new ZYEventLoginOutSuc());
                                 finish();
                             }
                         })

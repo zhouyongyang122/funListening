@@ -12,7 +12,9 @@ import com.funlisten.base.mvp.ZYListDateFragment;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.contract.ZYAlbumAudiosContract;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
+import com.funlisten.business.album.model.bean.ZYAlbumEpisode;
 import com.funlisten.business.album.view.viewHolder.ZYAlbumAudiosHeaderVH;
+import com.funlisten.business.album.view.viewHolder.ZYAlbumHomeEpisodeVH;
 import com.funlisten.business.album.view.viewHolder.ZYAudioItemVH;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.play.activity.ZYPlayActivity;
@@ -29,9 +31,11 @@ import java.util.ArrayList;
  * Created by ZY on 17/7/5.
  */
 
-public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContract.IPresenter, ZYAudio> implements ZYAlbumAudiosContract.IView, ZYAudioItemVH.AudioItemListener {
+public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContract.IPresenter, ZYAudio> implements ZYAlbumAudiosContract.IView, ZYAudioItemVH.AudioItemListener, ZYAlbumAudiosHeaderVH.AlbumAudiosHeaderListener, ZYAlbumHomeEpisodeVH.AlbumHomeEpisodeListener {
 
     ZYAlbumAudiosHeaderVH homeHeaderVH;
+
+    ZYAlbumHomeEpisodeVH episodeVH;
 
     ZYAlbumDetail albumDetail;
 
@@ -41,14 +45,20 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        homeHeaderVH = new ZYAlbumAudiosHeaderVH();
+        homeHeaderVH = new ZYAlbumAudiosHeaderVH(this);
         mAdapter.addHeader(homeHeaderVH);
+
+        episodeVH = new ZYAlbumHomeEpisodeVH(this);
+        episodeVH.attachTo(mRootView);
+        episodeVH.hide();
 
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mRefreshRecyclerView.getLoadingView().getView().getLayoutParams();
         params.height = ZYScreenUtils.dp2px(mActivity, 160);
         params.topMargin = ZYScreenUtils.dp2px(mActivity, 40);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         mRefreshRecyclerView.getLoadingView().getView().setLayoutParams(params);
+
+        mRefreshRecyclerView.setRefreshEnable(false);
 
         return view;
     }
@@ -66,6 +76,28 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     @Override
     protected ZYBaseViewHolder<ZYAudio> createViewHolder() {
         return new ZYAudioItemVH(this);
+    }
+
+    @Override
+    public void onSortClick() {
+        mPresenter.changerSortType();
+    }
+
+    @Override
+    public void onChoiceClick() {
+        episodeVH.updateView(albumDetail, 0);
+        episodeVH.show();
+    }
+
+    @Override
+    public void onDownloadClick() {
+
+    }
+
+    @Override
+    public void onEpisodeItemClick(ZYAlbumEpisode episode) {
+        episodeVH.hide();
+        mPresenter.choiceEpisode(episode.start);
     }
 
     @Override

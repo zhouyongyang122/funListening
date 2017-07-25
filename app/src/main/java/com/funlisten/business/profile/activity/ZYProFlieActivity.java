@@ -1,5 +1,7 @@
 package com.funlisten.business.profile.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -17,11 +19,18 @@ import com.funlisten.business.profile.view.ZYProfileFragment;
 
 public class ZYProFlieActivity extends ZYBaseFragmentActivity<ZYProfileFragment> {
 
+    public static Intent createIntent(Context context, int uid) {
+        Intent intent = new Intent(context, ZYProFlieActivity.class);
+        intent.putExtra("uid", uid);
+        return intent;
+    }
+
     ZYProfilePresenter presenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new ZYProfilePresenter(mFragment,new ZYProfileModel(),0,121);
+        presenter = new ZYProfilePresenter(mFragment, new ZYProfileModel(), 0, getIntent().getIntExtra("uid", 0));
         showTitle(" ");
         showActionRightImg(R.drawable.nav_btn_share_n, new View.OnClickListener() {
             @Override

@@ -329,7 +329,7 @@ public interface ZYRequestApi {
      * 省市信息接口
      */
     @POST("province/listAll")
-    Observable<ZYResponse<ZYListResponse<ZYProvince>>> getCities();
+    Observable<ZYResponse<List<ZYProvince>>> getCities();
 
     /**
      * 是否订阅查询

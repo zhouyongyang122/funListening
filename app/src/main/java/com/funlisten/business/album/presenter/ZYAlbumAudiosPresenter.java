@@ -26,17 +26,17 @@ public class ZYAlbumAudiosPresenter extends ZYListDataPresenter<ZYAlbumAudiosCon
 
     @Override
     public void subscribe() {
+        mView.showLoading();
+        mDataList.clear();
         loadData();
     }
 
     @Override
     protected void loadData() {
-        mView.showLoading();
         mSubscriptions.add(ZYNetSubscription.subscription(mModel.getAudios(mPageIndex, mRows, mAlbumId, mSortType), new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYAudio>>>() {
 
             @Override
             public void onSuccess(ZYResponse<ZYListResponse<ZYAudio>> response) {
-                super.onSuccess(response);
                 success(response);
             }
 
@@ -49,5 +49,19 @@ public class ZYAlbumAudiosPresenter extends ZYListDataPresenter<ZYAlbumAudiosCon
 
     public void setSortType(String sortType) {
         mSortType = sortType;
+    }
+
+    public void choiceEpisode(int start) {
+        mPageIndex = (start / mRows) + 1;
+        subscribe();
+    }
+
+    public void changerSortType() {
+        if (mSortType == ZYAlbumModel.SORT_ASC) {
+            mSortType = ZYAlbumModel.SORT_DESC;
+        } else {
+            mSortType = ZYAlbumModel.SORT_ASC;
+        }
+        subscribe();
     }
 }

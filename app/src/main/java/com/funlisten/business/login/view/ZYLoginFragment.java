@@ -129,7 +129,7 @@ public class ZYLoginFragment extends ZYBaseFragment<ZYLoginContract.IPresenter> 
                                 @Override
                                 public void run() {
                                     thirdLoginComplete = true;
-//                                    mPresenter.loginByThrid(loginParamas.getParamas());
+                                    mPresenter.loginByThrid(loginParamas.getParamas());
                                 }
                             });
                         }
@@ -177,7 +177,7 @@ public class ZYLoginFragment extends ZYBaseFragment<ZYLoginContract.IPresenter> 
                                 @Override
                                 public void run() {
                                     thirdLoginComplete = true;
-//                                    mPresenter.loginByThrid(loginParamas.getParamas());
+                                    mPresenter.loginByThrid(loginParamas.getParamas());
                                 }
                             });
                         }

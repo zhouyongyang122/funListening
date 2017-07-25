@@ -14,6 +14,12 @@ import butterknife.OnClick;
 
 public class ZYAlbumAudiosHeaderVH extends ZYBaseViewHolder<Object> {
 
+    AlbumAudiosHeaderListener listener;
+
+    public ZYAlbumAudiosHeaderVH(AlbumAudiosHeaderListener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public void updateView(Object data, int position) {
 
@@ -28,13 +34,24 @@ public class ZYAlbumAudiosHeaderVH extends ZYBaseViewHolder<Object> {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textDown:
+                listener.onDownloadClick();
                 break;
             case R.id.textEpisode:
                 break;
             case R.id.textChoice:
+                listener.onChoiceClick();
                 break;
             case R.id.textSort:
+                listener.onSortClick();
                 break;
         }
+    }
+
+    public interface AlbumAudiosHeaderListener {
+        void onSortClick();
+
+        void onChoiceClick();
+
+        void onDownloadClick();
     }
 }

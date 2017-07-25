@@ -13,7 +13,7 @@ public class ZYAppConstants {
     public static final String WECHAT_GET_USER_INFO  = "https://api.weixin.qq.com/sns/userinfo";
 
     //新浪
-    public static final String SINA_APP_KEY = "1740780193";
+    public static final String SINA_APP_KEY = "2955025736";
 
     public static final String SINA_REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
 
@@ -21,7 +21,7 @@ public class ZYAppConstants {
 
 
     //腾讯
-    public static final String TENCENT_APP_ID = "1106118502";
+    public static final String TENCENT_APP_ID = "1106127950";
 
     //bugtags
     public static final String BUGTAGS_KEY = "4ce5faa31620a5fe2a5e0d32886ff7eb";

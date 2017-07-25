@@ -20,6 +20,8 @@ public class ZYAlbumHomeActivity extends ZYBaseFragmentActivity<ZYAlbumHomeFragm
 
     static final String ALBUM_ID = "album_id";
 
+    ZYAlbumHomePresenter mPresenter;
+
     public static Intent createIntent(Context context, int albumId) {
         Intent intent = new Intent(context, ZYAlbumHomeActivity.class);
         intent.putExtra(ALBUM_ID, albumId);
@@ -29,7 +31,7 @@ public class ZYAlbumHomeActivity extends ZYBaseFragmentActivity<ZYAlbumHomeFragm
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new ZYAlbumHomePresenter(mFragment, getIntent().getIntExtra(ALBUM_ID, 0));
+        mPresenter = new ZYAlbumHomePresenter(mFragment, getIntent().getIntExtra(ALBUM_ID, 0));
 
         showActionRightImg2(R.drawable.nav_btn_share_n, new View.OnClickListener() {
             @Override

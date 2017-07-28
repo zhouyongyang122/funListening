@@ -36,36 +36,6 @@
             android:textSize="@dimen/f4"
             android:visibility="visible" />
 
-        <LinearLayout
-            android:id="@+id/layoutPlay"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/textPlay"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:drawableLeft="@drawable/nav_btn_playing_n"
-                android:drawablePadding="4dp"
-                android:drawableRight="@drawable/nav_btn_quick_play_n"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="播放中"
-                android:textColor="@color/white"
-                android:textSize="@dimen/f4" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imgShare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="15dp"
-            android:src="@drawable/nav_btn_share_n" />
-
         <ImageView
             android:id="@+id/imgMore"
             android:layout_width="wrap_content"

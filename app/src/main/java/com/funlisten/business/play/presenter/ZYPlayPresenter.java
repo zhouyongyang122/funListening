@@ -1,8 +1,11 @@
 package com.funlisten.business.play.presenter;
 
+import android.text.TextUtils;
+
 import com.funlisten.base.bean.ZYListResponse;
 import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.base.mvp.ZYBasePresenter;
+import com.funlisten.business.album.model.ZYAlbumModel;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.play.contract.ZYPlayContract;
@@ -14,11 +17,14 @@ import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import rx.Observable;
 import rx.functions.Func3;
+import rx.functions.Func4;
 
 /**
  * Created by ZY on 17/7/10.
@@ -34,83 +40,103 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
 
     int mAlbumId;
 
-    ArrayList<Object> comments = new ArrayList<Object>();
+    ArrayList<Object> mComments = new ArrayList<Object>();
 
-    ZYAlbumDetail albumDetail;
+    ArrayList<ZYAudio> mAudios = new ArrayList<ZYAudio>();
 
-    ZYAudio audio;
+    ZYAlbumDetail mAlbumDetail;
 
-    boolean isNewPlay;
+    String mSortType = ZYAlbumModel.SORT_DESC;
 
-    public ZYPlayPresenter(ZYPlayContract.IView iView, int mAlbumId, int mAudioId, boolean isNewPlay) {
+    ZYAudio mCurPlayAudio;
+
+    public ZYPlayPresenter(ZYPlayContract.IView iView, int mAlbumId, int mAudioId, String sortType) {
         mView = iView;
         mModel = new ZYPlayModel();
         mView.setPresenter(this);
         this.mAudioId = mAudioId;
         this.mAlbumId = mAlbumId;
-        this.isNewPlay = isNewPlay;
+        if (!TextUtils.isEmpty(sortType)) {
+            mSortType = sortType;
+        }
     }
 
     @Override
     public void subscribe() {
-        if (isNewPlay) {
-            mView.showLoading();
-            Observable<ZYResponse<ZYListResponse<ZYComment>>> observable = Observable.zip(
-                    mModel.getAlbumDetail(mAlbumId), mModel.getAudio(mAudioId + ""), mModel.getComments(mAlbumId + "", 1, 5), new Func3<ZYResponse<ZYAlbumDetail>, ZYResponse<ZYAudio>, ZYResponse<ZYListResponse<ZYComment>>, ZYResponse<ZYListResponse<ZYComment>>>() {
-                        @Override
-                        public ZYResponse<ZYListResponse<ZYComment>> call(ZYResponse<ZYAlbumDetail> albumDetailZYResponse, ZYResponse<ZYAudio> audioZYResponse, ZYResponse<ZYListResponse<ZYComment>> zyListResponseZYResponse) {
-                            if (albumDetailZYResponse == null || audioZYResponse == null) {
-                                return null;
-                            }
-                            albumDetail = albumDetailZYResponse.data;
-                            audio = audioZYResponse.data;
-                            if (albumDetail == null || audioZYResponse == null) {
-                                return null;
-                            }
-                            return zyListResponseZYResponse;
-                        }
+        mView.showLoading();
+        Observable<ZYResponse<ZYListResponse<ZYComment>>> observable = Observable.zip(
+                mModel.getAlbumDetail(mAlbumId), mModel.getComments(mAlbumId + "", 1, 5), mModel.getAudios(1, 1000, mAlbumId, mSortType), new Func3<ZYResponse<ZYAlbumDetail>, ZYResponse<ZYListResponse<ZYComment>>, ZYResponse<ZYListResponse<ZYAudio>>, ZYResponse<ZYListResponse<ZYComment>>>() {
+                    @Override
+                    public ZYResponse<ZYListResponse<ZYComment>> call(ZYResponse<ZYAlbumDetail> albumRes, ZYResponse<ZYListResponse<ZYComment>> commentsRes, ZYResponse<ZYListResponse<ZYAudio>> audiosRes) {
+                        mAlbumDetail = albumRes.data;
+                        mAudios.clear();
+                        mAudios.addAll(audiosRes.data.data);
+                        mCurPlayAudio = getAudioById();
+                        return commentsRes;
                     }
-            );
-            mSubscriptions.add(ZYNetSubscription.subscription(observable, new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYComment>>>() {
-                @Override
-                public void onSuccess(ZYResponse<ZYListResponse<ZYComment>> response) {
-                    if (response == null) {
-                        onFail("");
-                        return;
-                    }
-                    if (response.data != null && response.data.data != null && response.data.data.size() > 0) {
-                        comments.addAll(response.data.data);
-                    } else {
-                        comments.add(new ZYComment(-1));
-                    }
-                    mView.refreshView(isNewPlay);
-                    mView.hideLoading();
+                });
+        mSubscriptions.add(ZYNetSubscription.subscription(observable, new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYComment>>>() {
+            @Override
+            public void onSuccess(ZYResponse<ZYListResponse<ZYComment>> response) {
+                if (response.data != null && response.data.data != null && response.data.data.size() > 0) {
+                    mComments.addAll(response.data.data);
+                } else {
+                    mComments.add(new ZYComment(-1));
                 }
+                mView.refreshView();
+                mView.hideLoading();
+            }
 
-                @Override
-                public void onFail(String message) {
-                    mView.showError();
-                }
-            }));
-        } else {
-            comments.addAll(ZYPLayManager.getInstance().getComments());
-            ZYPlay play = ZYPLayManager.getInstance().getPlay();
-            albumDetail = play.albumDetail;
-            audio = play.audio;
-            mView.hideLoading();
-            mView.refreshView(false);
+            @Override
+            public void onFail(String message) {
+                mView.showError();
+            }
+        }));
+    }
+
+    public void refreshPlay(int album, int audio) {
+        if (album != mAlbumDetail.id || mCurPlayAudio.id != audio) {
+            ZYPLayManager.getInstance().puase();
+            subscribe();
         }
     }
 
+    public void changeSory() {
+        if (mSortType == ZYAlbumModel.SORT_DESC) {
+            //当前为降序
+            mSortType = ZYAlbumModel.SORT_ASC;
+        } else {
+            mSortType = ZYAlbumModel.SORT_DESC;
+        }
+        Collections.reverse(mAudios);
+    }
+
+    ZYAudio getAudioById() {
+        for (ZYAudio audio : mAudios) {
+            if (audio.id == mAudioId) {
+                return audio;
+            }
+        }
+        return mAudios.get(0);
+    }
+
+    public ArrayList<ZYAudio> getAudios() {
+        return mAudios;
+    }
+
+    public void setCurPlayAudio(ZYAudio audio) {
+        mCurPlayAudio = audio;
+    }
+
     public List<Object> getComments() {
-        return comments;
+        return mComments;
     }
 
     public ZYAlbumDetail getAlbumDetail() {
-        return albumDetail;
+        return mAlbumDetail;
     }
 
-    public ZYAudio getAudio() {
-        return audio;
+    public ZYAudio getCurPlayAudio() {
+        return mCurPlayAudio;
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 public interface ZYPlayContract {
 
     interface IView extends ZYIBaseView<IPresenter> {
-        void refreshView(boolean needPlay);
+        void refreshView();
     }
 
     interface IPresenter extends ZYIBasePresenter {
@@ -24,7 +24,13 @@ public interface ZYPlayContract {
 
         ZYAlbumDetail getAlbumDetail();
 
-        ZYAudio getAudio();
+        ZYAudio getCurPlayAudio();
+
+        ArrayList<ZYAudio> getAudios();
+
+        void setCurPlayAudio(ZYAudio audio);
+
+        void changeSory();
     }
 
 }

@@ -5,25 +5,20 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 
-import com.funlisten.base.bean.ZYListResponse;
-import com.funlisten.base.bean.ZYResponse;
-import com.funlisten.base.event.ZYEventPlayState;
-import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.player.FZAudioPlayer;
 import com.funlisten.base.player.FZIPlayer;
-import com.funlisten.business.album.model.ZYAlbumModel;
+import com.funlisten.business.play.model.FZAudionPlayEvent;
 import com.funlisten.business.play.model.ZYPLayManager;
 import com.funlisten.business.play.model.bean.ZYAudio;
-import com.funlisten.service.net.ZYNetSubscriber;
-import com.funlisten.service.net.ZYNetSubscription;
+import com.funlisten.business.play.model.bean.ZYPlayHistory;
 import com.funlisten.utils.ZYLog;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import rx.subscriptions.CompositeSubscription;
 
@@ -33,18 +28,13 @@ import rx.subscriptions.CompositeSubscription;
 
 public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
 
-    ZYAudio mAudio;
+    //正在播放音频
+    ZYAudio mCurrentPlayAudio;
 
-    ArrayList<ZYAudio> mAudios = new ArrayList<ZYAudio>();
+    //缓存的音频数据列表
+    List<ZYAudio> mAudios = new ArrayList<ZYAudio>();
 
-    String sortType = ZYBaseModel.SORT_ASC;
-
-    int mPosition = 0;
-
-    int mRows = 50;
-
-    int mPageIndex;
-
+    //音频播放器
     FZAudioPlayer audioPlayer;
 
     Handler handler = new Handler();
@@ -57,111 +47,125 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
     public void onCreate() {
         super.onCreate();
         updateProgress = new UpdateProgressRunnable();
-        ZYLog.e(ZYPlayService.class.getSimpleName(), "onServiceConnected");
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        ZYLog.e(ZYPlayService.class.getSimpleName(), "onStartCommand");
-
-        return START_STICKY;
+        ZYLog.e(getClass().getSimpleName(), "onCreate");
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return new PlayBinder();
+        return new AudioBinder();
     }
 
-    public void play(ZYAudio audio) {
-        mAudio = audio;
-        mPageIndex = mAudio.sort / mRows;
-        if (mAudio.sort % mRows > 0) {
-            mPageIndex += 1;
-        }
-        loadAudios();
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        ZYLog.e(getClass().getSimpleName(), "onStartCommand");
+        return START_STICKY;
+    }
+
+    public void play(ZYAudio currenPlayAudio, List<ZYAudio> audios) {
+        setAudios(audios);
+        mCurrentPlayAudio = currenPlayAudio;
         play();
     }
 
-    public void startOrPuase() {
-        if (audioPlayer.isPlaying()) {
-            puase();
-            return;
-        }
-        audioPlayer.start(true);
+    public void setAudios(List<ZYAudio> audios) {
+        mAudios.clear();
+        mAudios.addAll(audios);
     }
 
-    public void start() {
-        audioPlayer.start(true);
-    }
-
-    public void puase() {
-        audioPlayer.pause();
-    }
-
-    public void seekTo(float proportion) {
-        audioPlayer.seekTo((int) (audioPlayer.getDuration() * proportion));
-    }
-
-    public void nextAudio() {
-        if (mPosition < mAudios.size() - 1) {
-            mAudio = mAudios.get(++mPosition);
-        }
-        play();
-    }
-
-    public void preAudio() {
-        if (mPosition > 0) {
-            mAudio = mAudios.get(--mPosition);
-        }
-        play();
-    }
 
     private void play() {
-        ZYPLayManager.getInstance().saveLastPlayId(mAudio.albumId, mAudio.id);
-        ZYPLayManager.getInstance().saveLastPlayImg(mAudio.coverUrl);
-        ZYLog.e(ZYPlayService.class.getSimpleName(), "play: " + mAudio.fileUrl);
+        ZYPlayHistory.saveByAudio(mCurrentPlayAudio, 0);
         if (audioPlayer == null) {
             audioPlayer = new FZAudioPlayer(getApplicationContext(), "ZYPlayService");
             audioPlayer.setPlayerCallBack(this);
         }
         audioPlayer.stop();
         stopProgressUpdate();
-        audioPlayer.open(mAudio.fileUrl, 0);
+        sendCallBack(ZYPLayManager.STATE_PREPARING, "播放器初使化中");
+        audioPlayer.open(mCurrentPlayAudio.fileUrl, 0);
+        reportAudioPlay();
     }
 
-    public class PlayBinder extends Binder {
-        //返回Service对象
-        public ZYPlayService getService() {
-            return ZYPlayService.this;
+    public void startOrPuase() {
+        if (audioPlayer.isPlaying()) {
+            puase();
+        } else {
+            start();
         }
+    }
+
+    public void start() {
+        if (!audioPlayer.isPlaying()) {
+            startProgressUpdate(0);
+            audioPlayer.start(true);
+            sendCallBack(ZYPLayManager.STATE_PLAYING, "正在播放");
+        }
+    }
+
+    public void puase() {
+        if (audioPlayer.isPlaying()) {
+            stopProgressUpdate();
+            audioPlayer.pause();
+            sendCallBack(ZYPLayManager.STATE_PAUSED, "暂停播放");
+        }
+    }
+
+    public void seekTo(int currentProgress, int totalProgress) {
+        float progress = (float) currentProgress / (float) totalProgress;
+        audioPlayer.seekTo((int) (progress * audioPlayer.getDuration()));
     }
 
     @Override
     public boolean onCallBack(String tag, int what, String msg, FZIPlayer player) {
-        ZYLog.e(getClass().getSimpleName(), "ZYPlayService-onCallBack: " + player.getClass().getSimpleName() + ":" + msg);
+        ZYLog.e(getClass().getSimpleName(), "FZAudioPlaysevice-onCallBack: " + what + ":" + msg);
+
         switch (what) {
             case FZIPlayer.PLAYER_PREPARED:
                 startProgressUpdate(0);
+                sendCallBack(ZYPLayManager.STATE_PREPARED, "准备播放");
                 break;
             case FZIPlayer.PLAYER_BUFFERING_END:
                 startProgressUpdate(0);
+                sendCallBack(ZYPLayManager.STATE_BUFFERING_END, "缓冲结束-开始播放");
                 break;
             case FZIPlayer.PLAYER_BUFFERING_START:
                 stopProgressUpdate();
+                sendCallBack(ZYPLayManager.STATE_BUFFERING_START, "缓冲开始-等待播放");
                 break;
             case FZIPlayer.PLAYER_COMPLETIIONED:
-                nextAudio();
+                stopProgressUpdate();
+                playNext();
                 break;
             case FZIPlayer.PLAYER_ERROR_SYSTEM:
             case FZIPlayer.PLAYER_ERROR_UNKNOWN:
             case FZIPlayer.PLAYER_ERROR_NET:
                 stopProgressUpdate();
+                sendCallBack(ZYPLayManager.STATE_ERROR, "播放出错");
                 break;
         }
-        EventBus.getDefault().post(new ZYEventPlayState(mAudio, audioPlayer.getState(), audioPlayer.getDuration(), audioPlayer.getCurrentPosition()));
         return true;
+    }
+
+    private void playNext() {
+        int position = mAudios.indexOf(mCurrentPlayAudio);
+        if (position < mAudios.size() - 1) {
+            sendCallBack(ZYPLayManager.STATE_PREPARING_NEXT, "准备播放下一集");
+            //缓存中还有
+            mCurrentPlayAudio = mAudios.get(++position);
+            if (mCurrentPlayAudio.needBuy() && (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isBuy() || mCurrentPlayAudio.isAudition())) {
+                play();
+            } else {
+                audioPlayer.stop();
+                sendCallBack(ZYPLayManager.STATE_NEED_BUY_PAUSED, "暂停播放,收费视频");
+            }
+        } else {
+            sendCallBack(ZYPLayManager.STATE_COMPLETED, "列表播放完成");
+        }
+    }
+
+    public boolean isPlaying() {
+        return audioPlayer.isPlaying();
     }
 
     /**
@@ -191,39 +195,17 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         }
     }
 
-    private class UpdateProgressRunnable implements Runnable {
-        @Override
-        public void run() {
-            if (audioPlayer != null) {
-                int currentPosition = audioPlayer.getCurrentPosition();
-                handler.postDelayed(updateProgress, 500);
-                EventBus.getDefault().post(new ZYEventPlayState(mAudio, audioPlayer.getState(), audioPlayer.getDuration(), currentPosition));
-            }
-        }
+    private void reportAudioPlay() {
+//        Map<String, String> params = new HashMap<String, String>();
+//        params.put("audio_id", mCurrentPlayAudio.getAudioId());
+//        getSubscription().add(FZNetBaseSubscription.subscription(FZNetManager.shareInstance().getApi().reportAudioPlay(params), new FZNetBaseSubscriber() {
+//
+//        }));
     }
 
-    private void loadAudios() {
-        getSubscription().add(ZYNetSubscription.subscription(new ZYAlbumModel().getAudios(mPageIndex, mRows, mAudio.albumId, sortType), new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYAudio>>>() {
-            @Override
-            public void onSuccess(ZYResponse<ZYListResponse<ZYAudio>> response) {
-                if (response.data != null && response.data.data != null && response.data.data.size() > 0) {
-                    mAudios.clear();
-                    mAudios.addAll(response.data.data);
-                    for (int i = 0; i < mAudios.size(); i++) {
-                        ZYAudio value = mAudios.get(i);
-                        if (mAudio.id == value.id) {
-                            mPosition = i;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(String message) {
-
-            }
-        }));
+    private void sendCallBack(int state, String msg) {
+        FZAudionPlayEvent playEvent = new FZAudionPlayEvent(mCurrentPlayAudio, state, msg, audioPlayer.getCurrentPosition(), audioPlayer.getDuration());
+        EventBus.getDefault().post(playEvent);
     }
 
     private CompositeSubscription getSubscription() {
@@ -237,6 +219,23 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         if (mSubscription != null) {
             mSubscription.unsubscribe();
             mSubscription = null;
+        }
+    }
+
+    class UpdateProgressRunnable implements Runnable {
+        @Override
+        public void run() {
+            if (audioPlayer != null) {
+                sendCallBack(ZYPLayManager.STATE_PLAYING, "正在播放");
+                handler.postDelayed(updateProgress, 500);
+            }
+        }
+    }
+
+    public class AudioBinder extends Binder {
+        //返回Service对象
+        public ZYPlayService getService() {
+            return ZYPlayService.this;
         }
     }
 }

@@ -11,22 +11,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
-import com.funlisten.ZYApplication;
 import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
-import com.funlisten.base.event.ZYEventPlayState;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.player.FZIPlayer;
 import com.funlisten.base.view.ZYLoadingView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
+import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.business.play.contract.ZYPlayContract;
+import com.funlisten.business.play.model.FZAudionPlayEvent;
 import com.funlisten.business.play.model.ZYPLayManager;
+import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.play.model.bean.ZYPlay;
-import com.funlisten.business.play.presenter.ZYPlayPresenter;
 import com.funlisten.business.play.view.viewHolder.ZYPlayActionBarVH;
 import com.funlisten.business.play.view.viewHolder.ZYPlayAudiosVH;
 import com.funlisten.business.play.view.viewHolder.ZYPlayHeaderVH;
+import com.funlisten.utils.ZYToast;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -35,11 +36,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.funlisten.business.play.model.ZYPLayManager.*;
+
 /**
  * Created by ZY on 17/7/10.
  */
 
-public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> implements ZYPlayContract.IView, ZYPlayActionBarVH.PlayActionListener, ZYCommentItemVH.CommentItemListener {
+public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> implements ZYPlayHeaderVH.PlayHeaderListener, ZYPlayContract.IView, ZYPlayActionBarVH.PlayActionListener, ZYCommentItemVH.CommentItemListener {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -78,7 +81,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
 
         audiosVH = new ZYPlayAudiosVH();
 
-        headerVH = new ZYPlayHeaderVH();
+        headerVH = new ZYPlayHeaderVH(this);
         adapter = new ZYBaseRecyclerAdapter<Object>(mPresenter.getComments()) {
             @Override
             public ZYBaseViewHolder<Object> createViewHolder(int type) {
@@ -117,32 +120,17 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     }
 
     @Override
-    public void refreshView(boolean needPlay) {
+    public void refreshView() {
         adapter.notifyDataSetChanged();
-        ZYPlay play = new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getAudio());
+        ZYPlay play = new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getCurPlayAudio());
         headerVH.updateView(play, 0);
-        ZYPLayManager.getInstance().setPlay(play);
-        ZYPLayManager.getInstance().setComments(mPresenter.getComments());
-
-        if (needPlay) {
-            ZYPLayManager.getInstance().play(play.audio);
-        }
+        ZYPLayManager.getInstance().play(mPresenter.getCurPlayAudio(), mPresenter.getAudios());
     }
 
     @Override
     public void onBackPressed() {
         finish();
         mActivity.overridePendingTransition(0, R.anim.slide_down);
-    }
-
-    @Override
-    public void onPlayPressed() {
-
-    }
-
-    @Override
-    public void onSharePressed() {
-
     }
 
     @Override
@@ -178,21 +166,61 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         loadingView.showError();
     }
 
+    @Override
+    public void onPreClick(ZYPlay play) {
+        int position = mPresenter.getAudios().indexOf(mPresenter.getCurPlayAudio());
+        if (position >= 1) {
+            ZYPLayManager.getInstance().play(mPresenter.getAudios().get(--position), mPresenter.getAudios());
+        } else {
+            ZYToast.show(mActivity, "当前为第一集");
+        }
+    }
+
+    @Override
+    public void onNextClick(ZYPlay play) {
+        int position = mPresenter.getAudios().indexOf(mPresenter.getCurPlayAudio());
+        if (position < mPresenter.getAudios().size() - 1) {
+            ZYPLayManager.getInstance().play(mPresenter.getAudios().get(++position), mPresenter.getAudios());
+        } else {
+            ZYToast.show(mActivity, "已经是最后一集了");
+        }
+    }
+
+    @Override
+    public void onPlayOrPauseClick(ZYPlay play) {
+        ZYPLayManager.getInstance().startOrPuase();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ZYEventPlayState playState) {
-        if (playState != null) {
-            switch (playState.state) {
-                case FZIPlayer.STATE_PREPARED:
-                    break;
-                case FZIPlayer.STATE_COMPLETED:
-                    break;
-                case FZIPlayer.STATE_ERROR:
-                    break;
-                case FZIPlayer.STATE_PLAYING:
-                    headerVH.refreshProgress(playState.currentDuration, playState.duration);
-                    break;
+    public void onEvent(FZAudionPlayEvent playEvent) {
+        if (playEvent != null) {
+            if (playEvent.state == STATE_ERROR) {
+                ZYToast.show(mActivity, "播放出错,请重新尝试!");
+            } else if (playEvent.state == STATE_PREPARING) {
+                showProgress();
+            } else if (playEvent.state == STATE_PREPARED) {
+                hideProgress();
+            } else if (playEvent.state == STATE_PLAYING) {
+
+            } else if (playEvent.state == STATE_PAUSED) {
+
+            } else if (playEvent.state == STATE_NEED_BUY_PAUSED) {
+
+            } else if (playEvent.state == STATE_BUFFERING_START) {
+
+            } else if (playEvent.state == STATE_BUFFERING_END) {
+
+            } else if (playEvent.state == STATE_PREPARING_NEXT) {
+                showProgress();
+            } else if (playEvent.state == STATE_COMPLETED) {
+
             }
-            headerVH.refreshPlayState(playState.state);
+
+            if (playEvent.audio != null) {
+                mPresenter.setCurPlayAudio(playEvent.audio);
+                actionBarVH.showTitle(playEvent.audio.title);
+            }
+            headerVH.refreshPlayState(playEvent);
         }
     }
 }

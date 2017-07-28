@@ -64,4 +64,8 @@ public class ZYAlbumAudiosPresenter extends ZYListDataPresenter<ZYAlbumAudiosCon
         }
         subscribe();
     }
+
+    public String getSortType() {
+        return mSortType;
+    }
 }

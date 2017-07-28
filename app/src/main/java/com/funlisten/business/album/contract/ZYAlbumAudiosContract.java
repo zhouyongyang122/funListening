@@ -15,6 +15,8 @@ public interface ZYAlbumAudiosContract {
     interface IPresenter extends ZYListDataContract.Presenter<ZYAudio> {
         void setSortType(String sortType);
 
+        String getSortType();
+
         void changerSortType();
 
         void choiceEpisode(int start);

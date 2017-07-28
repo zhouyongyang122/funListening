@@ -31,15 +31,6 @@ public class ZYPlayActionBarVH extends ZYBaseViewHolder<Object> {
     @Bind(R.id.textTitle)
     TextView textTitle;
 
-    @Bind(R.id.layoutPlay)
-    LinearLayout layoutPlay;
-
-    @Bind(R.id.textPlay)
-    TextView textPlay;
-
-    @Bind(R.id.imgShare)
-    ImageView imgShare;
-
     @Bind(R.id.imgMore)
     ImageView imgMore;
 
@@ -69,17 +60,11 @@ public class ZYPlayActionBarVH extends ZYBaseViewHolder<Object> {
         return R.layout.zy_view_play_aciton_bar;
     }
 
-    @OnClick({R.id.imgBack, R.id.textPlay, R.id.imgShare, R.id.imgMore})
+    @OnClick({R.id.imgBack, R.id.imgMore})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgBack:
                 listener.onBackPressed();
-                break;
-            case R.id.textPlay:
-                listener.onPlayPressed();
-                break;
-            case R.id.imgShare:
-                listener.onSharePressed();
                 break;
             case R.id.imgMore:
                 listener.onMoreActionPressed();
@@ -87,12 +72,14 @@ public class ZYPlayActionBarVH extends ZYBaseViewHolder<Object> {
         }
     }
 
+    public void showTitle(String title) {
+        if (textTitle != null) {
+            textTitle.setText(title);
+        }
+    }
+
     public interface PlayActionListener {
         void onBackPressed();
-
-        void onPlayPressed();
-
-        void onSharePressed();
 
         void onMoreActionPressed();
     }

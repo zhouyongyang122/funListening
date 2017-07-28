@@ -13,6 +13,7 @@ import com.funlisten.business.play.model.ZYPLayManager;
 import com.funlisten.business.play.model.bean.ZYPlay;
 import com.funlisten.business.play.presenter.ZYPlayPresenter;
 import com.funlisten.business.play.view.ZYPlayFragment;
+import com.funlisten.utils.ZYLog;
 import com.funlisten.utils.ZYStatusBarUtils;
 
 /**
@@ -23,26 +24,25 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
 
     static final String AUDIO_ID = "audioId";
     static final String ALBUM_ID = "albumID";
-    static final String IS_NEW_PLAY = "isNewPlay";
+    static final String SORT_TYPE = "sortType";
 
-//    public static Intent createIntent(Context context, int albumId, int audioId) {
-//        return createIntent(context, albumId, audioId, true);
-//    }
+    ZYPlayPresenter mPresenter;
 
-    public static Intent createIntent(Context context, int albumId, int audioId, boolean isNewPlay) {
+    public static Intent createIntent(Context context, int albumId, int audioId, String sortType) {
         Intent intent = new Intent(context, ZYPlayActivity.class);
         intent.putExtra(AUDIO_ID, audioId);
         intent.putExtra(ALBUM_ID, albumId);
-        intent.putExtra(IS_NEW_PLAY, isNewPlay);
+        intent.putExtra(SORT_TYPE, sortType);
         return intent;
     }
 
-    public static void toPlayActivity(Activity context, int albumId, int audioId) {
-        toPlayActivity(context, albumId, audioId, true);
+    public static void toPlayActivity(Activity context, int albumId, int audioId, String sortType) {
+        context.startActivity(createIntent(context, albumId, audioId, sortType));
+        context.overridePendingTransition(R.anim.slide_up, R.anim.slide_up);
     }
 
-    public static void toPlayActivity(Activity context, int albumId, int audioId, boolean isNewPlay) {
-        context.startActivity(createIntent(context, albumId, audioId, isNewPlay));
+    public static void toPlayActivity(Activity context, int albumId, int audioId) {
+        context.startActivity(createIntent(context, albumId, audioId, null));
         context.overridePendingTransition(R.anim.slide_up, R.anim.slide_up);
     }
 
@@ -54,19 +54,19 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
         if (ZYStatusBarUtils.isCanLightStatusBar()) {
             ZYStatusBarUtils.tintStatusBar(this, Color.TRANSPARENT, 0);
         }
-        boolean isNewPlay = getIntent().getBooleanExtra(IS_NEW_PLAY, true);
-        int albumId = getIntent().getIntExtra(ALBUM_ID, 0);
-        int audioId = getIntent().getIntExtra(AUDIO_ID, 0);
-        ZYPlay play = ZYPLayManager.getInstance().getPlay();
-        if (isNewPlay) {
-            new ZYPlayPresenter(mFragment, getIntent().getIntExtra(ALBUM_ID, 0), getIntent().getIntExtra(AUDIO_ID, 0), true);
-        } else {
-            if (play != null && play.albumDetail.id == albumId && play.audio.id == audioId) {
-                new ZYPlayPresenter(mFragment, getIntent().getIntExtra(ALBUM_ID, 0), getIntent().getIntExtra(AUDIO_ID, 0), false);
-            } else {
-                new ZYPlayPresenter(mFragment, getIntent().getIntExtra(ALBUM_ID, 0), getIntent().getIntExtra(AUDIO_ID, 0), true);
-            }
-        }
+        int mAlbumId = getIntent().getIntExtra(ALBUM_ID, 0);
+        int mAudioId = getIntent().getIntExtra(AUDIO_ID, 0);
+        String sortType = getIntent().getStringExtra(SORT_TYPE);
+        mPresenter = new ZYPlayPresenter(mFragment, mAlbumId, mAudioId, sortType);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        int mAlbumId = getIntent().getIntExtra(ALBUM_ID, 0);
+        int mAudioId = getIntent().getIntExtra(AUDIO_ID, 0);
+        ZYLog.e(getClass().getSimpleName(), "onNewIntent: " + mAlbumId + ":" + mAudioId);
+        mPresenter.refreshPlay(mAlbumId, mAudioId);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
 
     @Override
     public void onBackPressed() {
-        finish();
         overridePendingTransition(0, R.anim.slide_down);
+        moveTaskToBack(true);
     }
 }

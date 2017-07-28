@@ -14,8 +14,6 @@ public class ZYAudio implements ZYIBaseBean {
 
     public String title;
 
-    public int position;
-
     public int playCount;
 
     public int audioTimeLength;//s
@@ -47,4 +45,22 @@ public class ZYAudio implements ZYIBaseBean {
     public int sort;//当前顺序
 
     public boolean isPlaying;
+
+    public boolean isBuy;
+
+    public boolean needBuy() {
+        return costType != null && costType.equals("paid");
+    }
+
+    public boolean isFree() {
+        return costType != null && costType.equals("free");
+    }
+
+    public boolean isAudition() {
+        return isAudition != null && isAudition.equals("y");
+    }
+
+    public boolean isBuy() {
+        return isBuy;
+    }
 }

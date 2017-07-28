@@ -11,6 +11,7 @@ import com.funlisten.ZYApplication;
 import com.funlisten.business.play.ZYPlayService;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.play.model.bean.ZYPlay;
+import com.funlisten.business.play.model.bean.ZYPlayHistory;
 import com.funlisten.utils.ZYLog;
 
 import java.util.List;
@@ -21,26 +22,91 @@ import java.util.List;
 
 public class ZYPLayManager {
 
+    //出错状态
+    public static int STATE_ERROR = 0;
+
+    //准备播放
+    public static int STATE_PREPARING = 1;
+
+    //准备完成,开始播放
+    public static int STATE_PREPARED = 2;
+
+    //正在播放
+    public static int STATE_PLAYING = 3;
+
+    //暂停中
+    public static int STATE_PAUSED = 4;
+
+    //收费视频暂停播放
+    public static int STATE_NEED_BUY_PAUSED = 5;
+
+    //缓冲开始
+    public static int STATE_BUFFERING_START = 6;
+
+    //缓冲结束
+    public static int STATE_BUFFERING_END = 7;
+
+    //准备播放下一音频
+    public static int STATE_PREPARING_NEXT = 8;
+
+    //播放完成
+    public static int STATE_COMPLETED = 9;
+
     private static ZYPLayManager instance;
-
-    public static final String DEF_PRE_NAME = "play_manager_pre_name";
-
-    public static final String LAST_PLAY_AUDIO_ID = "last_play_audio_id";
-
-    public static final String LAST_PLAY_ALBUM_ID = "last_play_album_id";
-
-    public static final String LAST_PLAY_IMG = "last_play_img";
-
-    private SharedPreferences defPre;
 
     public ZYPlayService playService;
 
-    ZYPlay mPlay;
-
-    List<Object> mComments;
-
     private ZYPLayManager() {
 
+    }
+
+    public static ZYPLayManager getInstance() {
+        if (instance == null) {
+            instance = new ZYPLayManager();
+        }
+        return instance;
+    }
+
+    public void play(ZYAudio currentAudio, List<ZYAudio> audios) {
+        playService.play(currentAudio, audios);
+    }
+
+    public void setAudios(List<ZYAudio> audios) {
+        playService.setAudios(audios);
+    }
+
+    public void startOrPuase() {
+        playService.startOrPuase();
+    }
+
+    public void start() {
+        playService.start();
+    }
+
+    public void puase() {
+        playService.puase();
+    }
+
+    public void seekTo(int currentProgress, int totalProgress) {
+        playService.seekTo(currentProgress, totalProgress);
+    }
+
+    /**
+     * 获取最后播放的历史记录
+     *
+     * @return
+     */
+    public ZYPlayHistory queryLastPlay() {
+        return ZYPlayHistory.queryLastPlay();
+    }
+
+    /**
+     * 是否正在播放中
+     *
+     * @return
+     */
+    public boolean isPlaying() {
+        return playService.isPlaying();
     }
 
     public void startPlaySer() {
@@ -78,88 +144,8 @@ public class ZYPLayManager {
         public void onServiceConnected(ComponentName name, IBinder binder) {
             //这里我们实例化audioService,通过binder来实现
             ZYLog.e(ServiceConnection.class.getSimpleName(), "onServiceConnected");
-            playService = ((ZYPlayService.PlayBinder) binder).getService();
+            playService = ((ZYPlayService.AudioBinder) binder).getService();
 
         }
     };
-
-    public static ZYPLayManager getInstance() {
-        if (instance == null) {
-            instance = new ZYPLayManager();
-        }
-        return instance;
-    }
-
-    public ZYPlay getPlay() {
-        return mPlay;
-    }
-
-    public void setPlay(ZYPlay mPlay) {
-        this.mPlay = mPlay;
-    }
-
-    public List<Object> getComments() {
-        return mComments;
-    }
-
-    public void setComments(List<Object> mComments) {
-        this.mComments = mComments;
-    }
-
-    public void saveLastPlayId(int albumId, int audioId) {
-        SharedPreferences.Editor editor = getDefPre().edit();
-        editor.putInt(LAST_PLAY_ALBUM_ID, albumId)
-                .putInt(LAST_PLAY_AUDIO_ID, audioId).commit();
-    }
-
-    public int getLastPlayAudioId() {
-        return getDefPre().getInt(LAST_PLAY_AUDIO_ID, 0);
-    }
-
-    public int getLastPlayAlbumId() {
-        return getDefPre().getInt(LAST_PLAY_ALBUM_ID, 0);
-    }
-
-    public void saveLastPlayImg(String img) {
-        getDefPre().edit().putString(LAST_PLAY_IMG, img).commit();
-    }
-
-    public String getLastPlayImg() {
-        return getDefPre().getString(LAST_PLAY_IMG, null);
-    }
-
-    public void play(ZYAudio audio) {
-        playService.play(audio);
-    }
-
-    public void startOrPuase() {
-        playService.startOrPuase();
-    }
-
-    public void start() {
-        playService.start();
-    }
-
-    public void puase() {
-        playService.puase();
-    }
-
-    public void seekTo(float proportion) {
-        playService.seekTo(proportion);
-    }
-
-    public void nextAudio() {
-        playService.nextAudio();
-    }
-
-    public void preAudio() {
-        playService.preAudio();
-    }
-
-    public SharedPreferences getDefPre() {
-        if (defPre == null) {
-            defPre = ZYApplication.getInstance().getSharedPreferences(DEF_PRE_NAME, 0);
-        }
-        return defPre;
-    }
 }

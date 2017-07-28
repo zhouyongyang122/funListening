@@ -7,9 +7,11 @@ import android.widget.TextView;
 
 import com.funlisten.R;
 import com.funlisten.ZYApplication;
+import com.funlisten.base.player.FZAudioPlayer;
 import com.funlisten.base.player.FZIPlayer;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
+import com.funlisten.business.play.model.FZAudionPlayEvent;
 import com.funlisten.business.play.model.ZYPLayManager;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.play.model.bean.ZYPlay;
@@ -20,6 +22,17 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+
+import static com.funlisten.business.play.model.ZYPLayManager.STATE_BUFFERING_END;
+import static com.funlisten.business.play.model.ZYPLayManager.STATE_BUFFERING_START;
+import static com.funlisten.business.play.model.ZYPLayManager.STATE_COMPLETED;
+import static com.funlisten.business.play.model.ZYPLayManager.STATE_ERROR;
+import static com.funlisten.business.play.model.ZYPLayManager.STATE_NEED_BUY_PAUSED;
+import static com.funlisten.business.play.model.ZYPLayManager.STATE_PAUSED;
+import static com.funlisten.business.play.model.ZYPLayManager.STATE_PLAYING;
+import static com.funlisten.business.play.model.ZYPLayManager.STATE_PREPARED;
+import static com.funlisten.business.play.model.ZYPLayManager.STATE_PREPARING;
+import static com.funlisten.business.play.model.ZYPLayManager.STATE_PREPARING_NEXT;
 
 /**
  * Created by ZY on 17/7/10.
@@ -71,9 +84,17 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
 
     ZYPlay mData;
 
+    PlayHeaderListener headerListener;
+
     // 时间格式器 用来格式化视频播放的时间
     private StringBuilder mFormatBuilder;
     private Formatter mFormatter;
+
+    boolean isUpdated;
+
+    public ZYPlayHeaderVH(PlayHeaderListener headerListener) {
+        this.headerListener = headerListener;
+    }
 
     @Override
     public void findView(View view) {
@@ -84,22 +105,21 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
 
     @Override
     public void updateView(ZYPlay data, int position) {
-
         if (data != null) {
             mData = data;
         }
-
         if (imgBg != null && mData != null) {
+            if (isUpdated) {
+                return;
+            }
+            isUpdated = true;
             mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
             ZYAlbumDetail albumDetail = mData.albumDetail;
-            ZYAudio audio = mData.audio;
-            ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, albumDetail.coverUrl);
-            textStartTime.setText("00:00");
-            textEndTime.setText(stringForTime(audio.audioTimeLength));
-
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, albumDetail.publisher.avatarUrl);
-            textTitle.setText(albumDetail.title);
+            textTitle.setText(albumDetail.name);
             textInfo.setText(albumDetail.favoriteCount + "人订阅 | " + albumDetail.playCount + "播放");
+            ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, albumDetail.coverUrl);
+            refreshProgress(0, 1000);
         }
     }
 
@@ -112,13 +132,13 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgPre:
-                ZYPLayManager.getInstance().preAudio();
+                headerListener.onPreClick(mData);
                 break;
             case R.id.imgPlay:
-                ZYPLayManager.getInstance().startOrPuase();
+                headerListener.onPlayOrPauseClick(mData);
                 break;
             case R.id.imgNext:
-                ZYPLayManager.getInstance().nextAudio();
+                headerListener.onNextClick(mData);
                 break;
         }
     }
@@ -142,23 +162,45 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         }
     }
 
-    public void refreshProgress(int currentPosition, int totalPosition) {
-        if (textStartTime != null) {
+    void refreshProgress(int currentPosition, int totalPosition) {
+        if (textStartTime != null && mData != null) {
             textStartTime.setText(stringForTime(currentPosition / 1000));
+            textEndTime.setText(stringForTime(mData.audio.audioTimeLength));
             float progress = ((float) currentPosition / (float) totalPosition) * 1000;
             seekBar.setProgress((int) progress);
         }
     }
 
-    public void refreshPlayState(int state) {
-        if (imgPlay == null) {
+    public void refreshPlayState(FZAudionPlayEvent playEvent) {
+        if (imgPlay == null || mData == null) {
             return;
         }
-        if (state == FZIPlayer.STATE_COMPLETED || state == FZIPlayer.STATE_PAUSED) {
+
+        if (playEvent.state == STATE_ERROR) {
             imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
-        } else if (state == FZIPlayer.STATE_PLAYING || state == FZIPlayer.STATE_PREPARED || state == FZIPlayer.STATE_PREPARING) {
+        } else if (playEvent.state == STATE_PREPARING) {
+            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+        } else if (playEvent.state == STATE_PREPARED) {
+            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+        } else if (playEvent.state == STATE_PLAYING) {
+            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+        } else if (playEvent.state == STATE_PAUSED) {
+            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+        } else if (playEvent.state == STATE_NEED_BUY_PAUSED) {
+            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+        } else if (playEvent.state == STATE_BUFFERING_START) {
+
+        } else if (playEvent.state == STATE_BUFFERING_END) {
+
+        } else if (playEvent.state == STATE_PREPARING_NEXT) {
+
+        } else if (playEvent.state == STATE_COMPLETED) {
             imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
         }
+        if (playEvent.audio != null) {
+            mData.audio = playEvent.audio;
+        }
+        refreshProgress(playEvent.currentDuration, playEvent.totalDuration);
     }
 
     @Override
@@ -174,6 +216,14 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         int progress = seekBar.getProgress();
-        ZYPLayManager.getInstance().seekTo((float) progress / 1000.0f);
+        ZYPLayManager.getInstance().seekTo(progress, seekBar.getMax());
+    }
+
+    public interface PlayHeaderListener {
+        void onPreClick(ZYPlay play);
+
+        void onNextClick(ZYPlay play);
+
+        void onPlayOrPauseClick(ZYPlay play);
     }
 }

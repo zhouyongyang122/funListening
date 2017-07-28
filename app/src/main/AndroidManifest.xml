@@ -75,6 +75,7 @@
 
         <activity
             android:name=".business.play.activity.ZYPlayActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
 
         <activity android:name=".business.profile.activity.ZYProFlieActivity"

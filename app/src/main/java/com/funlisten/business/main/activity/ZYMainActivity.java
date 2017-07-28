@@ -20,6 +20,7 @@ import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.main.presenter.ZYMePresenter;
 import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.business.play.model.ZYPLayManager;
+import com.funlisten.business.play.model.bean.ZYPlayHistory;
 import com.funlisten.service.ZYUpdateService;
 import com.funlisten.business.main.contract.ZYMainContract;
 import com.funlisten.business.main.model.bean.ZYVersion;
@@ -142,9 +143,9 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
                 mainViewPager.setCurrentItem(1);
                 break;
             case R.id.layoutPlayer:
-                int lastPlayAudioId = ZYPLayManager.getInstance().getLastPlayAudioId();
-                if (lastPlayAudioId > 0) {
-                    ZYPlayActivity.toPlayActivity(mActivity, ZYPLayManager.getInstance().getLastPlayAlbumId(), lastPlayAudioId, ZYPLayManager.getInstance().getPlay() == null);
+                ZYPlayHistory history = ZYPLayManager.getInstance().queryLastPlay();
+                if (history != null) {
+                    ZYPlayActivity.toPlayActivity(mActivity, Integer.parseInt(history.albumId), Integer.parseInt(history.audioId));
                 } else {
                     ZYToast.show(mActivity, "您还没有播放过任何音频哦,请先去选择要播放的音频!");
                 }
@@ -207,7 +208,10 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
     }
 
     private void refreshPlay() {
-        ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, ZYPLayManager.getInstance().getLastPlayImg(), R.drawable.def_avatar, R.drawable.def_avatar);
+        ZYPlayHistory history = ZYPLayManager.getInstance().queryLastPlay();
+        if (history != null) {
+            ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, history.img, R.drawable.def_avatar, R.drawable.def_avatar);
+        }
     }
 
     @Override

@@ -41,9 +41,9 @@ public class ZYAlbumDetail implements ZYIBaseBean {
 
     public String gmtModified;//修改时间
 
-    public int originPrice;//原价
+    public float originPrice;//原价
 
-    public int sellPrice;//价格
+    public float sellPrice;//价格
 
     public int payCount;//购买次数
 

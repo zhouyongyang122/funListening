@@ -33,6 +33,9 @@ public class ZYPayHeaderDetails extends ZYBaseViewHolder<ZYAlbumDetail> {
     @Bind(R.id.textPlayNum)
     TextView textPlayNum;
 
+    @Bind(R.id.money_tv)
+    TextView money;
+
     ZYAlbumDetail mData;
 
     @Override
@@ -44,6 +47,7 @@ public class ZYPayHeaderDetails extends ZYBaseViewHolder<ZYAlbumDetail> {
             textCate.setText("类别: " + mData.getCategoryNames());
             textAnchor.setText("主播: " + mData.publisher.nickname);
             textPlayNum.setText("播放: " + mData.playCount);
+            money.setText("¥ "+mData.sellPrice);
 
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, mData.coverUrl);
         }

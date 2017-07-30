@@ -6,14 +6,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.funlisten.R;
-import com.funlisten.ZYApplication;
-import com.funlisten.base.player.FZAudioPlayer;
-import com.funlisten.base.player.FZIPlayer;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
+import com.funlisten.business.play.ZYPlayService;
 import com.funlisten.business.play.model.FZAudionPlayEvent;
-import com.funlisten.business.play.model.ZYPLayManager;
-import com.funlisten.business.play.model.bean.ZYAudio;
+import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.business.play.model.bean.ZYPlay;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 
@@ -23,16 +20,16 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.OnClick;
 
-import static com.funlisten.business.play.model.ZYPLayManager.STATE_BUFFERING_END;
-import static com.funlisten.business.play.model.ZYPLayManager.STATE_BUFFERING_START;
-import static com.funlisten.business.play.model.ZYPLayManager.STATE_COMPLETED;
-import static com.funlisten.business.play.model.ZYPLayManager.STATE_ERROR;
-import static com.funlisten.business.play.model.ZYPLayManager.STATE_NEED_BUY_PAUSED;
-import static com.funlisten.business.play.model.ZYPLayManager.STATE_PAUSED;
-import static com.funlisten.business.play.model.ZYPLayManager.STATE_PLAYING;
-import static com.funlisten.business.play.model.ZYPLayManager.STATE_PREPARED;
-import static com.funlisten.business.play.model.ZYPLayManager.STATE_PREPARING;
-import static com.funlisten.business.play.model.ZYPLayManager.STATE_PREPARING_NEXT;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_BUFFERING_END;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_BUFFERING_START;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_COMPLETED;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_ERROR;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_NEED_BUY_PAUSED;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_PAUSED;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_PLAYING;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_PREPARED;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_PREPARING;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_PREPARING_NEXT;
 
 /**
  * Created by ZY on 17/7/10.
@@ -120,6 +117,14 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
             textInfo.setText(albumDetail.favoriteCount + "人订阅 | " + albumDetail.playCount + "播放");
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, albumDetail.coverUrl);
             refreshProgress(0, 1000);
+
+            if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_LOOP_TYPE) {
+                textPlayType.setSelected(false);
+                textPlayType.setText("循环");
+            } else {
+                textPlayType.setSelected(true);
+                textPlayType.setText("随机");
+            }
         }
     }
 
@@ -128,7 +133,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         return R.layout.zy_view_play_header;
     }
 
-    @OnClick({R.id.imgPre, R.id.imgPlay, R.id.imgNext})
+    @OnClick({R.id.imgPre, R.id.imgPlay, R.id.imgNext, R.id.textPlayList, R.id.textPlayType})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgPre:
@@ -139,6 +144,21 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
                 break;
             case R.id.imgNext:
                 headerListener.onNextClick(mData);
+                break;
+            case R.id.textPlayList:
+                headerListener.onPlayListClick();
+                break;
+            case R.id.textPlayType:
+                headerListener.onPlayTypeClick();
+                if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_LOOP_TYPE) {
+                    textPlayType.setSelected(true);
+                    textPlayType.setText("随机");
+                    ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_RANDOM_TYPE);
+                } else {
+                    textPlayType.setSelected(false);
+                    textPlayType.setText("循环");
+                    ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_LOOP_TYPE);
+                }
                 break;
         }
     }
@@ -216,7 +236,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         int progress = seekBar.getProgress();
-        ZYPLayManager.getInstance().seekTo(progress, seekBar.getMax());
+        ZYPlayManager.getInstance().seekTo(progress, seekBar.getMax());
     }
 
     public interface PlayHeaderListener {
@@ -225,5 +245,9 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         void onNextClick(ZYPlay play);
 
         void onPlayOrPauseClick(ZYPlay play);
+
+        void onPlayListClick();
+
+        void onPlayTypeClick();
     }
 }

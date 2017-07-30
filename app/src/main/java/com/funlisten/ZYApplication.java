@@ -3,18 +3,12 @@ package com.funlisten;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Environment;
-import android.os.IBinder;
 
 import com.bugtags.library.Bugtags;
 import com.bugtags.library.BugtagsOptions;
-import com.funlisten.business.download.model.bean.ZYDownloadEntity;
-import com.funlisten.business.play.ZYPlayService;
-import com.funlisten.business.play.model.ZYPLayManager;
+import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.service.db.ZYDBManager;
 import com.funlisten.service.downNet.down.ZYDownloadManager;
 import com.funlisten.thirdParty.statistics.DataStatistics;
@@ -82,7 +76,7 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
         //富文本缓存
         RichText.initCacheDir(this);
 
-        ZYPLayManager.getInstance().startPlaySer();
+        ZYPlayManager.getInstance().startPlaySer();
 
         ZYDownloadManager.getInstance().puaseAllAudio(false);
     }

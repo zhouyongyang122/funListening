@@ -9,22 +9,18 @@ import com.funlisten.business.album.model.ZYAlbumModel;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.play.contract.ZYPlayContract;
-import com.funlisten.business.play.model.ZYPLayManager;
+import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.business.play.model.ZYPlayModel;
 import com.funlisten.business.play.model.bean.ZYAudio;
-import com.funlisten.business.play.model.bean.ZYPlay;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import rx.Observable;
 import rx.functions.Func3;
-import rx.functions.Func4;
 
 /**
  * Created by ZY on 17/7/10.
@@ -96,7 +92,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
 
     public void refreshPlay(int album, int audio) {
         if (album != mAlbumDetail.id || mCurPlayAudio.id != audio) {
-            ZYPLayManager.getInstance().puase();
+            ZYPlayManager.getInstance().puase();
             subscribe();
         }
     }

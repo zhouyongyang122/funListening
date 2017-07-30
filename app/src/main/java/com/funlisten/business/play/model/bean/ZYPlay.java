@@ -2,6 +2,7 @@ package com.funlisten.business.play.model.bean;
 
 import com.funlisten.base.bean.ZYIBaseBean;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
+import com.funlisten.business.play.ZYPlayService;
 
 /**
  * Created by ZY on 17/7/10.

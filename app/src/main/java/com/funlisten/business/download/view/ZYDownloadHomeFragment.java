@@ -20,7 +20,7 @@ import com.funlisten.business.download.view.viewholder.ZYDownloadHomeItemVH;
  * Created by ZY on 17/7/12.
  */
 
-public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeContract.IPresenter, ZYDownloadEntity> implements ZYDownloadHomeContract.IView {
+public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeContract.IPresenter, ZYDownloadEntity> implements ZYDownloadHomeContract.IView, ZYDownloadHomeHeaderVH.DownloadHomeHeaderListener {
 
     ZYDownloadHomeHeaderVH homeHeaderVH;
 
@@ -36,7 +36,7 @@ public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeCon
     @Override
     protected void init() {
         super.init();
-        homeHeaderVH = new ZYDownloadHomeHeaderVH();
+        homeHeaderVH = new ZYDownloadHomeHeaderVH(this);
         mAdapter.addHeader(homeHeaderVH);
     }
 
@@ -48,12 +48,20 @@ public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeCon
 
     @Override
     public void refresh(Object object) {
+        if (object == null) {
+            return;
+        }
         homeHeaderVH.updateView((ZYDownloadEntity) object, 0);
     }
 
     @Override
     protected ZYBaseViewHolder<ZYDownloadEntity> createViewHolder() {
         return new ZYDownloadHomeItemVH();
+    }
+
+    @Override
+    public void onDownloadAllFinished() {
+        mPresenter.subscribe();
     }
 
     @Override

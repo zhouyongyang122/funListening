@@ -4,13 +4,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.IBinder;
 
 import com.funlisten.ZYApplication;
 import com.funlisten.business.play.ZYPlayService;
 import com.funlisten.business.play.model.bean.ZYAudio;
-import com.funlisten.business.play.model.bean.ZYPlay;
 import com.funlisten.business.play.model.bean.ZYPlayHistory;
 import com.funlisten.utils.ZYLog;
 
@@ -20,7 +18,7 @@ import java.util.List;
  * Created by ZY on 17/7/16.
  */
 
-public class ZYPLayManager {
+public class ZYPlayManager {
 
     //出错状态
     public static int STATE_ERROR = 0;
@@ -52,17 +50,17 @@ public class ZYPLayManager {
     //播放完成
     public static int STATE_COMPLETED = 9;
 
-    private static ZYPLayManager instance;
+    private static ZYPlayManager instance;
 
     public ZYPlayService playService;
 
-    private ZYPLayManager() {
+    private ZYPlayManager() {
 
     }
 
-    public static ZYPLayManager getInstance() {
+    public static ZYPlayManager getInstance() {
         if (instance == null) {
-            instance = new ZYPLayManager();
+            instance = new ZYPlayManager();
         }
         return instance;
     }
@@ -85,6 +83,14 @@ public class ZYPLayManager {
 
     public void puase() {
         playService.puase();
+    }
+
+    public int getPlayType() {
+        return playService.getPlayType();
+    }
+
+    public void setPlayType(int playType) {
+        playService.setPlayType(playType);
     }
 
     public void seekTo(int currentProgress, int totalProgress) {

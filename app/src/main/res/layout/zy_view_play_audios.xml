@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="180dp">
+    android:background="@color/white"
+    android:layout_marginTop="0dp">
 
     <TextView
         android:id="@+id/textPlayType"
@@ -10,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
-        android:drawableLeft="@drawable/btn_change_or_cycle_n"
+        android:drawableLeft="@drawable/zy_bg_play_type"
         android:gravity="center"
         android:text="循环"
         android:textColor="@color/c3"
@@ -36,7 +37,7 @@
         android:layout_marginTop="15dp"
         android:background="@color/c6" />
 
-    <com.funlisten.base.view.ZYSwipeRefreshRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

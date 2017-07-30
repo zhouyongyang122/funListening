@@ -13,16 +13,15 @@ import android.widget.TextView;
 import com.funlisten.R;
 import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
 import com.funlisten.base.mvp.ZYBaseFragment;
-import com.funlisten.base.player.FZIPlayer;
 import com.funlisten.base.view.ZYLoadingView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
 import com.funlisten.business.comment.activity.ZYCommentActivity;
-import com.funlisten.business.play.activity.ZYPlayActivity;
+import com.funlisten.business.play.ZYPlayService;
 import com.funlisten.business.play.contract.ZYPlayContract;
 import com.funlisten.business.play.model.FZAudionPlayEvent;
-import com.funlisten.business.play.model.ZYPLayManager;
+import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.play.model.bean.ZYPlay;
 import com.funlisten.business.play.view.viewHolder.ZYPlayActionBarVH;
@@ -33,17 +32,19 @@ import com.funlisten.utils.ZYToast;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Random;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.funlisten.business.play.model.ZYPLayManager.*;
+import static com.funlisten.business.play.model.ZYPlayManager.*;
 
 /**
  * Created by ZY on 17/7/10.
  */
 
-public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> implements ZYPlayHeaderVH.PlayHeaderListener, ZYPlayContract.IView, ZYPlayActionBarVH.PlayActionListener, ZYCommentItemVH.CommentItemListener {
+public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> implements ZYPlayHeaderVH.PlayHeaderListener, ZYPlayContract.IView, ZYPlayActionBarVH.PlayActionListener, ZYCommentItemVH.CommentItemListener,ZYPlayAudiosVH.PlayAudiosListener {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -80,7 +81,9 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         actionBarVH = new ZYPlayActionBarVH(this);
         actionBarVH.attachTo(rootView);
 
-        audiosVH = new ZYPlayAudiosVH();
+        audiosVH = new ZYPlayAudiosVH(this);
+        audiosVH.attachTo(rootView);
+        audiosVH.hide();
 
         headerVH = new ZYPlayHeaderVH(this);
         adapter = new ZYBaseRecyclerAdapter<Object>(mPresenter.getComments()) {
@@ -116,7 +119,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             case R.id.textCollect:
                 break;
             case R.id.textComment:
-                mActivity.startActivity(ZYCommentActivity.createIntent(mActivity,"audio",mPresenter.getCurPlayAudio().id+""));
+                mActivity.startActivity(ZYCommentActivity.createIntent(mActivity, "audio", mPresenter.getCurPlayAudio().id + ""));
                 break;
         }
     }
@@ -126,7 +129,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         adapter.notifyDataSetChanged();
         ZYPlay play = new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getCurPlayAudio());
         headerVH.updateView(play, 0);
-        ZYPLayManager.getInstance().play(mPresenter.getCurPlayAudio(), mPresenter.getAudios());
+        ZYPlayManager.getInstance().play(mPresenter.getCurPlayAudio(), mPresenter.getAudios());
     }
 
     @Override
@@ -170,9 +173,19 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
 
     @Override
     public void onPreClick(ZYPlay play) {
+        ZYAudio audio = null;
+        if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_RANDOM_TYPE) {
+            int position = new Random(mPresenter.getAudios().size()).nextInt();
+            audio = mPresenter.getAudios().get(position);
+            mPresenter.setCurPlayAudio(audio);
+            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios());
+            return;
+        }
         int position = mPresenter.getAudios().indexOf(mPresenter.getCurPlayAudio());
         if (position >= 1) {
-            ZYPLayManager.getInstance().play(mPresenter.getAudios().get(--position), mPresenter.getAudios());
+            audio = mPresenter.getAudios().get(--position);
+            mPresenter.setCurPlayAudio(audio);
+            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios());
         } else {
             ZYToast.show(mActivity, "当前为第一集");
         }
@@ -180,17 +193,44 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
 
     @Override
     public void onNextClick(ZYPlay play) {
+        ZYAudio audio = null;
+        if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_RANDOM_TYPE) {
+            int position = new Random(mPresenter.getAudios().size()).nextInt();
+            audio = mPresenter.getAudios().get(position);
+            mPresenter.setCurPlayAudio(audio);
+            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios());
+            return;
+        }
         int position = mPresenter.getAudios().indexOf(mPresenter.getCurPlayAudio());
         if (position < mPresenter.getAudios().size() - 1) {
-            ZYPLayManager.getInstance().play(mPresenter.getAudios().get(++position), mPresenter.getAudios());
+            audio = mPresenter.getAudios().get(++position);
+            mPresenter.setCurPlayAudio(audio);
+            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios());
         } else {
             ZYToast.show(mActivity, "已经是最后一集了");
         }
     }
 
     @Override
+    public void onAudiosItemClick(int position) {
+        mPresenter.setCurPlayAudio(mPresenter.getAudios().get(position));
+        ZYPlayManager.getInstance().play(mPresenter.getAudios().get(position), mPresenter.getAudios());
+    }
+
+    @Override
+    public void onPlayListClick() {
+        audiosVH.updateView(mPresenter.getAudios(), mPresenter.getAudios().indexOf(mPresenter.getCurPlayAudio()));
+    }
+
+    @Override
+    public void onPlayTypeClick() {
+
+    }
+
+
+    @Override
     public void onPlayOrPauseClick(ZYPlay play) {
-        ZYPLayManager.getInstance().startOrPuase();
+        ZYPlayManager.getInstance().startOrPuase();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

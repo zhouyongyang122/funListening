@@ -62,7 +62,7 @@ public class ZYAlbumListItemVH extends ZYBaseViewHolder<ZYAlbumDetail> {
                 textPayTag.setVisibility(View.GONE);
             }
 
-            textTitle.setText(data.title);
+            textTitle.setText(data.name);
             textDesc.setText(data.title);
             textPlayNum.setText(data.playCount + "次");
             textPrice.setText("¥" + data.sellPrice);

@@ -59,7 +59,7 @@ public class ZYDownloadSubscriber<T> extends Subscriber<T> implements ZYDownload
         if (done) {
             ZYLog.e(getClass().getSimpleName(), "update: " + current + ":" + total + ":" + done);
         } else {
-            if (current % 100 * 1024 == 0) {
+            if ((current - current % 1024) % (100 * 1024) == 0) {
                 ZYLog.e(getClass().getSimpleName(), "update: " + current + ":" + total + ":" + done);
             }
         }

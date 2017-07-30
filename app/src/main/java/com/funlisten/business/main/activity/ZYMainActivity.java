@@ -6,20 +6,17 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
-import com.funlisten.ZYPreferenceHelper;
 import com.funlisten.base.adapter.ZYFragmentAdapter;
 import com.funlisten.base.mvp.ZYBaseActivity;
-import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.main.presenter.ZYMePresenter;
 import com.funlisten.business.play.activity.ZYPlayActivity;
-import com.funlisten.business.play.model.ZYPLayManager;
+import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.business.play.model.bean.ZYPlayHistory;
 import com.funlisten.service.ZYUpdateService;
 import com.funlisten.business.main.contract.ZYMainContract;
@@ -36,7 +33,6 @@ import com.umeng.analytics.MobclickAgent;
 import butterknife.Bind;
 import butterknife.OnClick;
 import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
-import pl.com.salsoft.sqlitestudioremote.internal.SQLiteStudioDbService;
 
 /**
  * Created by ZY on 17/4/27.
@@ -143,7 +139,7 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
                 mainViewPager.setCurrentItem(1);
                 break;
             case R.id.layoutPlayer:
-                ZYPlayHistory history = ZYPLayManager.getInstance().queryLastPlay();
+                ZYPlayHistory history = ZYPlayManager.getInstance().queryLastPlay();
                 if (history != null) {
                     ZYPlayActivity.toPlayActivity(mActivity, Integer.parseInt(history.albumId), Integer.parseInt(history.audioId));
                 } else {
@@ -208,7 +204,7 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
     }
 
     private void refreshPlay() {
-        ZYPlayHistory history = ZYPLayManager.getInstance().queryLastPlay();
+        ZYPlayHistory history = ZYPlayManager.getInstance().queryLastPlay();
         if (history != null) {
             ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, history.img, R.drawable.def_avatar, R.drawable.def_avatar);
         }

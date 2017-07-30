@@ -2,6 +2,7 @@ package com.funlisten.business.download.view.viewholder;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,6 +29,9 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     @Bind(R.id.imgAvatar)
     ImageView imgAvatar;
 
+    @Bind(R.id.layoutRoot)
+    LinearLayout layoutRoot;
+
     @Bind(R.id.textName)
     TextView textName;
 
@@ -44,8 +48,11 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
 
     static float SIZE_M = 1024.0f * 1024.0f;
 
-    public ZYDownloadHomeHeaderVH() {
+    DownloadHomeHeaderListener listener;
+
+    public ZYDownloadHomeHeaderVH(DownloadHomeHeaderListener listener) {
         EventBus.getDefault().register(this);
+        this.listener = listener;
     }
 
     @Override
@@ -65,11 +72,13 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
             mData = data;
         }
         if (mData != null && textName != null) {
-            mItemView.setVisibility(View.VISIBLE);
+            layoutRoot.setVisibility(View.VISIBLE);
             ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, mData.albumCoverUrl);
             textPublisher.setText("超级演说家: " + mData.albumPublisher);
             textName.setText(mData.audioName);
             updateProgress();
+        } else if (layoutRoot != null) {
+            layoutRoot.setVisibility(View.GONE);
         }
     }
 
@@ -94,6 +103,9 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
             if (dowloadUpdate.downloadEntity.getState() == ZYDownState.FINISH) {
                 mData = ZYDownloadEntity.queryAudioByNotFinishedState();
                 updateView(mData, 0);
+                if (mData == null) {
+                    listener.onDownloadAllFinished();
+                }
             } else {
                 mData = (ZYDownloadEntity) dowloadUpdate.downloadEntity;
                 updateProgress();
@@ -105,5 +117,9 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     public void unAttachTo() {
         super.unAttachTo();
         EventBus.getDefault().unregister(this);
+    }
+
+    public interface DownloadHomeHeaderListener {
+        void onDownloadAllFinished();
     }
 }

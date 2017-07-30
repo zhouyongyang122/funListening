@@ -174,7 +174,7 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
     public static List<ZYDownloadEntity> queryAlbums() {
         synchronized (object) {
             ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
-            List<ZYDownloadEntity> downloadedAudios = downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.Current.eq(ZYDownloadEntityDao.Properties.Total)).build().list();
+            List<ZYDownloadEntity> downloadedAudios = downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.FINISH.getState())).build().list();
             if (downloadedAudios == null || downloadedAudios.size() <= 0) {
                 return null;
             }
@@ -185,6 +185,8 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
                     albumEntity.audioDowloadedCount++;
                     albumEntity.albumDownloadedSize += downloadEntity.total;
                 } else {
+                    downloadEntity.audioDowloadedCount++;
+                    downloadEntity.albumDownloadedSize += downloadEntity.total;
                     albums.put(downloadEntity.albumId, downloadEntity);
                 }
             }

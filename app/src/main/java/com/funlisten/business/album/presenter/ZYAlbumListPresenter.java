@@ -25,7 +25,7 @@ public class ZYAlbumListPresenter extends ZYListDataPresenter<ZYAlbumListContrac
     @Override
     protected void loadData() {
         mView.showLoading();
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.getAblums(mPageIndex, mRows, 0), new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYAlbumDetail>>>() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.getAblums(mPageIndex, mRows, mCatagoryId), new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYAlbumDetail>>>() {
             @Override
             public void onSuccess(ZYResponse<ZYListResponse<ZYAlbumDetail>> response) {
                 super.onSuccess(response);

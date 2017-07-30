@@ -9,8 +9,6 @@ import android.support.annotation.Nullable;
 
 import com.funlisten.R;
 import com.funlisten.base.mvp.ZYBaseFragmentActivity;
-import com.funlisten.business.play.model.ZYPLayManager;
-import com.funlisten.business.play.model.bean.ZYPlay;
 import com.funlisten.business.play.presenter.ZYPlayPresenter;
 import com.funlisten.business.play.view.ZYPlayFragment;
 import com.funlisten.utils.ZYLog;

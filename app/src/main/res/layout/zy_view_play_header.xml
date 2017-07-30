@@ -79,7 +79,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/btn_change_or_cycle_n"
+                android:drawableTop="@drawable/zy_bg_play_type"
                 android:gravity="center"
                 android:text="循环"
                 android:textColor="@color/c4"

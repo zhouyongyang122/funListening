@@ -24,7 +24,7 @@ public class ZYPlayAudiosItemVH extends ZYBaseViewHolder<ZYAudio> {
     TextView textTitle;
 
     @Bind(R.id.imgDownload)
-    TextView imgDownload;
+    ImageView imgDownload;
 
     ZYAudio mData;
 

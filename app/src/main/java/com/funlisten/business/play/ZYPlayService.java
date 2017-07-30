@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 import com.funlisten.base.player.FZAudioPlayer;
 import com.funlisten.base.player.FZIPlayer;
 import com.funlisten.business.play.model.FZAudionPlayEvent;
-import com.funlisten.business.play.model.ZYPLayManager;
+import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.play.model.bean.ZYPlayHistory;
 import com.funlisten.utils.ZYLog;
@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import rx.subscriptions.CompositeSubscription;
 
@@ -27,6 +28,14 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
+
+    //顺序播放
+    public static final int PLAY_LOOP_TYPE = 1;
+
+    //随机
+    public static final int PLAY_RANDOM_TYPE = 2;
+
+    int playType = PLAY_LOOP_TYPE;
 
     //正在播放音频
     ZYAudio mCurrentPlayAudio;
@@ -82,7 +91,7 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         }
         audioPlayer.stop();
         stopProgressUpdate();
-        sendCallBack(ZYPLayManager.STATE_PREPARING, "播放器初使化中");
+        sendCallBack(ZYPlayManager.STATE_PREPARING, "播放器初使化中");
         audioPlayer.open(mCurrentPlayAudio.fileUrl, 0);
         reportAudioPlay();
     }
@@ -99,7 +108,7 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         if (!audioPlayer.isPlaying()) {
             startProgressUpdate(0);
             audioPlayer.start(true);
-            sendCallBack(ZYPLayManager.STATE_PLAYING, "正在播放");
+            sendCallBack(ZYPlayManager.STATE_PLAYING, "正在播放");
         }
     }
 
@@ -107,7 +116,7 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         if (audioPlayer.isPlaying()) {
             stopProgressUpdate();
             audioPlayer.pause();
-            sendCallBack(ZYPLayManager.STATE_PAUSED, "暂停播放");
+            sendCallBack(ZYPlayManager.STATE_PAUSED, "暂停播放");
         }
     }
 
@@ -123,15 +132,15 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         switch (what) {
             case FZIPlayer.PLAYER_PREPARED:
                 startProgressUpdate(0);
-                sendCallBack(ZYPLayManager.STATE_PREPARED, "准备播放");
+                sendCallBack(ZYPlayManager.STATE_PREPARED, "准备播放");
                 break;
             case FZIPlayer.PLAYER_BUFFERING_END:
                 startProgressUpdate(0);
-                sendCallBack(ZYPLayManager.STATE_BUFFERING_END, "缓冲结束-开始播放");
+                sendCallBack(ZYPlayManager.STATE_BUFFERING_END, "缓冲结束-开始播放");
                 break;
             case FZIPlayer.PLAYER_BUFFERING_START:
                 stopProgressUpdate();
-                sendCallBack(ZYPLayManager.STATE_BUFFERING_START, "缓冲开始-等待播放");
+                sendCallBack(ZYPlayManager.STATE_BUFFERING_START, "缓冲开始-等待播放");
                 break;
             case FZIPlayer.PLAYER_COMPLETIIONED:
                 stopProgressUpdate();
@@ -141,26 +150,32 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
             case FZIPlayer.PLAYER_ERROR_UNKNOWN:
             case FZIPlayer.PLAYER_ERROR_NET:
                 stopProgressUpdate();
-                sendCallBack(ZYPLayManager.STATE_ERROR, "播放出错");
+                sendCallBack(ZYPlayManager.STATE_ERROR, "播放出错");
                 break;
         }
         return true;
     }
 
     private void playNext() {
-        int position = mAudios.indexOf(mCurrentPlayAudio);
+        int curPosition = mAudios.indexOf(mCurrentPlayAudio);
+        int position = 0;
+        if (playType == PLAY_LOOP_TYPE) {
+            position = curPosition++;
+        } else {
+            position = new Random(mAudios.size()).nextInt();
+        }
         if (position < mAudios.size() - 1) {
-            sendCallBack(ZYPLayManager.STATE_PREPARING_NEXT, "准备播放下一集");
+            sendCallBack(ZYPlayManager.STATE_PREPARING_NEXT, "准备播放下一集");
             //缓存中还有
-            mCurrentPlayAudio = mAudios.get(++position);
+            mCurrentPlayAudio = mAudios.get(position);
             if (mCurrentPlayAudio.needBuy() && (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isBuy() || mCurrentPlayAudio.isAudition())) {
                 play();
             } else {
                 audioPlayer.stop();
-                sendCallBack(ZYPLayManager.STATE_NEED_BUY_PAUSED, "暂停播放,收费视频");
+                sendCallBack(ZYPlayManager.STATE_NEED_BUY_PAUSED, "暂停播放,收费视频");
             }
         } else {
-            sendCallBack(ZYPLayManager.STATE_COMPLETED, "列表播放完成");
+            sendCallBack(ZYPlayManager.STATE_COMPLETED, "列表播放完成");
         }
     }
 
@@ -203,6 +218,14 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
 //        }));
     }
 
+    public int getPlayType() {
+        return playType;
+    }
+
+    public void setPlayType(int playType) {
+        this.playType = playType;
+    }
+
     private void sendCallBack(int state, String msg) {
         FZAudionPlayEvent playEvent = new FZAudionPlayEvent(mCurrentPlayAudio, state, msg, audioPlayer.getCurrentPosition(), audioPlayer.getDuration());
         EventBus.getDefault().post(playEvent);
@@ -226,7 +249,7 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         @Override
         public void run() {
             if (audioPlayer != null) {
-                sendCallBack(ZYPLayManager.STATE_PLAYING, "正在播放");
+                sendCallBack(ZYPlayManager.STATE_PLAYING, "正在播放");
                 handler.postDelayed(updateProgress, 500);
             }
         }

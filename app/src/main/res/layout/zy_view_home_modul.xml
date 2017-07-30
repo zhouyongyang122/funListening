@@ -34,24 +34,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:textSize="@dimen/f4"
-            android:textColor="@color/c2"
             android:layout_toLeftOf="@+id/imgArrow"
             android:layout_toRightOf="@+id/imgIcon"
             android:paddingLeft="8dp"
-            android:text="ssss"
             android:paddingRight="8dp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="ssss"
+            android:textColor="@color/c2"
+            android:textSize="@dimen/f4" />
 
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutTitle" />
+        android:layout_below="@+id/layoutTitle"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" />
 
     <LinearLayout
         android:id="@+id/layoutRefresh"
@@ -59,7 +59,7 @@
         android:layout_height="35dp"
         android:layout_below="@+id/recyclerView"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:visibility="visible">
 
         <View

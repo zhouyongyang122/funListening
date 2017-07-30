@@ -1,6 +1,7 @@
 package com.funlisten.business.play.view.viewHolder;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,12 +15,15 @@ import com.funlisten.base.view.ZYRefreshListener;
 import com.funlisten.base.view.ZYSwipeRefreshRecyclerView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.ZYAlbumModel;
+import com.funlisten.business.play.ZYPlayService;
+import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.business.play.model.ZYPlayModel;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -30,7 +34,7 @@ import rx.subscriptions.CompositeSubscription;
  * Created by ZY on 17/7/10.
  */
 
-public class ZYPlayAudiosVH extends ZYBaseViewHolder<ZYAudio> {
+public class ZYPlayAudiosVH extends ZYBaseViewHolder<List<ZYAudio>> {
 
     @Bind(R.id.textPlayType)
     TextView textPlayType;
@@ -39,105 +43,45 @@ public class ZYPlayAudiosVH extends ZYBaseViewHolder<ZYAudio> {
     TextView textPlaySort;
 
     @Bind(R.id.recyclerView)
-    ZYSwipeRefreshRecyclerView recyclerView;
+    RecyclerView recyclerView;
 
     @Bind(R.id.textClose)
     TextView textClose;
 
     List<ZYAudio> mAudios;
 
-    ZYAudio currentPlayAudio;
+    int mPosition;
 
     ZYBaseRecyclerAdapter<ZYAudio> adapter;
 
-    CompositeSubscription mSubscriptions = null;
+    PlayAudiosListener listener;
 
-    ZYPlayModel mModel = null;
-
-    int mStart;
-
-    int mRows = 20;
-
-    int mEnd;
-
-    String mSort = ZYAlbumModel.SORT_ASC;
+    public ZYPlayAudiosVH(PlayAudiosListener listener) {
+        this.listener = listener;
+    }
 
     @Override
-    public void updateView(ZYAudio data, int position) {
+    public void updateView(List<ZYAudio> data, int position) {
         if (data != null) {
-            currentPlayAudio = data;
-            mStart = currentPlayAudio.sort;
-            mEnd = currentPlayAudio.sort;
-            if (adapter == null) {
-                adapter = new ZYBaseRecyclerAdapter<ZYAudio>(mAudios) {
-                    @Override
-                    public ZYBaseViewHolder<ZYAudio> createViewHolder(int type) {
-                        return new ZYPlayAudiosItemVH();
-                    }
-                };
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-                recyclerView.setRefreshListener(new ZYRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        loadData(false);
-                    }
-
-                    @Override
-                    public void onLoadMore() {
-                        loadData(true);
-                    }
-                });
-            }
+            show();
+            mAudios = data;
+            mPosition = position;
+            adapter = new ZYBaseRecyclerAdapter<ZYAudio>(mAudios) {
+                @Override
+                public ZYBaseViewHolder<ZYAudio> createViewHolder(int type) {
+                    return new ZYPlayAudiosItemVH();
+                }
+            };
+            adapter.setOnItemClickListener(new ZYBaseRecyclerAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    hide();
+                    listener.onAudiosItemClick(position);
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         }
-    }
-
-    private void loadData(final boolean loadMore) {
-        int pageIndex = 0;
-        if (loadMore) {
-            pageIndex = getPageIndex(mStart);
-        } else {
-            pageIndex = getPageIndex(mEnd);
-        }
-
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.getAudios(pageIndex, mRows, currentPlayAudio.albumId, mSort),
-                new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYAudio>>>() {
-                    @Override
-                    public void onSuccess(ZYResponse<ZYListResponse<ZYAudio>> response) {
-                        super.onSuccess(response);
-                        List<ZYAudio> audios = response.data.data;
-                        if (audios != null && audios.size() > 0) {
-                            if (loadMore) {
-                                mEnd = audios.get(audios.size() - 1).sort;
-                                mAudios.addAll(audios);
-                            } else {
-                                mStart = audios.get(0).sort;
-                                mAudios.addAll(0, audios);
-                                recyclerView.setEnabled(true);
-                            }
-                            recyclerView.showList(true);
-                        } else {
-                            if (loadMore) {
-                                recyclerView.showList(false);
-                            } else {
-                                recyclerView.setRefreshEnable(false);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFail(String message) {
-                        super.onFail(message);
-                    }
-                }));
-    }
-
-    private int getPageIndex(int index) {
-        int pageIndex = index / mRows;
-        if (index % mRows > 0) {
-            pageIndex++;
-        }
-        return pageIndex;
     }
 
     @Override
@@ -149,12 +93,19 @@ public class ZYPlayAudiosVH extends ZYBaseViewHolder<ZYAudio> {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textPlayType:
+                if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_LOOP_TYPE) {
+                    textPlayType.setSelected(true);
+                    textPlayType.setText("随机");
+                    ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_RANDOM_TYPE);
+                } else {
+                    textPlayType.setSelected(false);
+                    textPlayType.setText("循环");
+                    ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_LOOP_TYPE);
+                }
                 break;
             case R.id.textPlaySort:
-                mStart = currentPlayAudio.sort;
-                mEnd = currentPlayAudio.sort;
-                mAudios.clear();
-                loadData(false);
+                Collections.reverse(mAudios);
+                ZYPlayManager.getInstance().setAudios(mAudios);
                 break;
             case R.id.textClose:
                 unAttachTo();
@@ -162,17 +113,7 @@ public class ZYPlayAudiosVH extends ZYBaseViewHolder<ZYAudio> {
         }
     }
 
-    @Override
-    public void attachTo(ViewGroup viewGroup) {
-        super.attachTo(viewGroup);
-        mSubscriptions = new CompositeSubscription();
-        mModel = new ZYPlayModel();
-        mAudios = new ArrayList<ZYAudio>();
-    }
-
-    @Override
-    public void unAttachTo() {
-        super.unAttachTo();
-        mSubscriptions.unsubscribe();
+    public interface PlayAudiosListener {
+        void onAudiosItemClick(int position);
     }
 }

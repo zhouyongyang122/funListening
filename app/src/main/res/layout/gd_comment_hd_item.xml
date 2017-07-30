@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@color/c8"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/comment_count"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:textColor="@color/c2"
+        android:text="评论 (300)"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/c6"
+        android:layout_height="0.5dp"/>
+
+</LinearLayout>

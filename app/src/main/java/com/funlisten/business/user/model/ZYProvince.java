@@ -2,6 +2,7 @@ package com.funlisten.business.user.model;
 
 import com.funlisten.base.bean.ZYIBaseBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class ZYProvince implements ZYIBaseBean {
 
     public String provinceName;
 
-    public class City {
+    public class City implements Serializable {
         public String cityCode;
         public String cityName;
         public int id;

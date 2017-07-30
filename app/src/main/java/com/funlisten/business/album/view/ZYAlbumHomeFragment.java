@@ -2,7 +2,9 @@ package com.funlisten.business.album.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,10 @@ import com.funlisten.business.album.model.ZYAlbumModel;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.album.presenter.ZYAlbumAudiosPresenter;
 import com.funlisten.business.album.presenter.ZYAlbumDetailPresenter;
+import com.funlisten.business.album.view.viewHolder.ZYAlbumFooterVH;
 import com.funlisten.business.album.view.viewHolder.ZYAlbumHomeHeaderVH;
+import com.funlisten.business.pay.activity.ZYPayActivity;
+import com.funlisten.utils.ZYScreenUtils;
 
 import java.util.ArrayList;
 
@@ -31,7 +36,8 @@ import butterknife.ButterKnife;
  * Created by ZY on 17/7/4.
  */
 
-public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPresenter> implements ZYAlbumHomeContract.IView, ZYAlbumHomeHeaderVH.HeaderListener {
+public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPresenter> implements ZYAlbumHomeContract.IView, ZYAlbumHomeHeaderVH.HeaderListener ,
+        ZYAlbumFooterVH.AlbumFooterListener {
 
     @Bind(R.id.layoutRoot)
     RelativeLayout layoutRoot;
@@ -45,11 +51,16 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
     @Bind(R.id.viewPager)
     ViewPager viewPager;
 
+    @Bind(R.id.coor_layout)
+    CoordinatorLayout coorLayout;
+
     ZYFragmentAdapter adapter;
 
     ZYAlbumHomeHeaderVH homeHeaderVH;
 
     ZYLoadingView loadingView;
+
+    ZYAlbumFooterVH footerVH;
 
     @Nullable
     @Override
@@ -64,11 +75,21 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
 
         initHeaderView();
 
+        initFooterView();
+
         initLoadingView();
 
         mPresenter.load();
 
         return view;
+    }
+
+    private void initFooterView(){
+        footerVH = new ZYAlbumFooterVH(this);
+        footerVH.attachTo(layoutRoot);
+        RelativeLayout.LayoutParams layoutParams  = (RelativeLayout.LayoutParams) coorLayout.getLayoutParams();
+        layoutParams.bottomMargin = ZYScreenUtils.dp2px(mActivity,50);
+        coorLayout.setLayoutParams(layoutParams);
     }
 
     private void initLoadingView() {
@@ -178,5 +199,14 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
     @Override
     public void showError() {
         loadingView.showError();
+    }
+
+    @Override
+    public void onListener() {
+    }
+
+    @Override
+    public void onPay() {
+        mActivity.startActivity(ZYPayActivity.createIntent(mActivity,mPresenter.getAlbumDetail()));
     }
 }

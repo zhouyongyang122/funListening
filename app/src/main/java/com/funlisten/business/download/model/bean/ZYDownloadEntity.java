@@ -217,6 +217,10 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
         }
     }
 
+    public static boolean audioIsDown(ZYAudio audio){
+        return queryById(audio.id,audio.albumId) == null ? false:true;
+    }
+
     public static String getEntityId(int audioId, int albumId) {
         return audioId + "_" + albumId;
     }

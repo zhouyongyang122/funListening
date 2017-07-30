@@ -14,6 +14,8 @@ public class ZYAudio implements ZYIBaseBean {
 
     public String title;
 
+    public int position;
+
     public int playCount;
 
     public int audioTimeLength;//s
@@ -45,6 +47,8 @@ public class ZYAudio implements ZYIBaseBean {
     public int sort;//当前顺序
 
     public boolean isPlaying;
+
+    public boolean isSelect = false;
 
     public boolean isBuy;
 

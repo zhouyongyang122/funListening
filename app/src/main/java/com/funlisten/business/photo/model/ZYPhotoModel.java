@@ -26,13 +26,6 @@ public class ZYPhotoModel extends ZYBaseModel {
     }
 
     public Observable<ZYResponse<ZYPhoto>> addPhoto(File photo) {
-//        byte[] datas = null;
-//        try {
-//            datas = ZYUtils.toByteArray(photo);
-//            ZYLog.e(getClass().getSimpleName(), "addPhoto: " + datas.length);
-//        } catch (Exception e) {
-//            ZYLog.e(getClass().getSimpleName(), "addPhoto-error: " + e.getMessage());
-//        }
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), photo);
         MultipartBody.Part body =

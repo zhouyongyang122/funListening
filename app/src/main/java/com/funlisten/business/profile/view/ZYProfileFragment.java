@@ -29,8 +29,6 @@ public class ZYProfileFragment extends ZYListDateFragment<ZYProfileContract.IPre
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-//        int space = ZYScreenUtils.dp2px(mActivity, 15);
-//        mRefreshRecyclerView.getRecyclerView().setPadding(space, 0, 0, 0);
         mRefreshRecyclerView.getRecyclerView().setBackgroundColor(ZYResourceUtils.getColor(R.color.c8));
         ZYProfileHeader.followPhoto = followPhoto;
         profileHeader = new ZYProfileHeader();

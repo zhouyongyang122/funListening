@@ -18,6 +18,7 @@ import com.funlisten.base.view.ZYLoadingView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
+import com.funlisten.business.comment.activity.ZYCommentActivity;
 import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.business.play.contract.ZYPlayContract;
 import com.funlisten.business.play.model.FZAudionPlayEvent;
@@ -115,6 +116,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             case R.id.textCollect:
                 break;
             case R.id.textComment:
+                mActivity.startActivity(ZYCommentActivity.createIntent(mActivity,"audio",mPresenter.getCurPlayAudio().id+""));
                 break;
         }
     }

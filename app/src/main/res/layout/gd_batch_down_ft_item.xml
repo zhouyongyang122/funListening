@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/c7"
+    android:layout_height="50dp">
+
+    <LinearLayout
+        android:id="@+id/select_all"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/img_selected_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/gd_selector_dowload"/>
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c1"
+            android:textSize="16dp"
+            android:text="全选"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/all_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:paddingLeft="9dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="9dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/shape_c1_4dp"
+        android:layout_alignParentRight="true"
+        android:textSize="15dp"
+        android:textColor="@color/c8"
+        android:text="立即下载"/>
+
+</RelativeLayout>

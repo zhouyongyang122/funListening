@@ -40,7 +40,7 @@ import java.util.Objects;
  * Created by gd on 2017/7/20.
  */
 
-public class ZYDailyFragment extends ZYBaseRecyclerFragment<ZYDailyListenContract.IPresenter> implements ZYDailyListenContract.IView,ZYDailyListenVH.AudioItemListener{
+public class ZYDailyFragment extends ZYBaseRecyclerFragment<ZYDailyListenContract.IPresenter> implements ZYDailyListenContract.IView, ZYDailyListenVH.AudioItemListener {
     static final int ADAPTER_TYPE_TITLE = 0;
     static final int ADAPTER_TYPE_DESC = 1;
     static final int ADAPTER_TYPE_HEAD = 2;
@@ -61,23 +61,19 @@ public class ZYDailyFragment extends ZYBaseRecyclerFragment<ZYDailyListenContrac
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-//                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                    if (layoutManager instanceof LinearLayoutManager) {
-                        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
-                        int position = linearLayoutManager.findFirstVisibleItemPosition();
-                        View current = linearLayoutManager.findViewByPosition(position);
-
-                        int[] location = new int[2];
-                        current.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
-                        Log.e("recyclerview","position = "+position+"  location = "+location[1]);
-                        if(position == 0 && location[1] > 0){
-                            activity.showChangeBar(true);
-                        }else if (position >= 0){
-                            activity.showChangeBar(false);
-                        }
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                if (layoutManager instanceof LinearLayoutManager) {
+                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+                    int position = linearLayoutManager.findFirstVisibleItemPosition();
+                    View current = linearLayoutManager.findViewByPosition(position);
+                    int[] location = new int[2];
+                    current.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
+                    if (position == 0 && location[1] > 0) {
+                        activity.showChangeBar(true);
+                    } else if (position >= 0) {
+                        activity.showChangeBar(false);
                     }
-//                }
+                }
             }
 
             @Override
@@ -95,7 +91,7 @@ public class ZYDailyFragment extends ZYBaseRecyclerFragment<ZYDailyListenContrac
                         return ADAPTER_TYPE_TITLE;
                     } else if (getItem(position) instanceof ZYAudio) {
                         return ADAPTER_TYPE_DESC;
-                    }else if(getItem(position) instanceof ZYHeaderInfo){
+                    } else if (getItem(position) instanceof ZYHeaderInfo) {
                         return ADAPTER_TYPE_HEAD;
                     }
                 }
@@ -108,7 +104,7 @@ public class ZYDailyFragment extends ZYBaseRecyclerFragment<ZYDailyListenContrac
                     return new ZYDailyTimeVH();
                 } else if (ADAPTER_TYPE_DESC == type) {
                     return new ZYDailyListenVH(ZYDailyFragment.this);
-                }else if(ADAPTER_TYPE_HEAD == type){
+                } else if (ADAPTER_TYPE_HEAD == type) {
                     return new ZYDailyHeaderVH();
                 }
                 return new ZYAlbumDetailTitleVH();
@@ -128,16 +124,16 @@ public class ZYDailyFragment extends ZYBaseRecyclerFragment<ZYDailyListenContrac
                 mPresenter.subscribe();
             }
         });
-        return  view;
+        return view;
     }
 
     ZYBaseRecyclerAdapter.OnItemClickListener onItemClickListener = new ZYBaseRecyclerAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-            Object object =  mPresenter.getDataList().get(position);
-            if(object instanceof ZYAudio ){
+            Object object = mPresenter.getDataList().get(position);
+            if (object instanceof ZYAudio) {
                 ZYAudio audio = (ZYAudio) object;
-                ZYPlayActivity.toPlayActivity(mActivity,audio.albumId,audio.id);
+                ZYPlayActivity.toPlayActivity(mActivity, audio.albumId, audio.id);
             }
         }
     };
@@ -149,14 +145,14 @@ public class ZYDailyFragment extends ZYBaseRecyclerFragment<ZYDailyListenContrac
     }
 
     @Override
-    public void loadAudio(ZYAlbumDetail  albumDetail,ZYAudio audio) {
+    public void loadAudio(ZYAlbumDetail albumDetail, ZYAudio audio) {
         ZYDownloadEntity downloadEntity = ZYDownloadEntity.createEntityByAudio(albumDetail, audio);
         ZYDownloadManager.getInstance().addAudio(downloadEntity);
     }
 
     @Override
     public ZYDownloadEntity onDownloadClick(ZYAudio audio) {
-       mPresenter.getAlbumDetail(audio);
+        mPresenter.getAlbumDetail(audio);
         return null;
     }
 

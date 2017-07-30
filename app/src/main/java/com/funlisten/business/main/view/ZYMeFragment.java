@@ -18,9 +18,12 @@ import com.funlisten.base.event.ZYEventUpdateUserInfo;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.view.ZYPicSelect;
 import com.funlisten.base.view.ZYPicker;
+import com.funlisten.business.accountmanage.activity.ZYAccountManageActivity;
 import com.funlisten.business.download.activity.ZYDownloadHomeActivity;
+import com.funlisten.business.followfans.activity.GDFansActivity;
 import com.funlisten.business.followfans.activity.GDFollowActivity;
 import com.funlisten.business.main.contract.ZYMeContract;
+import com.funlisten.business.mylike.activity.ZYMyLikeActivity;
 import com.funlisten.business.myorder.activity.ZYMyOrderActivity;
 import com.funlisten.business.photo.activity.ZYPhotoActivity;
 import com.funlisten.business.profile.activity.ZYProFlieActivity;
@@ -112,12 +115,13 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
+                mActivity.startActivity(new Intent(mActivity, GDFansActivity.class));
                 break;
             case R.id.layoutPic:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
-                mActivity.startActivity(new Intent(mActivity, ZYPhotoActivity.class));
+                mActivity.startActivity(ZYPhotoActivity.createIntent(mActivity,ZYUserManager.getInstance().getUser().userId));
                 break;
             case R.id.layoutDowload:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
@@ -129,11 +133,13 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
+                mActivity.startActivity(new Intent(ZYProFlieActivity.createIntent(mActivity,ZYUserManager.getInstance().getUser().userId)));
                 break;
             case R.id.layoutLove:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
+                mActivity.startActivity(new Intent(mActivity, ZYMyLikeActivity.class));
                 break;
             case R.id.layoutSub:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
@@ -149,11 +155,13 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
+                mActivity.startActivity(new Intent(mActivity,ZYMyOrderActivity.class));
                 break;
             case R.id.layoutAccountManager:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
+                mActivity.startActivity(new Intent(mActivity, ZYAccountManageActivity.class));
                 break;
             case R.id.layoutHelper:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {

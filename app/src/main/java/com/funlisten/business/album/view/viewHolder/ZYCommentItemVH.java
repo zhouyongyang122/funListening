@@ -60,8 +60,8 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
             }
             textMore.setVisibility(View.GONE);
             layoutInfo.setVisibility(View.VISIBLE);
-            ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, mData.user.avatarUrl);
-            textName.setText(mData.user.nickname);
+            ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar,  mData.user == null ? "":mData.user.avatarUrl);
+            textName.setText( mData.user == null ? "":mData.user.nickname);
             textTime.setText(mData.gmtCreate);
             refreshSuport();
             textDesc.setText(mData.content);

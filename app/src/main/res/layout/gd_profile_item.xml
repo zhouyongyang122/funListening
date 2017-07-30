@@ -51,7 +51,9 @@
                 android:ellipsize="end"
                 android:maxEms="14"
                 android:maxLines="1"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
             <TextView
                 android:layout_marginTop="7dp"
                 android:layout_below="@id/title"

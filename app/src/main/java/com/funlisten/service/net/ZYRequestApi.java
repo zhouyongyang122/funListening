@@ -5,6 +5,7 @@ import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.album.model.bean.ZYCategory;
 import com.funlisten.business.album.model.bean.ZYComment;
+import com.funlisten.business.order.ZYWeChatBack;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.favorite.ZYFavorite;
 import com.funlisten.business.login.model.bean.ZYLoginUser;
@@ -59,6 +60,9 @@ public interface ZYRequestApi {
 
     @POST("sys/sendCode")
     Observable<ZYResponse> getCode(@Query("phone") String phone, @Query("type") String type);
+
+    @POST("sys/checkCodeIsEquals")
+    Observable<ZYResponse> checkCode(@Query("phone") String phone, @Query("type") String type,@Query("code") String code);
 
     @POST("user/regUser")
     Observable<ZYResponse> regUser(@QueryMap Map<String, String> paramas);
@@ -135,9 +139,13 @@ public interface ZYRequestApi {
     /**
      * 更新头像
      */
-    @FormUrlEncoded
+
     @POST("user/updateUserAvatar")
-    Observable<ZYResponse> updateUserAvatar(@Field("avatarFile") byte[] avatarFile);
+    @Multipart
+    Observable<ZYResponse> updateUserAvatar( @Part MultipartBody.Part avatarFile);
+
+//    Observable<ZYResponse> updateUserAvatar(@Field("avatarFile") byte[] avatarFile);
+
 
     /**
      * 评论
@@ -236,6 +244,13 @@ public interface ZYRequestApi {
     @FormUrlEncoded
     @POST("order/alipay/appTrade")
     Observable<ZYResponse<ZYAlipayBack>> alipay(@Field("productDetail") String productDetail);
+
+    /****
+     * 微信下单
+     * ****/
+    @FormUrlEncoded
+    @POST("order/weChat/unifiedOrder")
+    Observable<ZYResponse<ZYWeChatBack>> wxPay(@Field("productDetail") String productDetail);
 
     /**
      * 音频列表

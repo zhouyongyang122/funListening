@@ -25,6 +25,7 @@ public class DaoMaster extends AbstractDaoMaster {
         ZYUserDao.createTable(db, ifNotExists);
         ZYPlayHistoryDao.createTable(db, ifNotExists);
         ZYSearchHistoryDao.createTable(db, ifNotExists);
+        ZYMarkBeanDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
@@ -33,6 +34,7 @@ public class DaoMaster extends AbstractDaoMaster {
         ZYUserDao.dropTable(db, ifExists);
         ZYPlayHistoryDao.dropTable(db, ifExists);
         ZYSearchHistoryDao.dropTable(db, ifExists);
+        ZYMarkBeanDao.dropTable(db, ifExists);
     }
 
     /**
@@ -55,6 +57,7 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(ZYUserDao.class);
         registerDaoClass(ZYPlayHistoryDao.class);
         registerDaoClass(ZYSearchHistoryDao.class);
+        registerDaoClass(ZYMarkBeanDao.class);
     }
 
     public DaoSession newSession() {

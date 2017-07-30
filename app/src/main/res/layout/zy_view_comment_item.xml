@@ -57,13 +57,13 @@
                 android:id="@+id/textSuport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 android:drawableRight="@drawable/zy_selector_like"
                 android:gravity="center"
                 android:text="40"
                 android:textColor="@color/c3"
-                android:textSize="@dimen/f7" />
+                android:textSize="@dimen/f7"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
 

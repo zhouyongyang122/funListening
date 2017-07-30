@@ -39,11 +39,13 @@
                 android:layout_height="48dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/arrow"
+                android:background="@color/c8"
                 android:src="@drawable/icon_avatar_pre_n" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/nick_line"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/c8"
@@ -76,6 +78,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/sex_line"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="20dp"
@@ -104,6 +107,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/age_line"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/c8"
@@ -136,6 +140,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/area_line"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/c8"
@@ -163,11 +168,12 @@
                 android:layout_marginRight="15dp"
                 android:drawableRight="@drawable/arrow_rightxx"
                 android:gravity="center"
-                android:text="广州" />
+                android:text="无" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/synopsis_line"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="20dp"
@@ -188,6 +194,7 @@
 
 
             <TextView
+                android:id="@+id/change_intro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -208,13 +215,23 @@
         <TextView
             android:id="@+id/synopsis"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:minHeight="60dp"
             android:background="@color/c8"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:layout_centerVertical="true"
             android:text="这个人很懒，什么都没写" />
 
+        <TextView
+            android:id="@+id/finish"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:background="@color/c8"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="完成"/>
 
     </LinearLayout>
 </ScrollView>

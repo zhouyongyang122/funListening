@@ -1,5 +1,6 @@
 package com.funlisten.business.login.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 
 import com.funlisten.R;
 import com.funlisten.base.mvp.ZYBaseFragment;
+import com.funlisten.business.accountmanage.activity.ZYForgotPasswordActivity;
 import com.funlisten.business.login.activity.ZYRegistActivity;
 import com.funlisten.business.login.contract.ZYLoginContract;
 import com.funlisten.business.login.model.bean.ZYThridLoginParamas;
@@ -204,6 +206,7 @@ public class ZYLoginFragment extends ZYBaseFragment<ZYLoginContract.IPresenter> 
                 startActivity(ZYRegistActivity.createIntent(mActivity));
                 break;
             case R.id.textForget:
+                startActivity(new Intent(mActivity, ZYForgotPasswordActivity.class));
                 break;
         }
     }

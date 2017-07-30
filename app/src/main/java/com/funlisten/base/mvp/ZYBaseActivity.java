@@ -84,6 +84,25 @@ public class ZYBaseActivity<P extends ZYIBasePresenter> extends AppCompatActivit
     }
 
     @Override
+    public void setContentView(View view) {
+        mRootView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.sr_activity_base, null);
+        mActionBar = (ZYActionBar) mRootView.findViewById(R.id.baseToolBar);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.addRule(RelativeLayout.BELOW, R.id.baseToolBar);
+        view.setLayoutParams(layoutParams);
+        mRootView.addView(view);
+        mActionBar.mIvLeftImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        super.setContentView(mRootView);
+        ButterKnife.bind(this);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         ZYLog.e(getClass().getSimpleName(), "onResume");

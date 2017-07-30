@@ -2,7 +2,6 @@ package com.funlisten.business.album.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.funlisten.base.mvp.ZYListDateFragment;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.business.album.activity.ZYBatchDownloadActivity;
 import com.funlisten.business.album.contract.ZYAlbumAudiosContract;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.album.model.bean.ZYAlbumEpisode;
@@ -91,7 +91,9 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
 
     @Override
     public void onDownloadClick() {
-
+         ArrayList<ZYAudio> list = new ArrayList<>();
+        list.addAll(mPresenter.getDataList());
+        mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity,list));
     }
 
     @Override

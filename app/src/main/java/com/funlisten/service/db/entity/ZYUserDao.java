@@ -37,7 +37,10 @@ public class ZYUserDao extends AbstractDao<ZYUser, String> {
         public final static Property Fans = new Property(10, int.class, "fans", false, "FANS");
         public final static Property Follow = new Property(11, int.class, "follow", false, "FOLLOW");
         public final static Property Token = new Property(12, String.class, "token", false, "TOKEN");
-        public final static Property IsLoginUser = new Property(13, boolean.class, "isLoginUser", false, "IS_LOGIN_USER");
+        public final static Property Age = new Property(13, String.class, "age", false, "AGE");
+        public final static Property AreaCode = new Property(14, String.class, "areaCode", false, "AREA_CODE");
+        public final static Property AreaName = new Property(15, String.class, "areaName", false, "AREA_NAME");
+        public final static Property IsLoginUser = new Property(16, boolean.class, "isLoginUser", false, "IS_LOGIN_USER");
     }
 
 
@@ -66,7 +69,10 @@ public class ZYUserDao extends AbstractDao<ZYUser, String> {
                 "\"FANS\" INTEGER NOT NULL ," + // 10: fans
                 "\"FOLLOW\" INTEGER NOT NULL ," + // 11: follow
                 "\"TOKEN\" TEXT," + // 12: token
-                "\"IS_LOGIN_USER\" INTEGER NOT NULL );"); // 13: isLoginUser
+                "\"AGE\" TEXT," + // 13: age
+                "\"AREA_CODE\" TEXT," + // 14: areaCode
+                "\"AREA_NAME\" TEXT," + // 15: areaName
+                "\"IS_LOGIN_USER\" INTEGER NOT NULL );"); // 16: isLoginUser
     }
 
     /** Drops the underlying database table. */
@@ -131,7 +137,22 @@ public class ZYUserDao extends AbstractDao<ZYUser, String> {
         if (token != null) {
             stmt.bindString(13, token);
         }
-        stmt.bindLong(14, entity.getIsLoginUser() ? 1L: 0L);
+ 
+        String age = entity.getAge();
+        if (age != null) {
+            stmt.bindString(14, age);
+        }
+ 
+        String areaCode = entity.getAreaCode();
+        if (areaCode != null) {
+            stmt.bindString(15, areaCode);
+        }
+ 
+        String areaName = entity.getAreaName();
+        if (areaName != null) {
+            stmt.bindString(16, areaName);
+        }
+        stmt.bindLong(17, entity.getIsLoginUser() ? 1L: 0L);
     }
 
     @Override
@@ -190,7 +211,22 @@ public class ZYUserDao extends AbstractDao<ZYUser, String> {
         if (token != null) {
             stmt.bindString(13, token);
         }
-        stmt.bindLong(14, entity.getIsLoginUser() ? 1L: 0L);
+ 
+        String age = entity.getAge();
+        if (age != null) {
+            stmt.bindString(14, age);
+        }
+ 
+        String areaCode = entity.getAreaCode();
+        if (areaCode != null) {
+            stmt.bindString(15, areaCode);
+        }
+ 
+        String areaName = entity.getAreaName();
+        if (areaName != null) {
+            stmt.bindString(16, areaName);
+        }
+        stmt.bindLong(17, entity.getIsLoginUser() ? 1L: 0L);
     }
 
     @Override
@@ -214,7 +250,10 @@ public class ZYUserDao extends AbstractDao<ZYUser, String> {
             cursor.getInt(offset + 10), // fans
             cursor.getInt(offset + 11), // follow
             cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // token
-            cursor.getShort(offset + 13) != 0 // isLoginUser
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // age
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // areaCode
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // areaName
+            cursor.getShort(offset + 16) != 0 // isLoginUser
         );
         return entity;
     }
@@ -234,7 +273,10 @@ public class ZYUserDao extends AbstractDao<ZYUser, String> {
         entity.setFans(cursor.getInt(offset + 10));
         entity.setFollow(cursor.getInt(offset + 11));
         entity.setToken(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setIsLoginUser(cursor.getShort(offset + 13) != 0);
+        entity.setAge(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setAreaCode(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setAreaName(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setIsLoginUser(cursor.getShort(offset + 16) != 0);
      }
     
     @Override

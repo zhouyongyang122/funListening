@@ -109,4 +109,7 @@ dependencies {
     //富文本
     compile 'com.zzhoujay.richtext:richtext:2.5.2'
     compile files('libs/SQLiteStudioRemote.jar')
+    compile files('libs/alipaySdk-20170725.jar')//支付宝
+//    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'//微信支付
+
 }

@@ -19,7 +19,7 @@ import com.funlisten.business.profile.view.ZYProfileFragment;
 
 public class ZYProFlieActivity extends ZYBaseFragmentActivity<ZYProfileFragment> {
 
-    public static Intent createIntent(Context context, int uid) {
+    public static Intent createIntent(Context context, String uid) {
         Intent intent = new Intent(context, ZYProFlieActivity.class);
         intent.putExtra("uid", uid);
         return intent;
@@ -30,7 +30,7 @@ public class ZYProFlieActivity extends ZYBaseFragmentActivity<ZYProfileFragment>
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new ZYProfilePresenter(mFragment, new ZYProfileModel(), 0, getIntent().getIntExtra("uid", 0));
+        presenter = new ZYProfilePresenter(mFragment, new ZYProfileModel(), 0, getIntent().getStringExtra("uid"));
         showTitle(" ");
         showActionRightImg(R.drawable.nav_btn_share_n, new View.OnClickListener() {
             @Override

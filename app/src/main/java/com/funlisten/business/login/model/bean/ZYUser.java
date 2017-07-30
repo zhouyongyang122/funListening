@@ -40,17 +40,23 @@ public class ZYUser extends ZYBaseEntity {
 
     public String token;
 
+    public String age;
+
+    public String areaCode;
+
+    public String areaName;
+
     public boolean isLoginUser;
 
     @Generated(hash = 193195294)
     public ZYUser() {
     }
 
-    @Generated(hash = 1172012738)
+    @Generated(hash = 1939359424)
     public ZYUser(String id, String userId, String phone, String nickname,
             String openWechatId, String avatarUrl, String avatar, int albumCount,
-            String intro, String sex, int fans, int follow, String token,
-            boolean isLoginUser) {
+            String intro, String sex, int fans, int follow, String token, String age,
+            String areaCode, String areaName, boolean isLoginUser) {
         this.id = id;
         this.userId = userId;
         this.phone = phone;
@@ -64,6 +70,9 @@ public class ZYUser extends ZYBaseEntity {
         this.fans = fans;
         this.follow = follow;
         this.token = token;
+        this.age = age;
+        this.areaCode = areaCode;
+        this.areaName = areaName;
         this.isLoginUser = isLoginUser;
     }
 
@@ -195,5 +204,29 @@ public class ZYUser extends ZYBaseEntity {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getAge() {
+        return this.age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getAreaCode() {
+        return this.areaCode;
+    }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+    }
+
+    public String getAreaName() {
+        return this.areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
 }

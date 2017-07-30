@@ -112,7 +112,7 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
                 break;
             case R.id.imgAvatar:
                 //个人主页
-                mContext.startActivity(ZYProFlieActivity.createIntent(mContext, mData.publisherId));
+                mContext.startActivity(ZYProFlieActivity.createIntent(mContext, mData.publisherId+""));
                 break;
         }
     }

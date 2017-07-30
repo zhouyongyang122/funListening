@@ -32,10 +32,10 @@ public class ZYProfilePresenter extends ZYListDataPresenter<ZYProfileContract.IV
     ZYUser user;
     int  totalCount;
     int categoryId;
-    int userId;
+    String userId;
 
 
-    public ZYProfilePresenter(ZYProfileContract.IView view, ZYProfileModel model, int categoryId, int userId) {
+    public ZYProfilePresenter(ZYProfileContract.IView view, ZYProfileModel model, int categoryId, String userId) {
         super(view, model);
         this.categoryId = categoryId;
         this.userId = userId;
@@ -44,7 +44,7 @@ public class ZYProfilePresenter extends ZYListDataPresenter<ZYProfileContract.IV
     @Override
     protected void loadData() {
         Observable<ZYResponse<ZYListResponse<ZYAlbumDetail>>> observable = Observable.zip(
-                mModel.getUserInfo(userId + ""), mModel.photos(userId + ""), mModel.getAlbums(mPageIndex, mRows, categoryId, userId), new Func3<ZYResponse<ZYUser>, ZYResponse<ZYListResponse<ZYPhoto>>, ZYResponse<ZYListResponse<ZYAlbumDetail>>, ZYResponse<ZYListResponse<ZYAlbumDetail>>>() {
+                mModel.getUserInfo(userId), mModel.photos(userId), mModel.getAlbums(mPageIndex, mRows, categoryId, Integer.parseInt(userId)), new Func3<ZYResponse<ZYUser>, ZYResponse<ZYListResponse<ZYPhoto>>, ZYResponse<ZYListResponse<ZYAlbumDetail>>, ZYResponse<ZYListResponse<ZYAlbumDetail>>>() {
                     @Override
                     public ZYResponse<ZYListResponse<ZYAlbumDetail>> call(ZYResponse<ZYUser> zyUserZYResponse, ZYResponse<ZYListResponse<ZYPhoto>> zyListResponseZYResponse, ZYResponse<ZYListResponse<ZYAlbumDetail>> zyListResponseZYResponse2) {
                         user = zyUserZYResponse.data;

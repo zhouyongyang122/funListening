@@ -1,5 +1,6 @@
 package com.funlisten.business.photo.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +37,11 @@ public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> imp
     ZYPhotoPresenter zyPhotoPresenter;
     private boolean isEdit = false;
     private String userId;
+    public static Intent createIntent(Context context ,String userId){
+        Intent intent = new Intent(context, ZYPhotoActivity.class);
+        intent.putExtra("userId", userId);
+        return intent;
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -10,6 +10,7 @@ import com.funlisten.business.play.model.bean.ZYAudio;
 
 import java.util.List;
 
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -65,4 +66,12 @@ public class ZYAlbumModel extends ZYBaseModel {
     public Observable<ZYResponse<ZYListResponse<ZYAudio>>> getAudios(int pageIndex, int pageSize, int albumId, String direction) {
         return mApi.getAudios(pageIndex, pageSize, albumId, direction);
     }
+
+    /***
+     * 是否已经订购
+     * **/
+    public  Observable<ZYResponse<Boolean>> isOrder(String type,String  objectId){
+        return mApi.isOrder(type,objectId);
+    }
+
 }

@@ -145,6 +145,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
+                mActivity.startActivity(ZYMyOrderActivity.createIntent(mActivity,1));
                 break;
             case R.id.layoutStu:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
@@ -155,7 +156,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
-                mActivity.startActivity(new Intent(mActivity,ZYMyOrderActivity.class));
+                mActivity.startActivity(ZYMyOrderActivity.createIntent(mActivity,2));
                 break;
             case R.id.layoutAccountManager:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {

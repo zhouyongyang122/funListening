@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.funlisten.R;
 import com.funlisten.base.mvp.ZYListDateFragment;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.business.album.activity.ZYAlbumHomeActivity;
 import com.funlisten.business.myorder.contract.ZYMyOrderContract;
 import com.funlisten.business.myorder.view.viewholder.ZYMyOrderVH;
 import com.funlisten.business.order.ZYOrder;
@@ -16,7 +17,7 @@ import com.funlisten.utils.ZYResourceUtils;
 import com.funlisten.utils.ZYScreenUtils;
 
 /**
- * Created by Administrator on 2017/7/22.
+ * Created by gd on 2017/7/22.
  */
 
 public class ZYMyOrderFragment extends ZYListDateFragment<ZYMyOrderContract.IPresenter,ZYOrder> implements ZYMyOrderContract.IView{
@@ -34,7 +35,8 @@ public class ZYMyOrderFragment extends ZYListDateFragment<ZYMyOrderContract.IPre
 
     @Override
     protected void onItemClick(View view, int position) {
-
+        int id = mPresenter.getDataList().get(position).album.id;
+        mActivity.startActivity(ZYAlbumHomeActivity.createIntent(mActivity,id));
     }
 
     @Override

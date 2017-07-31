@@ -149,6 +149,21 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
         }));
     }
 
+    public void isOrder(String  objectId){
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.isOrder("album",objectId), new ZYNetSubscriber<ZYResponse<Boolean>>() {
+            @Override
+            public void onSuccess(ZYResponse<Boolean> response) {
+                Boolean show = response.data;
+                mView.isShowPay(!show);
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
+            }
+        }));
+    }
+
     public int getAlbumId() {
         return mAlbumId;
     }

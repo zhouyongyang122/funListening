@@ -5,6 +5,7 @@ import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.favorite.ZYFavorite;
+import com.funlisten.business.order.ZYOrder;
 
 import rx.Observable;
 
@@ -13,7 +14,7 @@ import rx.Observable;
  */
 
 public class ZYMyLikeModel extends ZYBaseModel {
-    public Observable<ZYResponse<ZYListResponse<ZYFavorite>>> getFavorites(String type, int pageIndex,int pageSize){
+    public Observable<ZYResponse<ZYListResponse<ZYOrder>>> getFavorites(String type, int pageIndex, int pageSize){
         return mApi.getFavorites(type,pageIndex,pageSize);
     }
 

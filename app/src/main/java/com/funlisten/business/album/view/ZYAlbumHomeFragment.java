@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 
 import com.funlisten.R;
 import com.funlisten.base.adapter.ZYFragmentAdapter;
+import com.funlisten.base.event.ZYEventLoginSuc;
+import com.funlisten.base.event.ZYEventPaySuc;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.view.ZYLoadingView;
@@ -26,6 +28,9 @@ import com.funlisten.business.album.view.viewHolder.ZYAlbumFooterVH;
 import com.funlisten.business.album.view.viewHolder.ZYAlbumHomeHeaderVH;
 import com.funlisten.business.pay.activity.ZYPayActivity;
 import com.funlisten.utils.ZYScreenUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -87,9 +92,7 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
     private void initFooterView(){
         footerVH = new ZYAlbumFooterVH(this);
         footerVH.attachTo(layoutRoot);
-        RelativeLayout.LayoutParams layoutParams  = (RelativeLayout.LayoutParams) coorLayout.getLayoutParams();
-        layoutParams.bottomMargin = ZYScreenUtils.dp2px(mActivity,50);
-        coorLayout.setLayoutParams(layoutParams);
+        footerVH.hide();
     }
 
     private void initLoadingView() {
@@ -101,6 +104,11 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
                 mPresenter.subscribe();
             }
         });
+    }
+    private void setMargin(int height){
+        RelativeLayout.LayoutParams layoutParams  = (RelativeLayout.LayoutParams) coorLayout.getLayoutParams();
+        layoutParams.bottomMargin = ZYScreenUtils.dp2px(mActivity,height);
+        coorLayout.setLayoutParams(layoutParams);
     }
 
     private void initHeaderView() {
@@ -154,6 +162,8 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
     @Override
     public void showDetail(ZYAlbumDetail albumDetail) {
         homeHeaderVH.updateView(albumDetail, 0);
+        if("free".equals(albumDetail.costType))footerVH.hide();
+        else mPresenter.isOrder(albumDetail.id+"");
         ((ZYAlbumDetailFragment) adapter.getItem(0)).loadComments(albumDetail.details);
         ((ZYAlbumAudiosFragment) adapter.getItem(1)).setAlbumDetail(albumDetail);
     }
@@ -208,5 +218,18 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
     @Override
     public void onPay() {
         mActivity.startActivity(ZYPayActivity.createIntent(mActivity,mPresenter.getAlbumDetail()));
+    }
+
+    @Override
+    public void isShowPay(boolean isShow) {
+        if(isShow){
+            footerVH.show();
+            setMargin(50);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ZYEventPaySuc paySuc) {
+        mPresenter.subscribe();
     }
 }

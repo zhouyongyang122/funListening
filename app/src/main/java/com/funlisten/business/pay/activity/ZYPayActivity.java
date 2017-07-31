@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.funlisten.R;
+import com.funlisten.base.event.ZYEventPaySuc;
 import com.funlisten.base.mvp.ZYBaseActivity;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.pay.contract.ZYPayContract;
@@ -19,6 +20,8 @@ import com.funlisten.business.pay.view.viewholder.ZYPayHeaderDetails;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.utils.ZYToast;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -104,5 +107,11 @@ public class ZYPayActivity extends ZYBaseActivity implements ZYPayFooterVH.PayLi
     @Override
     public void onPayFaild() {
         ZYToast.show(ZYPayActivity.this,"支付失败");
+    }
+
+    @Override
+    public void onPaySuccess() {
+        EventBus.getDefault().post(new ZYEventPaySuc());
+        finish();
     }
 }

@@ -16,44 +16,51 @@ import com.funlisten.service.net.ZYNetSubscription;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+
 /**
  * Created by gd on 2017/7/22.
  */
 
 public class ZYMyOrderPresenter extends ZYListDataPresenter<ZYMyOrderContract.IView,ZYMyOrderModel,ZYOrder> implements ZYMyOrderContract.IPresenter {
 
-    String type;
-    public ZYMyOrderPresenter(ZYMyOrderContract.IView view, ZYMyOrderModel model, String type) {
+    int  type;
+    public ZYMyOrderPresenter(ZYMyOrderContract.IView view, ZYMyOrderModel model, int type) {
         super(view, model);
         this.type = type;
     }
 
     @Override
     protected void loadData() {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.getorders(type,mPageIndex,mRows),new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYOrder>>>(){
+        Observable observable;
+        if(type == 1)
+         observable = mModel.getFavorites("album",mPageIndex,mRows);
+        else observable = mModel.getorders("album",mPageIndex,mRows);
+
+        mSubscriptions.add(ZYNetSubscription.subscription(observable,new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYOrder>>>(){
             @Override
             public void onSuccess(ZYResponse<ZYListResponse<ZYOrder>> response) {
                 super.onSuccess(response);
-                List<ZYOrder> lists = new ArrayList<>();
-                ZYAudio user1 =   new ZYAudio();
-                user1.costType = "paid";
-                user1.coverUrl  = "http://img4q.duitang.com/uploads/item/201411/05/20141105003804_hQFiB.jpeg";
-                user1.title = "杨幂";
-                user1.playCount = 20;
-
-                ZYAlbumDetail detail = new ZYAlbumDetail();
-                detail.audioCount = 30;
-
-                ZYOrder order = new ZYOrder();
-                order.gmtCreate  ="2017-07-24 12:34";
-                order.audio = user1;
-                order.album = detail;
-
-                lists.add(order);
-
-                ZYListResponse response1 =  new ZYListResponse();
-                response1.data = lists;
-                response.data = response1;
+//                List<ZYOrder> lists = new ArrayList<>();
+//                ZYAudio user1 =   new ZYAudio();
+//                user1.costType = "paid";
+//                user1.coverUrl  = "http://img4q.duitang.com/uploads/item/201411/05/20141105003804_hQFiB.jpeg";
+//                user1.title = "杨幂";
+//                user1.playCount = 20;
+//
+//                ZYAlbumDetail detail = new ZYAlbumDetail();
+//                detail.audioCount = 30;
+//
+//                ZYOrder order = new ZYOrder();
+//                order.gmtCreate  ="2017-07-24 12:34";
+//                order.audio = user1;
+//                order.album = detail;
+//
+//                lists.add(order);
+//
+//                ZYListResponse response1 =  new ZYListResponse();
+//                response1.data = lists;
+//                response.data = response1;
                 success(response);
             }
 

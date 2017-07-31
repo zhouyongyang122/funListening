@@ -24,7 +24,7 @@ public class ZYMylikePresenter extends ZYListDataPresenter<ZYMyLikeContract.IVie
 
     @Override
     protected void loadData() {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.getFavorites("album",mPageIndex,mRows), new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYFavorite>>>() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.getFavorites("audio",mPageIndex,mRows), new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYFavorite>>>() {
 
             @Override
             public void onSuccess(ZYResponse<ZYListResponse<ZYFavorite>> response) {

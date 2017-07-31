@@ -212,7 +212,7 @@ public interface ZYRequestApi {
 
 
     /**
-     * 收藏列表
+     * 订阅(专辑列表) 收藏(音频)列表
      *
      * @param type      album：专辑，audio：单集
      * @param pageIndex
@@ -220,7 +220,7 @@ public interface ZYRequestApi {
      * @return
      */
     @POST("favorite/list")
-    Observable<ZYResponse<ZYListResponse<ZYFavorite>>> getFavorites(@Query("type") String type, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+    Observable<ZYResponse<ZYListResponse<ZYOrder>>> getFavorites(@Query("type") String type, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 
     /**
      * 我的订购列表
@@ -232,6 +232,14 @@ public interface ZYRequestApi {
      */
     @POST("user/albumAudio")
     Observable<ZYResponse<ZYListResponse<ZYOrder>>> getorders(@Query("type") String type, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+
+    /***
+     * 是否已经订购
+     * @param  type  album：专辑，audio：单集
+     * @param  objectId 对应的专辑id或音频id
+     * */
+    @POST("user/checkAlbumAudio")
+    Observable<ZYResponse<Boolean>> isOrder(@Query("type") String type, @Query("objectId") String  objectId);
 
     /**
      * 支付宝下单

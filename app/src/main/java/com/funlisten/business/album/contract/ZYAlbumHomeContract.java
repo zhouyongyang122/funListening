@@ -17,6 +17,8 @@ public interface ZYAlbumHomeContract {
         void refreshFavorite(ZYAlbumDetail albumDetail);
 
         void refreshFollow(ZYAlbumDetail albumDetail);
+
+        void isShowPay(boolean isShow);
     }
 
     interface IPresenter extends ZYIBasePresenter {
@@ -38,5 +40,7 @@ public interface ZYAlbumHomeContract {
         void followCancle();
 
         void load();
+
+        void isOrder(String objectId);
     }
 }

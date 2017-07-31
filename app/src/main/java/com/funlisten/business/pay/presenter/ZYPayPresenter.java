@@ -1,5 +1,7 @@
 package com.funlisten.business.pay.presenter;
 
+import android.app.Activity;
+
 import com.alipay.sdk.pay.AlipayUtils;
 import com.funlisten.ZYApplication;
 import com.funlisten.base.bean.ZYResponse;
@@ -12,6 +14,9 @@ import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 import com.funlisten.utils.WeChatPayUtils;
 import com.funlisten.utils.ZYLog;
+import com.funlisten.utils.ZYToast;
+import com.funlisten.wxapi.WeChaPayManager;
+import com.funlisten.wxapi.WeChatPayCallBack;
 import com.google.gson.Gson;
 import com.tencent.mm.sdk.modelpay.PayReq;
 
@@ -71,6 +76,19 @@ public class ZYPayPresenter extends ZYBasePresenter implements ZYPayContract.Pre
             @Override
             public void payInfoResult(Map<String, String> result) {
                 String son = new Gson().toJson(result);
+                String  resultStatus = result.get("resultStatus");
+                switch (resultStatus){
+                    case "9000":
+                        mView.onPaySuccess();
+                        break;
+                    case "6001":
+                        ZYToast.show((Activity)mView,"支付取消");
+                        break;
+                   default:
+                       mView.onPayFaild();
+                       break;
+
+                }
                 ZYLog.d(son);
             }
 
@@ -81,7 +99,7 @@ public class ZYPayPresenter extends ZYBasePresenter implements ZYPayContract.Pre
         });
     }
 
-    private void goWeChatPay(ZYWeChatBack back){
+    private void goWeChatPay(final ZYWeChatBack back){
         PayReq payReq = new PayReq();
         payReq.partnerId = back.partnerId;
         payReq.prepayId = back.prepayId;
@@ -90,5 +108,21 @@ public class ZYPayPresenter extends ZYBasePresenter implements ZYPayContract.Pre
         payReq.sign  = back.sign;
         payReq.packageValue = back.packageValue;
         WeChatPayUtils.getInstance().pay(payReq);
+        WeChaPayManager.registerPayCallBack("WeChatPay", new WeChatPayCallBack() {
+            @Override
+            public void payCallBack(int code) {
+                switch (code){
+                    case 0:
+                        mView.onPaySuccess();
+                        break;
+                    case -1:
+                        mView.onPayFaild();
+                        break;
+                    case -2:
+                        ZYToast.show((Activity)mView,"支付取消");
+                        break;
+                }
+            }
+        });
     }
 }

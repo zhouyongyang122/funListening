@@ -45,6 +45,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 	@Override
 	public void onResp(BaseResp resp) {
 		Log.d(TAG, "onPayFinish, errCode = " + resp.errCode);
+		WeChaPayManager.notifyCallBack(resp.errCode);
 		finish();
 	}
 }

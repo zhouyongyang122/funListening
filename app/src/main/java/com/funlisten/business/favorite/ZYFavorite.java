@@ -1,7 +1,7 @@
 package com.funlisten.business.favorite;
 
-import com.funlisten.base.activity.picturePicker.ZYAlbum;
 import com.funlisten.base.bean.ZYIBaseBean;
+import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.play.model.bean.ZYAudio;
 
 /**
@@ -10,7 +10,7 @@ import com.funlisten.business.play.model.bean.ZYAudio;
 
 public class ZYFavorite implements ZYIBaseBean {
 
-    public ZYAlbum album;
+    public ZYAlbumDetail album;
 
     public ZYAudio audio;
 

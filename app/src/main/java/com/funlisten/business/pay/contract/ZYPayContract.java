@@ -10,6 +10,7 @@ import com.funlisten.base.mvp.ZYIBaseView;
 public interface ZYPayContract {
     interface View<P> extends ZYIBaseView<P> {
         void onPayFaild();
+        void onPaySuccess();
     }
 
     interface Presenter<D> extends ZYIBasePresenter {

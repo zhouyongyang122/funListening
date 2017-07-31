@@ -10,7 +10,7 @@ import com.funlisten.business.mylike.view.ZYMyLikeFragment;
 
 /**
  * Created by gd on 2017/7/25.
- * 我喜欢的
+ * 我喜欢的(就是我的收藏 只有音频列表)
  */
 
 public class ZYMyLikeActivity extends ZYBaseFragmentActivity<ZYMyLikeFragment> {

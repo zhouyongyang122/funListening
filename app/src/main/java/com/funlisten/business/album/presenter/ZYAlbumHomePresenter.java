@@ -89,7 +89,7 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
     }
 
     public void favorite() {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favorite(ZYBaseModel.ALBUM_TYPE, mAlbumDetail.id + ""), new ZYNetSubscriber<ZYResponse<Object>>() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favorite( mAlbumDetail.id + "",ZYBaseModel.ALBUM_TYPE), new ZYNetSubscriber<ZYResponse<Object>>() {
             @Override
             public void onSuccess(ZYResponse<Object> response) {
                 mAlbumDetail.isFavorite = true;
@@ -105,7 +105,7 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
 
 
     public void favoriteCancel() {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favoriteCancel(ZYBaseModel.ALBUM_TYPE, mAlbumDetail.id + ""), new ZYNetSubscriber<ZYResponse<Object>>() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favoriteCancel( mAlbumDetail.id + "",ZYBaseModel.ALBUM_TYPE), new ZYNetSubscriber<ZYResponse<Object>>() {
             @Override
             public void onSuccess(ZYResponse<Object> response) {
                 mAlbumDetail.isFavorite = false;

@@ -49,23 +49,40 @@ public class ZYAlbumListItemVH extends ZYBaseViewHolder<ZYAlbumDetail> {
         if (data != null) {
             mData = data;
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, data.coverUrl, R.color.c1, R.color.c1);
-            if (data.originPrice > 0) {
+//            if (data.originPrice > 0) {
+//                textOPrice.setVisibility(View.VISIBLE);
+//                textOPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
+//                textOPrice.setText("¥" + data.originPrice);
+//            } else {
+//                textOPrice.setVisibility(View.GONE);
+//            }
+//            if (data.sellPrice > 0) {
+//                textPayTag.setVisibility(View.VISIBLE);
+//            } else {
+//
+//            }
+
+            if("paid".equals(data.costType)){
+
                 textOPrice.setVisibility(View.VISIBLE);
                 textOPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
                 textOPrice.setText("¥" + data.originPrice);
-            } else {
-                textOPrice.setVisibility(View.GONE);
-            }
-            if (data.sellPrice > 0) {
+
+                textPrice.setVisibility(View.VISIBLE);
+                textPrice.setText("¥" + data.sellPrice);
+
                 textPayTag.setVisibility(View.VISIBLE);
-            } else {
+            }else {
                 textPayTag.setVisibility(View.GONE);
+                textOPrice.setVisibility(View.INVISIBLE);
+                textPrice.setVisibility(View.INVISIBLE);
             }
+
 
             textTitle.setText(data.name);
             textDesc.setText(data.title);
             textPlayNum.setText(data.playCount + "次");
-            textPrice.setText("¥" + data.sellPrice);
+
             textFreshNum.setText("更新至" + data.audioCount + "集");
         }
     }

@@ -1,5 +1,6 @@
 package com.funlisten.business.play.view;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,11 +14,13 @@ import android.widget.TextView;
 import com.funlisten.R;
 import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
 import com.funlisten.base.mvp.ZYBaseFragment;
+import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.view.ZYLoadingView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
 import com.funlisten.business.comment.activity.ZYCommentActivity;
+import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.play.ZYPlayService;
 import com.funlisten.business.play.contract.ZYPlayContract;
 import com.funlisten.business.play.model.FZAudionPlayEvent;
@@ -113,10 +116,24 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textDown:
+                ZYAudio audio = mPresenter.getCurPlayAudio();
+                boolean isDown = ZYDownloadEntity.audioIsDown(audio);
+                if(isDown){
+                    ZYToast.show(mActivity,"已下载!");
+                    break;
+                }
                 break;
             case R.id.textShare:
                 break;
             case R.id.textCollect:
+                ZYAudio zyAudio = mPresenter.getCurPlayAudio();
+                if(textCollect.isSelected()){
+                    setCollect(true);
+                    mPresenter.favoriteCancel(ZYBaseModel.AUDIO_TYPE,zyAudio.id);
+                }else {
+                    setCollect(false);
+                    mPresenter.favorite(ZYBaseModel.AUDIO_TYPE,zyAudio.id);
+                }
                 break;
             case R.id.textComment:
                 mActivity.startActivity(ZYCommentActivity.createIntent(mActivity, "audio", mPresenter.getCurPlayAudio().id + ""));
@@ -126,11 +143,47 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
 
     @Override
     public void refreshView() {
+        ZYAudio audio = mPresenter.getCurPlayAudio();
+        mPresenter.isFavorite("audio",audio.id);
+
+        boolean isDown = ZYDownloadEntity.audioIsDown(audio);
+        setTextDown(isDown);
+
         adapter.notifyDataSetChanged();
         ZYPlay play = new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getCurPlayAudio());
         headerVH.updateView(play, 0);
         ZYPlayManager.getInstance().play(mPresenter.getCurPlayAudio(), mPresenter.getAudios());
     }
+
+    @Override
+    public void setCollect(boolean isCollect) {
+        if(isCollect){
+            Drawable drawable= getResources().getDrawable(R.drawable.tab_icon_collect_n);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            textCollect.setCompoundDrawables(null,drawable,null,null);
+            textCollect.setSelected(false);
+        }else {
+            Drawable drawable= getResources().getDrawable(R.drawable.icon_collect_pxx);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            textCollect.setCompoundDrawables(null,drawable,null,null);
+            textCollect.setSelected(true);
+        }
+    }
+
+    private void setTextDown(boolean isDown){
+        if(isDown){
+            Drawable drawable= getResources().getDrawable(R.drawable.icon_downloadi_pxx);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            textCollect.setCompoundDrawables(null,drawable,null,null);
+            textCollect.setSelected(false);
+        }else {
+            Drawable drawable= getResources().getDrawable(R.drawable.tab_icon_download_n);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            textCollect.setCompoundDrawables(null,drawable,null,null);
+            textCollect.setSelected(true);
+        }
+    }
+
 
     @Override
     public void onBackPressed() {

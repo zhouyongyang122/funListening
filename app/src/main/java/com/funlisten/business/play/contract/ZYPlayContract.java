@@ -16,6 +16,7 @@ public interface ZYPlayContract {
 
     interface IView extends ZYIBaseView<IPresenter> {
         void refreshView();
+        void setCollect(boolean isCollect);
     }
 
     interface IPresenter extends ZYIBasePresenter {
@@ -30,6 +31,9 @@ public interface ZYPlayContract {
         void setCurPlayAudio(ZYAudio audio);
 
         void changeSory();
+        void isFavorite(String type, int objectId);
+        void favorite(String type, int objectId);
+        void favoriteCancel(String type, int objectId);
     }
 
 }

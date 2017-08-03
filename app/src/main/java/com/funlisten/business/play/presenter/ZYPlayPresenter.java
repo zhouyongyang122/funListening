@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.funlisten.base.bean.ZYListResponse;
 import com.funlisten.base.bean.ZYResponse;
+import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.mvp.ZYBasePresenter;
 import com.funlisten.business.album.model.ZYAlbumModel;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
@@ -86,6 +87,45 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
             @Override
             public void onFail(String message) {
                 mView.showError();
+            }
+        }));
+    }
+
+    @Override
+    public void isFavorite(String type, int objectId) {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.isFavorite(type,objectId),new ZYNetSubscriber<ZYResponse<Boolean>>(){
+            @Override
+            public void onSuccess(ZYResponse<Boolean> response) {
+                super.onSuccess(response);
+                mView.setCollect(response.data);
+            }
+        }));
+    }
+
+    public void favorite(String type, int objectId) {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favorite(objectId+"", type), new ZYNetSubscriber<ZYResponse<Object>>() {
+            @Override
+            public void onSuccess(ZYResponse<Object> response) {
+
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
+            }
+        }));
+    }
+
+
+    public void favoriteCancel(String type, int objectId) {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favoriteCancel(objectId+"", type), new ZYNetSubscriber<ZYResponse<Object>>() {
+            @Override
+            public void onSuccess(ZYResponse<Object> response) {
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
             }
         }));
     }

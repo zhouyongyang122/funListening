@@ -36,6 +36,9 @@ public class ZYHome implements ZYIBaseBean {
     public static class ModuleItem {
         public String coverUrl;//背景地址
         public int id;//对象id
+        public String name;//名称
+        public String title;//标题
+        public String costType;//付费  free  paid
     }
 
     public static class DayListening {

@@ -13,6 +13,7 @@ import com.funlisten.business.dailylisten.model.ZYDailyListenModel;
 import com.funlisten.business.dailylisten.presenter.ZYDailyListenPresenter;
 import com.funlisten.business.dailylisten.view.ZYDailyFragment;
 import com.funlisten.business.login.model.ZYUserManager;
+import com.funlisten.business.share.model.bean.ZYMarkBean;
 import com.funlisten.thirdParty.image.ZYIImageLoader;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.utils.SRShareUtils;
@@ -40,6 +41,8 @@ public class ZYDailyListenActivity extends ZYBaseFragmentActivity<ZYDailyFragmen
         showActionRightImg2(R.drawable.share_slelector, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ZYMarkBean markBean  = new ZYMarkBean();
+                share(markBean);
             }
         });
         showActionRightImg(R.drawable.quick_play_slelector, new View.OnClickListener() {
@@ -50,19 +53,19 @@ public class ZYDailyListenActivity extends ZYBaseFragmentActivity<ZYDailyFragmen
         });
     }
 
-//    private void share(final SRMarkBean markBean) {
-//        ShareEntity shareEntity = new ShareEntity();
-//        shareEntity.avatarUrl = ZYUserManager.getInstance().getUser().avatar;
+    private void share(final ZYMarkBean markBean) {
+        ShareEntity shareEntity = new ShareEntity();
+        shareEntity.avatarUrl = ZYUserManager.getInstance().getUser().avatarUrl;
 //        if (bitmap != null) {
 //            shareEntity.avatarBitmap = bitmap;
 //        } else {
-//            shareEntity.avatarBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+            shareEntity.avatarBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 //        }
-//        shareEntity.webUrl = markBean.share_url;
-//        shareEntity.title = ZYUserManager.getInstance().getUser().nickname + "的录音作品快来听一下吧!";
-//        shareEntity.text = "专为小学生设计的智能学习机";
-//        new SRShareUtils(mActivity, shareEntity).share();
-//    }
+        shareEntity.webUrl = markBean.share_url;
+        shareEntity.title = ZYUserManager.getInstance().getUser().nickname + "的录音作品快来听一下吧!";
+        shareEntity.text = "专为小学生设计的智能学习机";
+        new SRShareUtils(mActivity, shareEntity).share();
+    }
 
     @Override
     public void setPresenter(Object presenter) {

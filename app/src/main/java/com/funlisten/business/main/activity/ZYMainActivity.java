@@ -227,7 +227,12 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
-                }).create().show();
+                }).setNeutralButton("最小化", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                moveTaskToBack(false);
+            }
+        }).create().show();
     }
 
     @Override

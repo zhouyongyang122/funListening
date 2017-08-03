@@ -93,7 +93,7 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     public void onDownloadClick() {
          ArrayList<ZYAudio> list = new ArrayList<>();
         list.addAll(mPresenter.getDataList());
-        mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity,list));
+        mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity,list,albumDetail));
     }
 
     @Override

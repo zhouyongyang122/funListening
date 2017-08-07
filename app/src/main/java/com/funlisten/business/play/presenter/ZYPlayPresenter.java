@@ -133,6 +133,8 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
     public void refreshPlay(int album, int audio) {
         if (album != mAlbumDetail.id || mCurPlayAudio.id != audio) {
             ZYPlayManager.getInstance().puase();
+            this.mAudioId = audio;
+            this.mAlbumId = album;
             subscribe();
         }
     }

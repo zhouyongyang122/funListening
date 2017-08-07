@@ -47,7 +47,7 @@ import static com.funlisten.business.play.model.ZYPlayManager.*;
  * Created by ZY on 17/7/10.
  */
 
-public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> implements ZYPlayHeaderVH.PlayHeaderListener, ZYPlayContract.IView, ZYPlayActionBarVH.PlayActionListener, ZYCommentItemVH.CommentItemListener,ZYPlayAudiosVH.PlayAudiosListener {
+public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> implements ZYPlayHeaderVH.PlayHeaderListener, ZYPlayContract.IView, ZYPlayActionBarVH.PlayActionListener, ZYCommentItemVH.CommentItemListener, ZYPlayAudiosVH.PlayAudiosListener {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -118,8 +118,8 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             case R.id.textDown:
                 ZYAudio audio = mPresenter.getCurPlayAudio();
                 boolean isDown = ZYDownloadEntity.audioIsDown(audio);
-                if(isDown){
-                    ZYToast.show(mActivity,"已下载!");
+                if (isDown) {
+                    ZYToast.show(mActivity, "已下载!");
                     break;
                 }
                 break;
@@ -127,12 +127,12 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
                 break;
             case R.id.textCollect:
                 ZYAudio zyAudio = mPresenter.getCurPlayAudio();
-                if(textCollect.isSelected()){
+                if (textCollect.isSelected()) {
                     setCollect(true);
-                    mPresenter.favoriteCancel(ZYBaseModel.AUDIO_TYPE,zyAudio.id);
-                }else {
+                    mPresenter.favoriteCancel(ZYBaseModel.AUDIO_TYPE, zyAudio.id);
+                } else {
                     setCollect(false);
-                    mPresenter.favorite(ZYBaseModel.AUDIO_TYPE,zyAudio.id);
+                    mPresenter.favorite(ZYBaseModel.AUDIO_TYPE, zyAudio.id);
                 }
                 break;
             case R.id.textComment:
@@ -144,42 +144,43 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     @Override
     public void refreshView() {
         ZYAudio audio = mPresenter.getCurPlayAudio();
-        mPresenter.isFavorite("audio",audio.id);
+        mPresenter.isFavorite("audio", audio.id);
 
         boolean isDown = ZYDownloadEntity.audioIsDown(audio);
         setTextDown(isDown);
 
         adapter.notifyDataSetChanged();
         ZYPlay play = new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getCurPlayAudio());
+        headerVH.setUpdated(false);
         headerVH.updateView(play, 0);
         ZYPlayManager.getInstance().play(mPresenter.getCurPlayAudio(), mPresenter.getAudios());
     }
 
     @Override
     public void setCollect(boolean isCollect) {
-        if(isCollect){
-            Drawable drawable= getResources().getDrawable(R.drawable.tab_icon_collect_n);
+        if (isCollect) {
+            Drawable drawable = getResources().getDrawable(R.drawable.tab_icon_collect_n);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            textCollect.setCompoundDrawables(null,drawable,null,null);
+            textCollect.setCompoundDrawables(null, drawable, null, null);
             textCollect.setSelected(false);
-        }else {
-            Drawable drawable= getResources().getDrawable(R.drawable.icon_collect_pxx);
+        } else {
+            Drawable drawable = getResources().getDrawable(R.drawable.icon_collect_pxx);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            textCollect.setCompoundDrawables(null,drawable,null,null);
+            textCollect.setCompoundDrawables(null, drawable, null, null);
             textCollect.setSelected(true);
         }
     }
 
-    private void setTextDown(boolean isDown){
-        if(isDown){
-            Drawable drawable= getResources().getDrawable(R.drawable.icon_downloadi_pxx);
+    private void setTextDown(boolean isDown) {
+        if (isDown) {
+            Drawable drawable = getResources().getDrawable(R.drawable.icon_downloadi_pxx);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            textCollect.setCompoundDrawables(null,drawable,null,null);
+            textCollect.setCompoundDrawables(null, drawable, null, null);
             textCollect.setSelected(false);
-        }else {
-            Drawable drawable= getResources().getDrawable(R.drawable.tab_icon_download_n);
+        } else {
+            Drawable drawable = getResources().getDrawable(R.drawable.tab_icon_download_n);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            textCollect.setCompoundDrawables(null,drawable,null,null);
+            textCollect.setCompoundDrawables(null, drawable, null, null);
             textCollect.setSelected(true);
         }
     }
@@ -300,7 +301,8 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             } else if (playEvent.state == STATE_PAUSED) {
 
             } else if (playEvent.state == STATE_NEED_BUY_PAUSED) {
-
+                hideProgress();
+                ZYToast.show(mActivity, "需要购买哦!");
             } else if (playEvent.state == STATE_BUFFERING_START) {
 
             } else if (playEvent.state == STATE_BUFFERING_END) {

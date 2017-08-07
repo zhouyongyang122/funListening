@@ -61,8 +61,8 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        int mAlbumId = getIntent().getIntExtra(ALBUM_ID, 0);
-        int mAudioId = getIntent().getIntExtra(AUDIO_ID, 0);
+        int mAlbumId = intent.getIntExtra(ALBUM_ID, 0);
+        int mAudioId = intent.getIntExtra(AUDIO_ID, 0);
         ZYLog.e(getClass().getSimpleName(), "onNewIntent: " + mAlbumId + ":" + mAudioId);
         mPresenter.refreshPlay(mAlbumId, mAudioId);
     }

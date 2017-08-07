@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.funlisten.R;
 import com.funlisten.base.adapter.ZYFragmentAdapter;
 import com.funlisten.base.mvp.ZYBaseActivity;
+import com.funlisten.business.login.model.ZYUserManager;
+import com.funlisten.business.login.model.bean.ZYUser;
 import com.funlisten.business.main.presenter.ZYMePresenter;
 import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.business.play.model.ZYPlayManager;
@@ -139,6 +141,9 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
                 mainViewPager.setCurrentItem(1);
                 break;
             case R.id.layoutPlayer:
+                if (ZYUserManager.getInstance().isGuesterUser(true)) {
+                    return;
+                }
                 ZYPlayHistory history = ZYPlayManager.getInstance().queryLastPlay();
                 if (history != null) {
                     ZYPlayActivity.toPlayActivity(mActivity, Integer.parseInt(history.albumId), Integer.parseInt(history.audioId));

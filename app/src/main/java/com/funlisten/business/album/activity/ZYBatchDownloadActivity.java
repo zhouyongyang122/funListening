@@ -30,7 +30,7 @@ public class ZYBatchDownloadActivity extends ZYBaseFragmentActivity<ZYBatchDownl
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("audiolist",(ArrayList<ZYAudio>)getIntent().getSerializableExtra("audiolist"));
+        bundle.putSerializable("audiolist",getIntent().getSerializableExtra("audiolist"));
         bundle.putSerializable("album",getIntent().getSerializableExtra("album"));
         mFragment.setArguments(bundle);
         showTitle("批量下载");

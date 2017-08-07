@@ -26,7 +26,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * Created by Administrator on 2017/7/16.
+ * Created by gd on 2017/7/16.
  */
 
 public class ZYProfileHeader extends ZYBaseViewHolder<ZYProfileHeaderInfo> {
@@ -75,7 +75,9 @@ public class ZYProfileHeader extends ZYBaseViewHolder<ZYProfileHeaderInfo> {
         }
         if(mData != null && album_count != null) {
             showUserInfo(mData.user);
+            if(mData.response.totalCount >0)
             showPhoto(mData.response.data);
+
             photoCount.setText("相册 ("+mData.response.totalCount+")");
             showAlbum(mData.totalCount);
         }

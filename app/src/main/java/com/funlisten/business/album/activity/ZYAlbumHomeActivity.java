@@ -10,6 +10,9 @@ import com.funlisten.R;
 import com.funlisten.base.mvp.ZYBaseFragmentActivity;
 import com.funlisten.business.album.presenter.ZYAlbumHomePresenter;
 import com.funlisten.business.album.view.ZYAlbumHomeFragment;
+import com.funlisten.business.play.activity.ZYPlayActivity;
+import com.funlisten.business.play.model.ZYPlayManager;
+import com.funlisten.business.play.model.bean.ZYPlayHistory;
 import com.funlisten.utils.ZYToast;
 
 /**
@@ -43,7 +46,12 @@ public class ZYAlbumHomeActivity extends ZYBaseFragmentActivity<ZYAlbumHomeFragm
         showActionRightImg(R.drawable.nav_btn_quick_play_n, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ZYToast.show(mActivity, "还不清楚跳转到哪里!");
+                ZYPlayHistory history = ZYPlayManager.getInstance().queryLastPlay();
+                if (history != null) {
+                    ZYPlayActivity.toPlayActivity(mActivity, Integer.parseInt(history.albumId), Integer.parseInt(history.audioId));
+                } else {
+                    ZYToast.show(mActivity, "您还没有播放过任何音频哦,请先去选择要播放的音频!");
+                }
             }
         });
     }

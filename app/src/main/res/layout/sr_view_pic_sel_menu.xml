@@ -11,7 +11,7 @@
         android:layout_height="48dp"
         android:background="@drawable/btn_bg_common_white_selector"
         android:text="拍照"
-        android:textColor="@color/c6"
+        android:textColor="@color/c4"
         android:textSize="@dimen/f2" />
 
     <Button
@@ -21,7 +21,7 @@
         android:layout_below="@id/take_photo"
         android:background="@drawable/btn_bg_common_white_selector"
         android:text="相册选择"
-        android:textColor="@color/c6"
+        android:textColor="@color/c4"
         android:textSize="@dimen/f2" />
 
     <Button
@@ -32,7 +32,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/btn_bg_common_white_selector"
         android:text="取消"
-        android:textColor="@color/c6"
+        android:textColor="@color/c4"
         android:textSize="@dimen/f2" />
 
 </RelativeLayout>

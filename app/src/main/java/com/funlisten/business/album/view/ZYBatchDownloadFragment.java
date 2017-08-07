@@ -21,6 +21,8 @@ import com.funlisten.business.album.view.viewHolder.ZYBatchDownHeaderVH;
 import com.funlisten.business.album.view.viewHolder.ZYBatchDownloadItemVH;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.play.model.bean.ZYAudio;
+import com.funlisten.service.downNet.down.ZYDownloadManager;
+import com.funlisten.service.downNet.down.ZYIDownBase;
 import com.funlisten.utils.ZYScreenUtils;
 import com.funlisten.utils.ZYToast;
 
@@ -44,15 +46,17 @@ public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment implements
 
     ZYAlbumHomeEpisodeVH episodeVH;
 
-    ZYAlbumDetail albumDetail = new ZYAlbumDetail();
+    ZYAlbumDetail albumDetail;
 
     ArrayList<ZYAudio> noList = new ArrayList<>();
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  super.onCreateView(inflater, container, savedInstanceState);
         Bundle bundle = getArguments();
+        albumDetail = (ZYAlbumDetail) bundle.getSerializable("album");
         init((ArrayList<ZYAudio>)bundle.getSerializable("audiolist"));
         footerVH = new ZYBatchDownFooterVH(this);
         footerVH.attachTo(mRootView);
@@ -127,7 +131,12 @@ public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment implements
             ZYToast.show(mActivity,"请选择下载项");
             return;
         }
-
+        ArrayList<ZYIDownBase> arrayList = new ArrayList<>();
+        for(ZYAudio audio :selectList){
+            ZYDownloadEntity downloadEntity = ZYDownloadEntity.createEntityByAudio(albumDetail, audio);
+            arrayList.add(downloadEntity);
+        }
+        ZYDownloadManager.getInstance().addAudios(arrayList);
         mActivity.finish();
     }
 

@@ -49,6 +49,7 @@ public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeCon
     @Override
     public void refresh(Object object) {
         if (object == null) {
+            homeHeaderVH.hideView(null);
             return;
         }
         homeHeaderVH.updateView((ZYDownloadEntity) object, 0);
@@ -61,6 +62,12 @@ public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeCon
 
     @Override
     public void onDownloadAllFinished() {
+        mPresenter.subscribe();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         mPresenter.subscribe();
     }
 

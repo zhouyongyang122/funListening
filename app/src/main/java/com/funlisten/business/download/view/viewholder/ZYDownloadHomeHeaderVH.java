@@ -82,6 +82,13 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
         }
     }
 
+    public void hideView(ZYDownloadEntity data) {
+        if (layoutRoot != null) {
+            mData = data;
+            layoutRoot.setVisibility(View.GONE);
+        }
+    }
+
     private void updateProgress() {
         long total = mData.total;
         long currentSize = mData.current;

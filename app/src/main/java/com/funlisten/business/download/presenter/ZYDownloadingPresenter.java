@@ -20,6 +20,7 @@ public class ZYDownloadingPresenter extends ZYListDataPresenter<ZYDownloadedCont
 
     @Override
     protected void loadData() {
+        mDataList.clear();
         List<ZYDownloadEntity> resutls = mModel.queryAudiosByNotFinishedState();
         if (resutls != null && resutls.size() > 0) {
             mDataList.addAll(resutls);

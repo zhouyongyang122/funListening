@@ -56,6 +56,11 @@ public class ZYMarkBean extends ZYBaseEntity {
 
     }
 
+    @Override
+    public long update(boolean needInsert) {
+        return 0;
+    }
+
     public String getMark_id() {
         return this.mark_id;
     }

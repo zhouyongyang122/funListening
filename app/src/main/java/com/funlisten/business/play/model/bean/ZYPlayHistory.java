@@ -145,4 +145,8 @@ public class ZYPlayHistory extends ZYBaseEntity {
         this.lastUpdate = lastUpdate;
     }
 
+    @Override
+    public long update(boolean needInsert) {
+        return 0;
+    }
 }

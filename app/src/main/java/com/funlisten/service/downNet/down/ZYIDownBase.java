@@ -34,7 +34,7 @@ public interface ZYIDownBase {
 
     long save();
 
-    long update();
+    long update(boolean needInsert);
 
     void delete();
 }

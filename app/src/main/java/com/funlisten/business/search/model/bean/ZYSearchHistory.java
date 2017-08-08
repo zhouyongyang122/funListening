@@ -69,4 +69,9 @@ public class ZYSearchHistory extends ZYBaseEntity {
     public void setHistory(String history) {
         this.history = history;
     }
+
+    @Override
+    public long update(boolean needInsert) {
+        return 0;
+    }
 }

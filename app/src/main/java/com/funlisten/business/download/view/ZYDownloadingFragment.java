@@ -13,15 +13,23 @@ import com.funlisten.business.download.view.viewholder.ZYDownloadingHeaderVH;
 import com.funlisten.business.download.view.viewholder.ZYDownloadingItemVH;
 import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.service.downNet.down.ZYDownloadManager;
+import com.funlisten.utils.ZYLog;
 import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 
 /**
  * Created by ZY on 17/7/13.
  */
 
-public class ZYDownloadingFragment extends ZYListDateFragment<ZYDownloadedContract.IPresenter, ZYDownloadEntity> implements ZYDownloadedContract.IView{
+public class ZYDownloadingFragment extends ZYListDateFragment<ZYDownloadedContract.IPresenter, ZYDownloadEntity> implements ZYDownloadedContract.IView
+        , ZYDownloadingItemVH.DownloadingItemListener {
 
     ZYDownloadingHeaderVH headerVH;
+
+    ArrayList<ZYBaseViewHolder> viewHolders = new ArrayList<ZYBaseViewHolder>();
 
     @Override
     protected void onItemClick(View view, int position) {
@@ -53,7 +61,12 @@ public class ZYDownloadingFragment extends ZYListDateFragment<ZYDownloadedContra
 
             @Override
             public void onDownAllClick(boolean isDowAll) {
-
+                if (isDowAll) {
+                    ZYDownloadManager.getInstance().startAllAudio();
+                } else {
+                    ZYDownloadManager.getInstance().puaseAllAudio(true);
+                }
+                mPresenter.refresh();
             }
         });
         mAdapter.addHeader(headerVH);
@@ -63,6 +76,30 @@ public class ZYDownloadingFragment extends ZYListDateFragment<ZYDownloadedContra
 
     @Override
     protected ZYBaseViewHolder<ZYDownloadEntity> createViewHolder() {
-        return new ZYDownloadingItemVH();
+        return new ZYDownloadingItemVH(this);
+    }
+
+    @Override
+    public void addEvents(ZYBaseViewHolder viewHolder) {
+        viewHolders.add(viewHolder);
+    }
+
+    @Override
+    public void downloadFinished(ZYDownloadEntity data) {
+        mPresenter.getDataList().remove(data);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        try {
+            for (ZYBaseViewHolder viewHolder : viewHolders) {
+                EventBus.getDefault().unregister(viewHolder);
+                ZYLog.e(getClass().getSimpleName(), "onDestroyView-eventBus: ");
+            }
+        } catch (Exception e) {
+
+        }
     }
 }

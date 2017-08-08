@@ -79,7 +79,7 @@ public class ZYDownloadManager {
     }
 
     public void addAudios(ArrayList<ZYIDownBase> downBases) {
-        if (downBases != null && downBases.size() > 0) {
+        if (downBases == null || downBases.size() <= 0) {
             return;
         }
         for (ZYIDownBase downBase : downBases) {
@@ -138,6 +138,7 @@ public class ZYDownloadManager {
         synchronized (this) {
             if (audios.containsKey(id)) {
                 DownloadTask task = audios.get(id);
+                task.entity.setState(ZYDownState.PAUSE);
                 getThreadPool().removeTask(task);
                 task.unsubscribe();
                 audios.remove(id);
@@ -151,6 +152,7 @@ public class ZYDownloadManager {
         synchronized (this) {
             Collection<DownloadTask> tasks = audios.values();
             for (DownloadTask task : tasks) {
+                task.entity.setState(ZYDownState.PAUSE);
                 task.unsubscribe();
             }
             audios.clear();

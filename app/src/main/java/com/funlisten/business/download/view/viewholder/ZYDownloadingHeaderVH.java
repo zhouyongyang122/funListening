@@ -43,8 +43,15 @@ public class ZYDownloadingHeaderVH extends ZYBaseViewHolder<Object> {
                 listener.onClearAllClick();
                 break;
             case R.id.textDown:
-                listener.onDownAllClick(isAllDownloading);
                 isAllDownloading = !isAllDownloading;
+                listener.onDownAllClick(isAllDownloading);
+                if (isAllDownloading) {
+                    textDown.setSelected(true);
+                    textDown.setText("全部暂停");
+                } else {
+                    textDown.setText("全部下载");
+                    textDown.setSelected(false);
+                }
                 break;
         }
     }

@@ -54,9 +54,9 @@ public class ZYUser extends ZYBaseEntity {
 
     @Generated(hash = 1939359424)
     public ZYUser(String id, String userId, String phone, String nickname,
-            String openWechatId, String avatarUrl, String avatar, int albumCount,
-            String intro, String sex, int fans, int follow, String token, String age,
-            String areaCode, String areaName, boolean isLoginUser) {
+                  String openWechatId, String avatarUrl, String avatar, int albumCount,
+                  String intro, String sex, int fans, int follow, String token, String age,
+                  String areaCode, String areaName, boolean isLoginUser) {
         this.id = id;
         this.userId = userId;
         this.phone = phone;
@@ -78,6 +78,12 @@ public class ZYUser extends ZYBaseEntity {
 
     @Override
     public long save() {
+        ZYUserDao userDao = ZYDBManager.getInstance().getWritableDaoSession().getZYUserDao();
+        return userDao.insertOrReplace(this);
+    }
+
+    @Override
+    public long update(boolean needInsert) {
         ZYUserDao userDao = ZYDBManager.getInstance().getWritableDaoSession().getZYUserDao();
         return userDao.insertOrReplace(this);
     }

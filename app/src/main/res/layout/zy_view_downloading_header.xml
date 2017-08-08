@@ -17,7 +17,7 @@
             android:id="@+id/textDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/icon_all_started_n"
+            android:drawableLeft="@drawable/zy_selector_down"
             android:drawablePadding="4dp"
             android:gravity="center"
             android:text="全部下载" />

@@ -156,10 +156,19 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
     }
 
     @Override
-    public long update() {
+    public long update(boolean needInsert) {
         synchronized (object) {
-            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getWritableDaoSession().getZYDownloadEntityDao();
-            return downloadEntityDao.insertOrReplace(this);
+            try {
+                ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getWritableDaoSession().getZYDownloadEntityDao();
+                if (!needInsert) {
+                    downloadEntityDao.update(this);
+                    return 1;
+                }
+                return downloadEntityDao.insertOrReplace(this);
+            } catch (Exception e) {
+                ZYLog.e(getClass().getSimpleName(), "update-error: " + e.getMessage());
+            }
+            return 0;
         }
     }
 
@@ -219,8 +228,8 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
         }
     }
 
-    public static boolean audioIsDown(ZYAudio audio){
-        return queryById(audio.id,audio.albumId) == null ? false:true;
+    public static boolean audioIsDown(ZYAudio audio) {
+        return queryById(audio.id, audio.albumId) == null ? false : true;
     }
 
     public static String getEntityId(int audioId, int albumId) {
@@ -295,7 +304,8 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
     public static List<ZYDownloadEntity> queryAudioByPauseState() {
         synchronized (object) {
             ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
-            return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.PAUSE.getState())
+            return downloadEntityDao.queryBuilder().whereOr(ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.PAUSE.getState())
+                    , ZYDownloadEntityDao.Properties.StateValue.eq(ZYDownState.ERROR.getState())
             ).build().list();
         }
     }
@@ -518,5 +528,10 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
 
     public void setStateValue(int stateValue) {
         this.stateValue = stateValue;
+    }
+
+    @Override
+    public long update() {
+        return 0;
     }
 }

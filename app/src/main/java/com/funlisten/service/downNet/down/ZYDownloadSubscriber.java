@@ -27,6 +27,7 @@ public class ZYDownloadSubscriber<T> extends Subscriber<T> implements ZYDownload
     public void onStart() {
         ZYLog.e(getClass().getSimpleName(), "onStart: " + downEntity.getUrl());
         downEntity.setState(ZYDownState.START);
+        downEntity.save();
         EventBus.getDefault().post(new ZYEventDowloadUpdate(downEntity));
     }
 
@@ -36,7 +37,7 @@ public class ZYDownloadSubscriber<T> extends Subscriber<T> implements ZYDownload
         ZYDownloadManager.getInstance().removeTask(downEntity.getId());
         downEntity.setState(ZYDownState.FINISH);
         downEntity.setCurrent(downEntity.getTotal());
-        downEntity.update();
+        downEntity.update(false);
         EventBus.getDefault().post(new ZYEventDowloadUpdate(downEntity));
     }
 
@@ -44,8 +45,10 @@ public class ZYDownloadSubscriber<T> extends Subscriber<T> implements ZYDownload
     public void onError(Throwable e) {
         ZYLog.e(getClass().getSimpleName(), "onError: " + e.getMessage());
         ZYDownloadManager.getInstance().removeTask(downEntity.getId());
-        downEntity.setState(ZYDownState.ERROR);
-        downEntity.update();
+        if (downEntity.getState() != ZYDownState.PAUSE) {
+            downEntity.setState(ZYDownState.ERROR);
+        }
+        downEntity.update(false);
         EventBus.getDefault().post(new ZYEventDowloadUpdate(downEntity));
     }
 
@@ -55,22 +58,25 @@ public class ZYDownloadSubscriber<T> extends Subscriber<T> implements ZYDownload
 
     @Override
     public void update(long current, long total, boolean done) {
-        downEntity.setTotal(total);
+        if (downEntity.getTotal() > total) {
+            current = downEntity.getTotal() - total + current;
+        } else {
+            downEntity.setTotal(total);
+        }
+        downEntity.setCurrent(current);
         if (done) {
-            ZYLog.e(getClass().getSimpleName(), "update: " + current + ":" + total + ":" + done);
+            ZYLog.e(getClass().getSimpleName(), "update: " + current + ":" + downEntity.getTotal() + ":" + done);
         } else {
             if ((current - current % 1024) % (100 * 1024) == 0) {
-                ZYLog.e(getClass().getSimpleName(), "update: " + current + ":" + total + ":" + done);
+                ZYLog.e(getClass().getSimpleName(), "update: " + current + ":" + downEntity.getTotal() + ":" + done);
             }
         }
         if (done) {
-            downEntity.setCurrent(total);
             downEntity.setState(ZYDownState.FINISH);
         } else {
-            downEntity.setCurrent(current);
             downEntity.setState(ZYDownState.DOWNING);
         }
-        downEntity.update();
+        downEntity.update(false);
         EventBus.getDefault().post(new ZYEventDowloadUpdate(downEntity));
     }
 }

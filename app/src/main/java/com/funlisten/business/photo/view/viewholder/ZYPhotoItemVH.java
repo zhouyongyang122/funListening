@@ -34,36 +34,37 @@ public class ZYPhotoItemVH extends ZYBaseViewHolder<ZYPhoto> {
     ImageView imageBtn;
 
     public static ZYPhotoSelect photoSelect;
-    public static boolean isEdit =false;
+    public static boolean isEdit = false;
 
     @Override
     public void updateView(ZYPhoto data, int position) {
-        ZYImageLoadHelper.getImageLoader().loadImage(this,photoImage,data.photoUrl,R.color.c1,R.color.c1);
-        if(isEdit) imgLine.setVisibility(View.VISIBLE);
+        ZYImageLoadHelper.getImageLoader().loadImage(this, photoImage, data.photoUrl, R.color.c1, R.color.c1);
+        if (isEdit) imgLine.setVisibility(View.VISIBLE);
         else imgLine.setVisibility(View.GONE);
         imageBtn.setTag(data);
     }
 
     @OnClick({R.id.image_btn})
-    public void onClick(View view){
+    public void onClick(View view) {
         ZYPhoto data = (ZYPhoto) view.getTag();
-        if(photoSelect != null){
+        if (photoSelect != null) {
             isCheck(data);
             photoSelect.onSelect(data);
         }
     }
 
-    private void isCheck(ZYPhoto data){
-        if (data.isSelect){
-            imageBtn.setImageResource(R.drawable.nav_btn_paused_n);
-        }else imageBtn.setImageResource(R.drawable.xiangce_xuanzhong_s);
+    private void isCheck(ZYPhoto data) {
+//        if (data.isSelect) {
+//            imageBtn.setImageResource(R.drawable.nav_btn_paused_n);
+//        } else imageBtn.setImageResource(R.drawable.xiangce_xuanzhong_s);
+        imageBtn.setSelected(data.isSelect);
     }
 
     @Override
     public void findView(View view) {
         super.findView(view);
-        RelativeLayout.LayoutParams layoutParams = ( RelativeLayout.LayoutParams)photoImage.getLayoutParams();
-        layoutParams.height = (ZYScreenUtils.getScreenWidth(mContext)-ZYScreenUtils.dp2px(mContext,5))/4;
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) photoImage.getLayoutParams();
+        layoutParams.height = (ZYScreenUtils.getScreenWidth(mContext) - ZYScreenUtils.dp2px(mContext, 5)) / 4;
         photoImage.setLayoutParams(layoutParams);
     }
 

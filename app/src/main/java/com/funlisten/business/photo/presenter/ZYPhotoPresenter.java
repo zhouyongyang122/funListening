@@ -48,7 +48,8 @@ public class ZYPhotoPresenter extends ZYListDataPresenter<ZYPhotoContract.IView,
             @Override
             public void onSuccess(ZYResponse<ZYPhoto> response) {
                 mView.hideProgress();
-               mDataList.add(response.data);
+//               mDataList.add(response.data);
+                loadData();
                 mView.showList(true);
             }
 

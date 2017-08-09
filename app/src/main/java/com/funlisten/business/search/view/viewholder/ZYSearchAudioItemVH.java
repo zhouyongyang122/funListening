@@ -1,18 +1,18 @@
-package com.funlisten.business.mylike.view.viewholder;
+package com.funlisten.business.search.view.viewholder;
 
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.funlisten.R;
 import com.funlisten.base.event.ZYEventDowloadUpdate;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
-import com.funlisten.business.dailylisten.view.viewholder.ZYDailyListenVH;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
-import com.funlisten.business.favorite.ZYFavorite;
 import com.funlisten.business.play.model.bean.ZYAudio;
+import com.funlisten.business.search.model.bean.ZYAudioAndAlbumInfo;
 import com.funlisten.service.downNet.down.ZYDownState;
 import com.funlisten.utils.ZYDateUtils;
 import com.funlisten.utils.ZYToast;
@@ -25,21 +25,22 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * Created by gd on 2017/7/25.
+ * Created by ZY on 17/7/4.
  */
 
-public class ZYMyLikeItem extends ZYBaseViewHolder<ZYFavorite> {
+public class ZYSearchAudioItemVH extends ZYBaseViewHolder<ZYAudioAndAlbumInfo> {
+
     @Bind(R.id.textName)
     TextView textName;
 
-    @Bind(R.id.textTime)
-    TextView textTime;
+    @Bind(R.id.textTimeDay)
+    TextView textTimeDay;
 
-    @Bind(R.id.play_count)
-    TextView playCount;
+    @Bind(R.id.textPlayNum)
+    TextView textPlayNum;
 
     @Bind(R.id.textTimeHours)
-    TextView timeHours;
+    TextView textTimeHours;
 
     @Bind(R.id.imgDownload)
     ImageView imgDownload;
@@ -47,34 +48,30 @@ public class ZYMyLikeItem extends ZYBaseViewHolder<ZYFavorite> {
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
 
+    ZYAudio mData;
+
+
     ZYDownloadEntity mDownloadEntity;
 
     AudioItemListener listener;
 
-    ZYFavorite mData;
-
-    public ZYMyLikeItem(AudioItemListener listener) {
+    public ZYSearchAudioItemVH(AudioItemListener listener) {
         this.listener = listener;
         EventBus.getDefault().register(this);
         this.listener.addEvents(this);
     }
 
     @Override
-    public void updateView(ZYFavorite data, int position) {
-        if(data != null){
-            mData = data;
-            textName.setText(data.audio.sort+" | "+data.audio.title);
-            playCount.setText(data.audio.playCount+"");
-            textTime.setText(ZYDateUtils.getTimeString(mData.audio.gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.YYMMDDHH));
-            timeHours.setText(ZYDateUtils.getTimeString(mData.audio.gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.HHMM24));
-            mDownloadEntity = ZYDownloadEntity.queryById(mData.audio.id, mData.audio.albumId);
+    public void updateView(ZYAudioAndAlbumInfo data, int position) {
+        if (data != null &&  data.audio != null) {
+            mData = data.audio;
+            textName.setText("第 " + mData.sort + " 期 | " + mData.title);
+            textPlayNum.setText(mData.playCount + "");
+            textTimeDay.setText(ZYDateUtils.getTimeString(mData.gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.YYMMDDHH));
+            textTimeHours.setText(ZYDateUtils.getTimeString(mData.gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.HHMM24));
+            mDownloadEntity = ZYDownloadEntity.queryById(mData.id, mData.albumId);
             refreshView();
         }
-    }
-
-    @Override
-    public int getLayoutResId() {
-        return R.layout.gd_my_like_item;
     }
 
     private void refreshView() {
@@ -98,17 +95,22 @@ public class ZYMyLikeItem extends ZYBaseViewHolder<ZYFavorite> {
         }
     }
 
+    @Override
+    public int getLayoutResId() {
+        return R.layout.zy_view_audio_item;
+    }
+
     @OnClick({R.id.layoutDownload})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layoutDownload:
                 if (!imgDownload.isSelected()) {
                     ZYToast.show(mContext, "开始下载!");
-                    if(TextUtils.isEmpty(mData.audio.fileUrl)){
+                    if(TextUtils.isEmpty(mData.fileUrl)){
                         ZYToast.show(mContext,"下载URL为null");
-                        break;
+                        return;
                     }
-                    mDownloadEntity = listener.onDownloadClick(mData.audio);
+                    mDownloadEntity = listener.onDownloadClick(mData);
                     refreshView();
                 } else {
                     ZYToast.show(mContext, "已经下载!");
@@ -124,7 +126,7 @@ public class ZYMyLikeItem extends ZYBaseViewHolder<ZYFavorite> {
                 if (progressBar == null) {
                     EventBus.getDefault().unregister(this);
                 }
-                if (dowloadUpdate.downloadEntity.getId().equals(ZYDownloadEntity.getEntityId(mData.audio.id, mData.audio.albumId))) {
+                if (dowloadUpdate.downloadEntity.getId().equals(ZYDownloadEntity.getEntityId(mData.id, mData.albumId))) {
                     mDownloadEntity = (ZYDownloadEntity) dowloadUpdate.downloadEntity;
                     refreshView();
                 }

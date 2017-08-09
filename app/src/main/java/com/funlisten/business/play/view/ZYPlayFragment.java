@@ -13,10 +13,12 @@ import android.widget.TextView;
 
 import com.funlisten.R;
 import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
+import com.funlisten.base.event.ZYEventDowloadUpdate;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.view.ZYLoadingView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
 import com.funlisten.business.comment.activity.ZYCommentActivity;
@@ -30,6 +32,8 @@ import com.funlisten.business.play.model.bean.ZYPlay;
 import com.funlisten.business.play.view.viewHolder.ZYPlayActionBarVH;
 import com.funlisten.business.play.view.viewHolder.ZYPlayAudiosVH;
 import com.funlisten.business.play.view.viewHolder.ZYPlayHeaderVH;
+import com.funlisten.service.downNet.down.ZYDownState;
+import com.funlisten.service.downNet.down.ZYDownloadManager;
 import com.funlisten.utils.ZYToast;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -117,11 +121,8 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         switch (view.getId()) {
             case R.id.textDown:
                 ZYAudio audio = mPresenter.getCurPlayAudio();
-                boolean isDown = ZYDownloadEntity.audioIsDown(audio);
-                if (isDown) {
-                    ZYToast.show(mActivity, "已下载!");
-                    break;
-                }
+                ZYDownloadEntity downloadEntitys = ZYDownloadEntity.queryById(audio.id,audio.albumId);
+                isCheckDown(downloadEntitys,audio);
                 break;
             case R.id.textShare:
                 break;
@@ -141,13 +142,15 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         }
     }
 
+
+
     @Override
     public void refreshView() {
         ZYAudio audio = mPresenter.getCurPlayAudio();
         mPresenter.isFavorite("audio", audio.id);
 
-        boolean isDown = ZYDownloadEntity.audioIsDown(audio);
-        setTextDown(isDown);
+        ZYDownloadEntity downloadEntity = ZYDownloadEntity.queryById(audio.id,audio.albumId);
+        refreshDown(downloadEntity);
 
         adapter.notifyDataSetChanged();
         ZYPlay play = new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getCurPlayAudio());
@@ -178,10 +181,42 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             textCollect.setCompoundDrawables(null, drawable, null, null);
             textCollect.setSelected(false);
         } else {
-            Drawable drawable = getResources().getDrawable(R.drawable.tab_icon_download_n);
+            Drawable drawable= getResources().getDrawable(R.drawable.tab_icon_download_n);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             textCollect.setCompoundDrawables(null, drawable, null, null);
             textCollect.setSelected(true);
+        }
+    }
+
+    private void isCheckDown(ZYDownloadEntity mDownloadEntity,ZYAudio audio){
+        if (mDownloadEntity != null) {
+            if (mDownloadEntity.getState() == ZYDownState.FINISH) {
+                ZYToast.show(mActivity,"以下载");
+            } else if (mDownloadEntity.getState() == ZYDownState.ERROR || mDownloadEntity.getState() == ZYDownState.PAUSE) {
+                textDown.setText("下载失败");
+            } else if(mDownloadEntity.getState() == ZYDownState.DOWNING){
+                ZYToast.show(mActivity,"下载中");
+            }
+        } else {
+            ZYDownloadEntity downloadEntity = ZYDownloadEntity.createEntityByAudio(mPresenter.getAlbumDetail(), audio);
+            ZYDownloadManager.getInstance().addAudio(downloadEntity);
+        }
+    }
+    private void refreshDown(ZYDownloadEntity mDownloadEntity){
+        if (mDownloadEntity != null) {
+            if (mDownloadEntity.getState() == ZYDownState.FINISH) {
+                textDown.setText("已下载");
+                setTextDown(true);
+            } else if (mDownloadEntity.getState() == ZYDownState.ERROR || mDownloadEntity.getState() == ZYDownState.PAUSE) {
+                textDown.setText("下载失败");
+                setTextDown(false);
+            } else if(mDownloadEntity.getState() == ZYDownState.DOWNING){
+                textDown.setText("下载中");
+                setTextDown(true);
+            }
+        } else {
+            setTextDown(false);
+            textDown.setText("下载");
         }
     }
 
@@ -205,6 +240,11 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     @Override
     public void suportCancle(ZYComment comment) {
 
+    }
+
+    @Override
+    public void moreComment() {
+        mActivity.startActivity(ZYCommentActivity.createIntent(mActivity,"audio",mPresenter.getCurPlayAudio().id+""));
     }
 
     @Override
@@ -243,6 +283,10 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         } else {
             ZYToast.show(mActivity, "当前为第一集");
         }
+
+        ZYAudio audios = mPresenter.getCurPlayAudio();
+        ZYDownloadEntity downloadEntity = ZYDownloadEntity.queryById(audios.id,audios.albumId);
+        refreshDown(downloadEntity);
     }
 
     @Override
@@ -263,6 +307,9 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         } else {
             ZYToast.show(mActivity, "已经是最后一集了");
         }
+        ZYAudio audios = mPresenter.getCurPlayAudio();
+        ZYDownloadEntity downloadEntity = ZYDownloadEntity.queryById(audios.id,audios.albumId);
+        refreshDown(downloadEntity);
     }
 
     @Override
@@ -279,6 +326,18 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     @Override
     public void onPlayTypeClick() {
 
+    }
+
+    @Override
+    public void onSubscribeClick(ZYAlbumDetail detail) {
+        if (detail.isFavorite) {
+            mPresenter.favoriteCancel(ZYBaseModel.ALBUM_TYPE,detail.id);
+            detail.isFavorite =false;
+        } else {
+            mPresenter.favorite(ZYBaseModel.ALBUM_TYPE,detail.id);
+            detail.isFavorite =true;
+        }
+        headerVH.updateSubscribeState();
     }
 
 
@@ -301,8 +360,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             } else if (playEvent.state == STATE_PAUSED) {
 
             } else if (playEvent.state == STATE_NEED_BUY_PAUSED) {
-                hideProgress();
-                ZYToast.show(mActivity, "需要购买哦!");
+
             } else if (playEvent.state == STATE_BUFFERING_START) {
 
             } else if (playEvent.state == STATE_BUFFERING_END) {
@@ -318,6 +376,16 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
                 actionBarVH.showTitle(playEvent.audio.title);
             }
             headerVH.refreshPlayState(playEvent);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ZYEventDowloadUpdate dowloadUpdate) {
+        if (dowloadUpdate.downloadEntity != null) {
+            ZYAudio audio = mPresenter.getCurPlayAudio();
+            if (dowloadUpdate.downloadEntity.getId().equals(ZYDownloadEntity.getEntityId(audio.id, audio.albumId))) {
+                refreshDown((ZYDownloadEntity)dowloadUpdate.downloadEntity);
+            }
         }
     }
 }

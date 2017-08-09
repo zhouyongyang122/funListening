@@ -4,6 +4,7 @@ import com.funlisten.base.bean.ZYListResponse;
 import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.base.mvp.ZYListDataPresenter;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
+import com.funlisten.business.favorite.ZYFavorite;
 import com.funlisten.business.login.model.bean.ZYUser;
 import com.funlisten.business.myorder.contract.ZYMyOrderContract;
 import com.funlisten.business.myorder.model.ZYMyOrderModel;
@@ -22,7 +23,7 @@ import rx.Observable;
  * Created by gd on 2017/7/22.
  */
 
-public class ZYMyOrderPresenter extends ZYListDataPresenter<ZYMyOrderContract.IView,ZYMyOrderModel,ZYOrder> implements ZYMyOrderContract.IPresenter {
+public class ZYMyOrderPresenter extends ZYListDataPresenter<ZYMyOrderContract.IView,ZYMyOrderModel,ZYFavorite> implements ZYMyOrderContract.IPresenter {
 
     int  type;
     public ZYMyOrderPresenter(ZYMyOrderContract.IView view, ZYMyOrderModel model, int type) {
@@ -37,9 +38,9 @@ public class ZYMyOrderPresenter extends ZYListDataPresenter<ZYMyOrderContract.IV
          observable = mModel.getFavorites("album",mPageIndex,mRows);
         else observable = mModel.getorders("album",mPageIndex,mRows);
 
-        mSubscriptions.add(ZYNetSubscription.subscription(observable,new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYOrder>>>(){
+        mSubscriptions.add(ZYNetSubscription.subscription(observable,new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYFavorite>>>(){
             @Override
-            public void onSuccess(ZYResponse<ZYListResponse<ZYOrder>> response) {
+            public void onSuccess(ZYResponse<ZYListResponse<ZYFavorite>> response) {
                 super.onSuccess(response);
 //                List<ZYOrder> lists = new ArrayList<>();
 //                ZYAudio user1 =   new ZYAudio();

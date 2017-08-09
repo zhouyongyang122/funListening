@@ -18,6 +18,7 @@ import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.album.view.viewHolder.ZYAlbumDetailItemVH;
 import com.funlisten.business.album.view.viewHolder.ZYAlbumDetailTitleVH;
 import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
+import com.funlisten.business.comment.activity.ZYCommentActivity;
 import com.funlisten.utils.ZYScreenUtils;
 
 import java.util.ArrayList;
@@ -108,5 +109,10 @@ public class ZYAlbumDetailFragment extends ZYBaseRecyclerFragment<ZYAlbumDetailC
     @Override
     public void suportCancle(ZYComment comment) {
         mPresenter.suportCancle(comment);
+    }
+
+    @Override
+    public void moreComment() {
+        mActivity.startActivity(ZYCommentActivity.createIntent(mActivity,"album",mPresenter.getAlbumId()+""));
     }
 }

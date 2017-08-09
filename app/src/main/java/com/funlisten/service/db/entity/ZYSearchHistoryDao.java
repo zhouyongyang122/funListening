@@ -24,8 +24,8 @@ public class ZYSearchHistoryDao extends AbstractDao<ZYSearchHistory, String> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property UserId = new Property(0, String.class, "userId", true, "USER_ID");
-        public final static Property History = new Property(1, String.class, "history", false, "HISTORY");
+        public final static Property UserId = new Property(0, String.class, "userId", false, "USER_ID");
+        public final static Property History = new Property(1, String.class, "history", true, "HISTORY");
     }
 
 
@@ -41,8 +41,8 @@ public class ZYSearchHistoryDao extends AbstractDao<ZYSearchHistory, String> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"ZYSEARCH_HISTORY\" (" + //
-                "\"USER_ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: userId
-                "\"HISTORY\" TEXT);"); // 1: history
+                "\"USER_ID\" TEXT," + // 0: userId
+                "\"HISTORY\" TEXT PRIMARY KEY NOT NULL );"); // 1: history
     }
 
     /** Drops the underlying database table. */
@@ -83,7 +83,7 @@ public class ZYSearchHistoryDao extends AbstractDao<ZYSearchHistory, String> {
 
     @Override
     public String readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0);
+        return cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1);
     }    
 
     @Override
@@ -103,13 +103,13 @@ public class ZYSearchHistoryDao extends AbstractDao<ZYSearchHistory, String> {
     
     @Override
     protected final String updateKeyAfterInsert(ZYSearchHistory entity, long rowId) {
-        return entity.getUserId();
+        return entity.getHistory();
     }
     
     @Override
     public String getKey(ZYSearchHistory entity) {
         if(entity != null) {
-            return entity.getUserId();
+            return entity.getHistory();
         } else {
             return null;
         }
@@ -117,7 +117,7 @@ public class ZYSearchHistoryDao extends AbstractDao<ZYSearchHistory, String> {
 
     @Override
     public boolean hasKey(ZYSearchHistory entity) {
-        return entity.getUserId() != null;
+        return entity.getHistory() != null;
     }
 
     @Override

@@ -60,6 +60,11 @@ public class ZYCommentFragment extends ZYListDateFragment<ZYCommentContract.IPre
         mPresenter.suportCancle(comment);
     }
 
+    @Override
+    public void moreComment() {
+
+    }
+
 
     @Override
     public void showDatas(ArrayList<Object> datas) {
@@ -76,4 +81,6 @@ public class ZYCommentFragment extends ZYListDateFragment<ZYCommentContract.IPre
     public void sendMessage(String text) {
         mPresenter.addComment(text);
     }
+
+
 }

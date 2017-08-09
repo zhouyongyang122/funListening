@@ -15,6 +15,7 @@ import com.funlisten.business.main.model.bean.ZYVersion;
 import com.funlisten.business.order.ZYAlipayBack;
 import com.funlisten.business.order.ZYOrder;
 import com.funlisten.business.photo.ZYPhoto;
+import com.funlisten.business.search.model.bean.ZYAudioAndAlbumInfo;
 import com.funlisten.business.user.model.ZYProvince;
 import com.funlisten.business.user.model.ZYUserList;
 
@@ -220,7 +221,7 @@ public interface ZYRequestApi {
      * @return
      */
     @POST("favorite/list")
-    Observable<ZYResponse<ZYListResponse<ZYOrder>>> getFavorites(@Query("type") String type, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+    Observable<ZYResponse<ZYListResponse<ZYFavorite>>> getFavorites(@Query("type") String type, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 
     /**
      * 我的订购列表
@@ -346,7 +347,7 @@ public interface ZYRequestApi {
      * 搜索
      * **/
     @POST("search/albumAudio")
-    Observable<ZYResponse<ZYListResponse<ZYAlbumDetail>>> getSearch(@Query("type") String type, @Query("keyword") String keyword);
+    Observable<ZYResponse<ZYListResponse<ZYAudioAndAlbumInfo>>> getSearch(@Query("type") String type, @Query("keyword") String keyword);
 
     /**
      * 省市信息接口

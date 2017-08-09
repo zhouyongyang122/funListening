@@ -2,6 +2,8 @@ package com.funlisten.business.search.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -18,16 +20,19 @@ import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
 import com.funlisten.base.mvp.ZYBaseActivity;
 import com.funlisten.base.view.FZListPopupWindow;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
-import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
 import com.funlisten.business.login.model.ZYUserManager;
-import com.funlisten.business.play.view.ZYPlayFragment;
 import com.funlisten.business.search.contract.ZYSearchContract;
 import com.funlisten.business.search.model.ZYSearchHistoryManager;
 import com.funlisten.business.search.model.ZYSearchModel;
 import com.funlisten.business.search.model.bean.ZYSearchHistory;
+import com.funlisten.business.search.presenter.ZYSearchAlbumPresenter;
+import com.funlisten.business.search.presenter.ZYSearchAudioPresenter;
 import com.funlisten.business.search.presenter.ZYSearchPresenter;
 import com.funlisten.business.search.view.WarpLinearLayout;
+import com.funlisten.business.search.view.ZYSearchAlbumListFragment;
+import com.funlisten.business.search.view.ZYSearchAudioListFragment;
 import com.funlisten.business.search.view.viewholder.ZYHistoryVH;
+import com.funlisten.utils.ZYUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +46,11 @@ import butterknife.OnClick;
  */
 
 public class ZYSearchActivity extends ZYBaseActivity<ZYSearchContract.IPresenter> implements ZYSearchContract.IView {
+    static final int AUDIO_TYPE = 1;
+    static final int ALBUM_TYPE = 2;
+    static final int HIDE_TYPE = 3;
+    int searchType = 0;// 1 audio , 0 album
+
     @Bind(R.id.album_tv)
     TextView albumType;
 
@@ -52,6 +62,9 @@ public class ZYSearchActivity extends ZYBaseActivity<ZYSearchContract.IPresenter
 
     @Bind(R.id.search_cancel)
     TextView searchCancel;
+
+    @Bind(R.id.hot_line)
+    LinearLayout hot_line;
 
     @Bind(R.id.warpLinearLayout)
     WarpLinearLayout warpLinearLayout;
@@ -71,6 +84,19 @@ public class ZYSearchActivity extends ZYBaseActivity<ZYSearchContract.IPresenter
 
     ZYBaseRecyclerAdapter<Object> adapter;
 
+    @Bind(R.id.fragment_id)
+    LinearLayout fragmentLine;
+
+    ZYSearchAudioListFragment listFragment;
+
+    ZYSearchAlbumListFragment albumListFragment;
+
+    FragmentManager fragmentManager;
+
+    ZYSearchAudioPresenter audioPresenter;
+
+    ZYSearchAlbumPresenter albumPresenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +104,10 @@ public class ZYSearchActivity extends ZYBaseActivity<ZYSearchContract.IPresenter
         searchPresenter = new ZYSearchPresenter(this,new ZYSearchModel());
         searchPresenter.loadHotWord();
         historyList.addAll(ZYSearchHistoryManager.getInsatnce().getAllHistory());
+        fragmentManager = getSupportFragmentManager();
         hideActionBar();
         initView();
+        hideView(true);
     }
     private void initView(){
         fzListPopupWindow = new FZListPopupWindow(this,listPopupWindowListener);
@@ -117,6 +145,14 @@ public class ZYSearchActivity extends ZYBaseActivity<ZYSearchContract.IPresenter
                     String userId = ZYUserManager.getInstance().getUser().userId;
                     if(TextUtils.isEmpty(userId))break;
                     ZYSearchHistoryManager.getInsatnce().save(new ZYSearchHistory(userId,key));
+                    if(searchType == 0){
+                        hideView(false);
+                        showFragment(ALBUM_TYPE);
+                    }else if(searchType == 1){
+                        hideView(false);
+                        showFragment(AUDIO_TYPE);
+                    }
+                    ZYUtils.hideInput(searchCancel);
                 }
                 break;
             case R.id.select_album:
@@ -147,9 +183,9 @@ public class ZYSearchActivity extends ZYBaseActivity<ZYSearchContract.IPresenter
             textKey =s.toString();
             if (textKey !=null && textKey.trim().length() > 0) {
                 searchCancel.setText("搜索");
-                if(history_line.getVisibility() == View.INVISIBLE || history_line.getVisibility() == View.GONE){
-                    history_line.setVisibility(View.VISIBLE);
-                }
+//                if(history_line.getVisibility() == View.INVISIBLE || history_line.getVisibility() == View.GONE){
+//                    history_line.setVisibility(View.VISIBLE);
+//                }
                 onBack = false;
             }else {
                 searchCancel.setText("取消");
@@ -167,6 +203,7 @@ public class ZYSearchActivity extends ZYBaseActivity<ZYSearchContract.IPresenter
         @Override
         public void onItemClick(String menuStr, int selectedIndex) {
             albumType.setText(menuStr);
+            searchType = selectedIndex;
         }
 
         @Override
@@ -174,6 +211,51 @@ public class ZYSearchActivity extends ZYBaseActivity<ZYSearchContract.IPresenter
 
         }
     };
+
+    private void showFragment(int  type){
+        FragmentTransaction ft= fragmentManager.beginTransaction();
+        hideFragment(ft);
+        switch (type){
+            case AUDIO_TYPE:
+                if(listFragment == null){
+                    listFragment = new ZYSearchAudioListFragment();
+                    ft.add(R.id.fragment_id,listFragment);
+                    audioPresenter = new ZYSearchAudioPresenter(listFragment,new ZYSearchModel(),keyword.getText().toString());
+                }else {
+                    ft.show(listFragment);
+                    audioPresenter.search(keyword.getText().toString());
+                }
+                break;
+            case ALBUM_TYPE:
+                if(albumListFragment == null){
+                    albumListFragment = new ZYSearchAlbumListFragment();
+                    ft.add(R.id.fragment_id,albumListFragment);
+                    albumPresenter = new ZYSearchAlbumPresenter(albumListFragment,new ZYSearchModel(),keyword.getText().toString());
+                }else{
+                    ft.show(albumListFragment);
+                    albumPresenter.search(keyword.getText().toString());
+                }
+                break;
+            case HIDE_TYPE:
+                break;
+        }
+        ft.commit();
+    }
+
+    private void hideFragment(FragmentTransaction ft){
+        if(listFragment != null) ft.hide(listFragment);
+        if(albumListFragment != null)ft.hide(albumListFragment);
+    }
+
+    private void hideView(boolean isShow){
+        if(isShow){
+            hot_line.setVisibility(View.VISIBLE);
+            history_line.setVisibility(View.VISIBLE);
+        }else {
+            hot_line.setVisibility(View.GONE);
+            history_line.setVisibility(View.GONE);
+        }
+    }
 
     private void addHotWord(List<String> list){
         warpLinearLayout.removeAllViews();
@@ -184,13 +266,13 @@ public class ZYSearchActivity extends ZYBaseActivity<ZYSearchContract.IPresenter
             tv.setBackgroundResource(R.drawable.shape_white_stroke);
             tv.setPadding(20,20,20,20);
             tv.setTextSize(14f);
-            tv.setOnClickListener(onclikListener);
+            tv.setOnClickListener(onClickListener);
             tv.setTag(hot);
             warpLinearLayout.addView(tv);
         }
     }
 
-    View.OnClickListener onclikListener = new View.OnClickListener() {
+    View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             String str = (String) v.getTag();
@@ -207,11 +289,6 @@ public class ZYSearchActivity extends ZYBaseActivity<ZYSearchContract.IPresenter
 
     @Override
     public void showEmpty() {
-
-    }
-
-    @Override
-    public void success(List<String> data) {
 
     }
 

@@ -79,6 +79,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
     @Bind(R.id.textComment)
     TextView textComment;
 
+
     ZYPlay mData;
 
     PlayHeaderListener headerListener;
@@ -119,6 +120,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, albumDetail.publisher.avatarUrl);
             textTitle.setText(albumDetail.name);
             textInfo.setText(albumDetail.favoriteCount + "人订阅 | " + albumDetail.playCount + "播放");
+            textSubscribe.setText(albumDetail.isFavorite ? "已订阅":"订阅");
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, albumDetail.coverUrl);
             refreshProgress(0, 1000);
 
@@ -137,7 +139,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         return R.layout.zy_view_play_header;
     }
 
-    @OnClick({R.id.imgPre, R.id.imgPlay, R.id.imgNext, R.id.textPlayList, R.id.textPlayType})
+    @OnClick({R.id.imgPre, R.id.imgPlay, R.id.imgNext, R.id.textPlayList, R.id.textPlayType,R.id.textSubscribe})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgPre:
@@ -164,6 +166,17 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
                     ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_LOOP_TYPE);
                 }
                 break;
+            case R.id.textSubscribe:
+                headerListener.onSubscribeClick(mData.albumDetail);
+                break;
+        }
+    }
+
+    public void updateSubscribeState() {
+        if (mData.albumDetail.isFavorite) {
+            textSubscribe.setText("已订阅");
+        } else {
+            textSubscribe.setText("订阅");
         }
     }
 
@@ -253,5 +266,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         void onPlayListClick();
 
         void onPlayTypeClick();
+
+        void onSubscribeClick(ZYAlbumDetail detail);
     }
 }

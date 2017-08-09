@@ -16,9 +16,9 @@ import java.util.List;
 
 @Entity
 public class ZYSearchHistory extends ZYBaseEntity {
-    @Id
     public String userId;
 
+    @Id
     public String history;
 
     @Generated(hash = 845344695)

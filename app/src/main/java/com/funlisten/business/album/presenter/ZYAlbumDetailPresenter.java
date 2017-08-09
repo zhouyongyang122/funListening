@@ -114,7 +114,15 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
         }));
     }
 
+    @Override
+    public int getAlbumId() {
+        return mAlbumId;
+    }
+
     public ArrayList<Object> getDatas() {
         return mDatas;
     }
+
+
+
 }

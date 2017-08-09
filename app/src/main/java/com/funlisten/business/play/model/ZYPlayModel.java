@@ -50,8 +50,8 @@ public class ZYPlayModel extends ZYBaseModel {
      * @param pageSize
      * @return
      */
-    public Observable<ZYResponse<ZYListResponse<ZYComment>>> getComments(String objectId, int pageIndex, int pageSize) {
-        return mApi.getComments("album", objectId, pageIndex, pageSize);
+    public Observable<ZYResponse<ZYListResponse<ZYComment>>> getComments(String type,String objectId, int pageIndex, int pageSize) {
+        return mApi.getComments(type, objectId, pageIndex, pageSize);
     }
 
     /**

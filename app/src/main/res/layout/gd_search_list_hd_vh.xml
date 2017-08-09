@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/c7"
+    android:layout_height="40dp">
+    <TextView
+        android:id="@+id/total_count"
+        android:layout_marginLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="共199个搜索结果"
+        />
+    <LinearLayout
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <View
+            android:layout_width="1dp"
+            android:layout_height="15dp"
+            android:background="@color/c4"/>
+        <TextView
+            android:id="@+id/textSort"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:drawableRight="@drawable/btn_sorting_n"
+            android:text="正序"
+            />
+    </LinearLayout>
+</RelativeLayout>

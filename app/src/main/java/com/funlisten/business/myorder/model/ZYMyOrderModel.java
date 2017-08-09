@@ -18,7 +18,7 @@ public class ZYMyOrderModel extends ZYBaseModel {
         return mApi.getorders(type,pageIndex,pageSize);
     }
 
-   public Observable<ZYResponse<ZYListResponse<ZYOrder>>> getFavorites(String type,int pageIndex, int pageSize){
+   public Observable<ZYResponse<ZYListResponse<ZYFavorite>>> getFavorites(String type,int pageIndex, int pageSize){
        return mApi.getFavorites(type,pageIndex,pageSize);
     }
 

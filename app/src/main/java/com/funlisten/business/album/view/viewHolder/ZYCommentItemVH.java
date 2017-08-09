@@ -68,7 +68,7 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
         }
     }
 
-    @OnClick({R.id.textSuport, R.id.imgAvatar})
+    @OnClick({R.id.textSuport, R.id.imgAvatar,R.id.textMore})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgAvatar:
@@ -81,6 +81,9 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
                 } else {
                     mListener.suport(mData);
                 }
+                break;
+            case R.id.textMore:
+                mListener.moreComment();
                 break;
         }
     }
@@ -103,5 +106,7 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
         void suport(ZYComment comment);
 
         void suportCancle(ZYComment comment);
+
+        void moreComment();
     }
 }

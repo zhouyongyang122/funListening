@@ -100,6 +100,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/hot_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -150,6 +151,14 @@
             app:vertical_Space="10dp">
 
         </com.funlisten.business.search.view.WarpLinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fragment_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
     </LinearLayout>
 
 </LinearLayout>

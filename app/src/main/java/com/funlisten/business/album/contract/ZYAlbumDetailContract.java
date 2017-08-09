@@ -27,5 +27,7 @@ public interface ZYAlbumDetailContract {
         void suport(ZYComment comment);
 
         void suportCancle(ZYComment comment);
+
+        int getAlbumId();
     }
 }

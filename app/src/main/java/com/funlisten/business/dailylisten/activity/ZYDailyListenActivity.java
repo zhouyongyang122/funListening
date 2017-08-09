@@ -61,7 +61,7 @@ public class ZYDailyListenActivity extends ZYBaseFragmentActivity<ZYDailyFragmen
 //        } else {
             shareEntity.avatarBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 //        }
-        shareEntity.webUrl = markBean.share_url;
+        shareEntity.webUrl ="https://mp.weixin.qq.com/s/Kf59r_E07cY4e_Xn0BQI0w"; /*markBean.share_url;*/
         shareEntity.title = ZYUserManager.getInstance().getUser().nickname + "的录音作品快来听一下吧!";
         shareEntity.text = "专为小学生设计的智能学习机";
         new SRShareUtils(mActivity, shareEntity).share();

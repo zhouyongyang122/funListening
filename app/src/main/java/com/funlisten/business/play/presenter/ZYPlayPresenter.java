@@ -15,6 +15,7 @@ import com.funlisten.business.play.model.ZYPlayModel;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
+import com.funlisten.utils.ZYLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,7 +63,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
     public void subscribe() {
         mView.showLoading();
         Observable<ZYResponse<ZYListResponse<ZYComment>>> observable = Observable.zip(
-                mModel.getAlbumDetail(mAlbumId), mModel.getComments(mAlbumId + "", 1, 5), mModel.getAudios(1, 1000, mAlbumId, mSortType), new Func3<ZYResponse<ZYAlbumDetail>, ZYResponse<ZYListResponse<ZYComment>>, ZYResponse<ZYListResponse<ZYAudio>>, ZYResponse<ZYListResponse<ZYComment>>>() {
+                mModel.getAlbumDetail(mAlbumId), mModel.getComments("audio",mAudioId + "", 1, 5), mModel.getAudios(1, 1000, mAlbumId, mSortType), new Func3<ZYResponse<ZYAlbumDetail>, ZYResponse<ZYListResponse<ZYComment>>, ZYResponse<ZYListResponse<ZYAudio>>, ZYResponse<ZYListResponse<ZYComment>>>() {
                     @Override
                     public ZYResponse<ZYListResponse<ZYComment>> call(ZYResponse<ZYAlbumDetail> albumRes, ZYResponse<ZYListResponse<ZYComment>> commentsRes, ZYResponse<ZYListResponse<ZYAudio>> audiosRes) {
                         mAlbumDetail = albumRes.data;
@@ -110,7 +111,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
         mSubscriptions.add(ZYNetSubscription.subscription(mModel.favorite(objectId + "", type), new ZYNetSubscriber<ZYResponse<Object>>() {
             @Override
             public void onSuccess(ZYResponse<Object> response) {
-
+                ZYLog.e(response.data.toString());
             }
 
             @Override

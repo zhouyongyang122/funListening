@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.funlisten.R;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.business.favorite.ZYFavorite;
 import com.funlisten.business.order.ZYOrder;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.utils.ZYDateUtils;
@@ -17,7 +18,7 @@ import butterknife.Bind;
  * Created by gd on 2017/7/22.
  */
 
-public class ZYMyOrderVH extends ZYBaseViewHolder<ZYOrder> {
+public class ZYMyOrderVH extends ZYBaseViewHolder<ZYFavorite> {
 
     @Bind(R.id.coverUrl)
     ImageView coverUrl;
@@ -41,7 +42,7 @@ public class ZYMyOrderVH extends ZYBaseViewHolder<ZYOrder> {
     TextView textTime;
 
     @Override
-    public void updateView(ZYOrder data, int position) {
+    public void updateView(ZYFavorite data, int position) {
         ZYImageLoadHelper.getImageLoader().loadImage(mContext,coverUrl,data.album.coverUrl);
         showPay("paid".equals(data.album.costType));
         title.setText(TextUtils.isEmpty(data.album.title)? "没有提供标题":data.album.title);

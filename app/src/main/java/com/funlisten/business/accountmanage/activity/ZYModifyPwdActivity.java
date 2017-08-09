@@ -12,6 +12,7 @@ import com.funlisten.business.accountmanage.contract.ZYModifyPwd;
 import com.funlisten.business.accountmanage.model.ZYAccountManageModel;
 import com.funlisten.business.accountmanage.presenter.ZYAccountManagerPresenter;
 import com.funlisten.utils.ZYToast;
+import com.funlisten.utils.ZYUtils;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -20,7 +21,7 @@ import butterknife.OnClick;
  * Created by gd on 2017/7/25.
  */
 
-public class ZYModifyPwdActivity extends ZYBaseActivity implements ZYModifyPwd{
+public class ZYModifyPwdActivity extends ZYBaseActivity implements ZYModifyPwd {
 
     @Bind(R.id.pwd_old)
     EditText pwdOld;
@@ -43,21 +44,25 @@ public class ZYModifyPwdActivity extends ZYBaseActivity implements ZYModifyPwd{
     }
 
     @OnClick({R.id.save_pwd})
-    public void OnClick(View view){
+    public void OnClick(View view) {
         String old = pwdOld.getText().toString();
         String pwd = pwdOne.getText().toString();
         String pwds = pwdTwo.getText().toString();
 
-        if(TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwds)||TextUtils.isEmpty(old)){
-            ZYToast.show(this,"请输入密码");
+        if (TextUtils.isEmpty(old)) {
+            ZYToast.show(mActivity, "旧密码不能为空");
             return;
         }
 
-        if(!pwd.equals(pwds)){
-            ZYToast.show(this,"密码不一致");
+        if (!ZYUtils.checkPassword(mActivity, pwd)) {
             return;
         }
-        presenter.updatePass(old,pwd);
+
+        if (!pwd.equals(pwds)) {
+            ZYToast.show(this, "密码不一致");
+            return;
+        }
+        presenter.updatePass(old, pwd);
     }
 
     @Override

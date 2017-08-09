@@ -28,4 +28,6 @@
     <string name="text_qq">QQ</string>
 
     <string name="toast_no_wechat">尚未安装微信，无法分享</string>
+    <string name="toast_password_limit">密码过于简单，请使用字母与数字组合密码。</string>
+    <string name="toast_password_not_null">密码不能空!</string>
 </resources>

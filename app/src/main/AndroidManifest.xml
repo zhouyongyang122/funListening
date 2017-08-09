@@ -61,7 +61,8 @@
             android:name=".business.followfans.activity.GDFollowActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".business.followfans.activity.GDFansActivity"
+        <activity
+            android:name=".business.followfans.activity.GDFansActivity"
             android:screenOrientation="portrait" />
 
         <activity
@@ -81,11 +82,13 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".business.profile.activity.ZYProFlieActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.profile.activity.ZYProFlieActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.search.activity.ZYSearchActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.search.activity.ZYSearchActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".business.user.activity.ZYSetActivity"
@@ -99,9 +102,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Translucent" />
 
-        <activity android:name=".wxapi.WXPayEntryActivity"
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
 
         <!-- begin： 第三方登录，分享添加 -->
         <!-- qq begin -->
@@ -150,55 +154,70 @@
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
 
         <activity
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"  >
-        </activity>
+            android:screenOrientation="behind"></activity>
         <!--支付宝支付添加 end-->
 
-        <activity android:name=".business.dailylisten.activity.ZYDailyListenActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.dailylisten.activity.ZYDailyListenActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.myorder.activity.ZYMyOrderActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.myorder.activity.ZYMyOrderActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.persondata.activity.ZYPersonDataActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.persondata.activity.ZYPersonDataActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.persondata.activity.ZYAreaActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.persondata.activity.ZYAreaActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.accountmanage.activity.ZYAccountManageActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.accountmanage.activity.ZYAccountManageActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.accountmanage.activity.ZYMobileBindActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.accountmanage.activity.ZYMobileBindActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.accountmanage.activity.ZYSetPasswordActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.accountmanage.activity.ZYSetPasswordActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.accountmanage.activity.ZYModifyPwdActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.accountmanage.activity.ZYModifyPwdActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.accountmanage.activity.ZYForgotPasswordActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.accountmanage.activity.ZYForgotPasswordActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.mylike.activity.ZYMyLikeActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.mylike.activity.ZYMyLikeActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.comment.activity.ZYCommentActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.comment.activity.ZYCommentActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.album.activity.ZYBatchDownloadActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.album.activity.ZYBatchDownloadActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".business.pay.activity.ZYPayActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".business.pay.activity.ZYPayActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".business.user.activity.ZYAboutActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

@@ -52,7 +52,7 @@ public class ZYUserManager {
 
     public ZYUser getGuesterUser() {
         ZYUser guesterUser = new ZYUser();
-        guesterUser.id = "-1";
+        guesterUser.id = "";
         return guesterUser;
     }
 

@@ -121,7 +121,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
-                mActivity.startActivity(ZYPhotoActivity.createIntent(mActivity,ZYUserManager.getInstance().getUser().userId));
+                mActivity.startActivity(ZYPhotoActivity.createIntent(mActivity, ZYUserManager.getInstance().getUser().userId));
                 break;
             case R.id.layoutDowload:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
@@ -133,7 +133,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
-                mActivity.startActivity(new Intent(ZYProFlieActivity.createIntent(mActivity,ZYUserManager.getInstance().getUser().userId)));
+                mActivity.startActivity(new Intent(ZYProFlieActivity.createIntent(mActivity, ZYUserManager.getInstance().getUser().userId)));
                 break;
             case R.id.layoutLove:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
@@ -145,7 +145,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
-                mActivity.startActivity(ZYMyOrderActivity.createIntent(mActivity,1));
+                mActivity.startActivity(ZYMyOrderActivity.createIntent(mActivity, 1));
                 break;
             case R.id.layoutStu:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
@@ -156,7 +156,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
-                mActivity.startActivity(ZYMyOrderActivity.createIntent(mActivity,2));
+                mActivity.startActivity(ZYMyOrderActivity.createIntent(mActivity, 2));
                 break;
             case R.id.layoutAccountManager:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
@@ -170,10 +170,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 }
                 break;
             case R.id.layoutSet:
-                if (ZYUserManager.getInstance().isGuesterUser(true)) {
-                    return;
-                }
-                mActivity.startActivity(new Intent(mActivity,ZYSetActivity.class));
+                mActivity.startActivity(new Intent(mActivity, ZYSetActivity.class));
                 break;
         }
     }

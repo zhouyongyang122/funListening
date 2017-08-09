@@ -23,3 +23,6 @@ https://app.zeplin.io/project/590954f22c0c7066252d1cdc/screen/590c2947bb850b23b2
 
 手机api接口  维护在这里
 http://120.27.226.195:8080/dashboard/index.html#!/project/3Afan37hE
+
+//原型
+https://modao.cc/app/dcaYm0S4UksY0zS4veulgYXqSRDH2z0

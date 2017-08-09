@@ -25,8 +25,15 @@ public class ZYDownloadedPresenter extends ZYListDataPresenter<ZYDownloadHomeCon
     protected void loadData() {
         try {
             List<ZYDownloadEntity> audios = mModel.getAlbumAudios(albumId);
-            mDataList.addAll(audios);
+            int totalSize = 0;
+            for (ZYDownloadEntity downloadEntity : audios) {
+                totalSize += downloadEntity.total;
+            }
+            getDataList().clear();
+            getDataList().addAll(audios);
             mView.showList(false);
+            ZYDownloadEntity album = audios.get(0);
+            album.albumDownloadedSize = totalSize;
             mView.refresh(audios.get(0));
         } catch (Exception e) {
             ZYLog.e(getClass().getSimpleName(), "error: " + e.getMessage());

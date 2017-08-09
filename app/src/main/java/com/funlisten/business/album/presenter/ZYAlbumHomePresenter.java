@@ -6,6 +6,7 @@ import com.funlisten.base.mvp.ZYBasePresenter;
 import com.funlisten.business.album.contract.ZYAlbumHomeContract;
 import com.funlisten.business.album.model.ZYAlbumModel;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
+import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 
@@ -46,8 +47,10 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
                 mView.hideLoading();
                 mAlbumDetail = response.data;
                 mView.showDetail(mAlbumDetail);
-                followState();
-                isFavorite();
+                if (!ZYUserManager.getInstance().isGuesterUser(false)) {
+                    followState();
+                    isFavorite();
+                }
             }
 
             @Override
@@ -89,7 +92,7 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
     }
 
     public void favorite() {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favorite( mAlbumDetail.id + "",ZYBaseModel.ALBUM_TYPE), new ZYNetSubscriber<ZYResponse<Object>>() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favorite(mAlbumDetail.id + "", ZYBaseModel.ALBUM_TYPE), new ZYNetSubscriber<ZYResponse<Object>>() {
             @Override
             public void onSuccess(ZYResponse<Object> response) {
                 mAlbumDetail.isFavorite = true;
@@ -105,7 +108,7 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
 
 
     public void favoriteCancel() {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favoriteCancel( mAlbumDetail.id + "",ZYBaseModel.ALBUM_TYPE), new ZYNetSubscriber<ZYResponse<Object>>() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favoriteCancel(mAlbumDetail.id + "", ZYBaseModel.ALBUM_TYPE), new ZYNetSubscriber<ZYResponse<Object>>() {
             @Override
             public void onSuccess(ZYResponse<Object> response) {
                 mAlbumDetail.isFavorite = false;
@@ -149,8 +152,11 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
         }));
     }
 
-    public void isOrder(String  objectId){
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.isOrder("album",objectId), new ZYNetSubscriber<ZYResponse<Boolean>>() {
+    public void isOrder(String objectId) {
+        if (ZYUserManager.getInstance().isGuesterUser(false)) {
+            return;
+        }
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.isOrder("album", objectId), new ZYNetSubscriber<ZYResponse<Boolean>>() {
             @Override
             public void onSuccess(ZYResponse<Boolean> response) {
                 Boolean show = response.data;
@@ -159,7 +165,7 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
 
             @Override
             public void onFail(String message) {
-                super.onFail(message);
+//                super.onFail(message);
             }
         }));
     }

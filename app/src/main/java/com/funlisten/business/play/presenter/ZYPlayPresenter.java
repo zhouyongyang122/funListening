@@ -93,17 +93,21 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
 
     @Override
     public void isFavorite(String type, int objectId) {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.isFavorite(type,objectId),new ZYNetSubscriber<ZYResponse<Boolean>>(){
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.isFavorite(type, objectId), new ZYNetSubscriber<ZYResponse<Boolean>>() {
             @Override
             public void onSuccess(ZYResponse<Boolean> response) {
                 super.onSuccess(response);
                 mView.setCollect(response.data);
             }
+
+            @Override
+            public void onFail(String message) {
+            }
         }));
     }
 
     public void favorite(String type, int objectId) {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favorite(objectId+"", type), new ZYNetSubscriber<ZYResponse<Object>>() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favorite(objectId + "", type), new ZYNetSubscriber<ZYResponse<Object>>() {
             @Override
             public void onSuccess(ZYResponse<Object> response) {
 
@@ -118,7 +122,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
 
 
     public void favoriteCancel(String type, int objectId) {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favoriteCancel(objectId+"", type), new ZYNetSubscriber<ZYResponse<Object>>() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.favoriteCancel(objectId + "", type), new ZYNetSubscriber<ZYResponse<Object>>() {
             @Override
             public void onSuccess(ZYResponse<Object> response) {
             }
@@ -131,7 +135,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
     }
 
     public void refreshPlay(int album, int audio) {
-        if (album != mAlbumDetail.id || mCurPlayAudio.id != audio) {
+        if (mAlbumDetail == null || album != mAlbumDetail.id || mCurPlayAudio.id != audio) {
             ZYPlayManager.getInstance().puase();
             this.mAudioId = audio;
             this.mAlbumId = album;

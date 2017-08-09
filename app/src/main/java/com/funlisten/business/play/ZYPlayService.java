@@ -84,12 +84,12 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
 
 
     private void play() {
+        if (audioPlayer == null) {
+            audioPlayer = new FZAudioPlayer(getApplicationContext(), "ZYPlayService");
+            audioPlayer.setPlayerCallBack(this);
+        }
         if (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isAudition() || mCurrentPlayAudio.isBuy()) {
             ZYPlayHistory.saveByAudio(mCurrentPlayAudio, 0);
-            if (audioPlayer == null) {
-                audioPlayer = new FZAudioPlayer(getApplicationContext(), "ZYPlayService");
-                audioPlayer.setPlayerCallBack(this);
-            }
             audioPlayer.stop();
             stopProgressUpdate();
             sendCallBack(ZYPlayManager.STATE_PREPARING, "播放器初使化中");

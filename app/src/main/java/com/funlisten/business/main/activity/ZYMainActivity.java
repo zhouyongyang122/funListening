@@ -141,9 +141,9 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
                 mainViewPager.setCurrentItem(1);
                 break;
             case R.id.layoutPlayer:
-                if (ZYUserManager.getInstance().isGuesterUser(true)) {
-                    return;
-                }
+//                if (ZYUserManager.getInstance().isGuesterUser(true)) {
+//                    return;
+//                }
                 ZYPlayHistory history = ZYPlayManager.getInstance().queryLastPlay();
                 if (history != null) {
                     ZYPlayActivity.toPlayActivity(mActivity, Integer.parseInt(history.albumId), Integer.parseInt(history.audioId));

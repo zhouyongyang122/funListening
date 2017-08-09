@@ -38,6 +38,8 @@ public class ZYDownloadedHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
 
     ZYDownloadEntity mData;
 
+    final float SIZE_M = 1024 * 1204.0f;
+
     @Override
     public void updateView(ZYDownloadEntity data, int position) {
         if (data != null) {
@@ -49,7 +51,7 @@ public class ZYDownloadedHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
             textName.setText(mData.albumPublisher);
             textUpdateCount.setText("已经更新到" + mData.audioUpatedCount + "集");
             textDownCount.setText("已经下载" + mData.audioDowloadedCount + "集");
-            textSize.setText(String.format("%.2f", ((float) mData.albumDownloadedSize / 1024.0f)));
+            textSize.setText(String.format("%.2f", ((float) mData.albumDownloadedSize / SIZE_M)));
         }
     }
 

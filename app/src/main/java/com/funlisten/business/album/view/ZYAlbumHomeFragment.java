@@ -41,7 +41,7 @@ import butterknife.ButterKnife;
  * Created by ZY on 17/7/4.
  */
 
-public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPresenter> implements ZYAlbumHomeContract.IView, ZYAlbumHomeHeaderVH.HeaderListener ,
+public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPresenter> implements ZYAlbumHomeContract.IView, ZYAlbumHomeHeaderVH.HeaderListener,
         ZYAlbumFooterVH.AlbumFooterListener {
 
     @Bind(R.id.layoutRoot)
@@ -89,7 +89,7 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
         return view;
     }
 
-    private void initFooterView(){
+    private void initFooterView() {
         footerVH = new ZYAlbumFooterVH(this);
         footerVH.attachTo(layoutRoot);
         footerVH.hide();
@@ -105,9 +105,10 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
             }
         });
     }
-    private void setMargin(int height){
-        RelativeLayout.LayoutParams layoutParams  = (RelativeLayout.LayoutParams) coorLayout.getLayoutParams();
-        layoutParams.bottomMargin = ZYScreenUtils.dp2px(mActivity,height);
+
+    private void setMargin(int height) {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) coorLayout.getLayoutParams();
+        layoutParams.bottomMargin = ZYScreenUtils.dp2px(mActivity, height);
         coorLayout.setLayoutParams(layoutParams);
     }
 
@@ -162,8 +163,11 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
     @Override
     public void showDetail(ZYAlbumDetail albumDetail) {
         homeHeaderVH.updateView(albumDetail, 0);
-        if("free".equals(albumDetail.costType))footerVH.hide();
-        else mPresenter.isOrder(albumDetail.id+"");
+        if ("free".equals(albumDetail.costType)) {
+            footerVH.hide();
+        } else {
+            mPresenter.isOrder(albumDetail.id + "");
+        }
         ((ZYAlbumDetailFragment) adapter.getItem(0)).loadComments(albumDetail.details);
         ((ZYAlbumAudiosFragment) adapter.getItem(1)).setAlbumDetail(albumDetail);
     }
@@ -217,12 +221,12 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
 
     @Override
     public void onPay() {
-        mActivity.startActivity(ZYPayActivity.createIntent(mActivity,mPresenter.getAlbumDetail()));
+        mActivity.startActivity(ZYPayActivity.createIntent(mActivity, mPresenter.getAlbumDetail()));
     }
 
     @Override
     public void isShowPay(boolean isShow) {
-        if(isShow){
+        if (isShow) {
             footerVH.show();
             setMargin(50);
         }

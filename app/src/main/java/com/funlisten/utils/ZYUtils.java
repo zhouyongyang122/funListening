@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.funlisten.R;
 import com.orhanobut.logger.Logger;
 
 import java.io.BufferedInputStream;
@@ -21,6 +22,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by ZY on 17/3/14.
@@ -142,5 +145,83 @@ public class ZYUtils {
             }
             bos.close();
         }
+    }
+
+    /**
+     * 检测密码复杂度
+     * 6-18位字母与数字组合密码；对于少于六位、纯数字或者纯字母的密码不可用
+     */
+    public static boolean checkPassword(Context context, String password){
+        if (TextUtils.isEmpty(password)){
+            ZYToast.show(context, context.getString(R.string.toast_password_not_null));
+            return false;
+        }else {
+            // 密码长度大于6为位
+            if (password.length() < 6)
+            {
+                ZYToast.show(context, context.getString(R.string.toast_password_limit));
+                return false;
+            }
+
+            // 密码不能全为同一符号
+            if (isContainSameoneChar(password))
+            {
+                ZYToast.show(context, context.getString(R.string.toast_password_limit));
+                return false;
+            }
+
+            // 密码不能全为数字
+            if (isContainDigitalOnly(password))
+            {
+                ZYToast.show(context, context.getString(R.string.toast_password_limit));
+                return false;
+            }
+
+            // 密码不能全为字母
+            if (isContainCharaterOnly(password))
+            {
+                ZYToast.show(context, context.getString(R.string.toast_password_limit));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 判断字符串是否为同一字符
+     */
+    public static boolean isContainSameoneChar(String str)
+    {
+        char c = str.charAt(0);
+        for (int i = 0; i < str.length(); i++)
+        {
+            if (c != str.charAt(i))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 判断字符串是否为纯字母
+     */
+    public static boolean isContainCharaterOnly(String str)
+    {
+        if (str.matches("[a-zA-Z]*"))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断是否是纯数字
+     */
+    public static boolean isContainDigitalOnly(String pwd)
+    {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(pwd);
+        return isNum.matches();
     }
 }

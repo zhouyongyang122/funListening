@@ -60,7 +60,8 @@ public class ZYAlbumHomeEpisodeVH extends ZYBaseViewHolder<ZYAlbumDetail> {
                 }
 
                 if (count % 20 > 0) {
-                    episodes.add(new ZYAlbumEpisode(start + 1, start + count % 20));
+                    start = count - count % 20;
+                    episodes.add(new ZYAlbumEpisode(start + 1, count));
                 }
 
                 adapter.setDatas(episodes);

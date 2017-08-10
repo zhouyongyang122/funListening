@@ -63,7 +63,7 @@ public interface ZYRequestApi {
     Observable<ZYResponse> getCode(@Query("phone") String phone, @Query("type") String type);
 
     @POST("sys/checkCodeIsEquals")
-    Observable<ZYResponse> checkCode(@Query("phone") String phone, @Query("type") String type,@Query("code") String code);
+    Observable<ZYResponse> checkCode(@Query("phone") String phone, @Query("type") String type, @Query("code") String code);
 
     @POST("user/regUser")
     Observable<ZYResponse> regUser(@QueryMap Map<String, String> paramas);
@@ -84,6 +84,7 @@ public interface ZYRequestApi {
 
     /**
      * 第三方id自动登录接口
+     *
      * @return
      */
     @POST("user/autoLoginByOpenId")
@@ -143,7 +144,7 @@ public interface ZYRequestApi {
 
     @POST("user/updateUserAvatar")
     @Multipart
-    Observable<ZYResponse> updateUserAvatar( @Part MultipartBody.Part avatarFile);
+    Observable<ZYResponse> updateUserAvatar(@Part MultipartBody.Part avatarFile);
 
 //    Observable<ZYResponse> updateUserAvatar(@Field("avatarFile") byte[] avatarFile);
 
@@ -240,7 +241,7 @@ public interface ZYRequestApi {
      * @param  objectId 对应的专辑id或音频id
      * */
     @POST("user/checkAlbumAudio")
-    Observable<ZYResponse<Boolean>> isOrder(@Query("type") String type, @Query("objectId") String  objectId);
+    Observable<ZYResponse<Boolean>> isOrder(@Query("type") String type, @Query("objectId") String objectId);
 
     /**
      * 支付宝下单
@@ -370,4 +371,9 @@ public interface ZYRequestApi {
     @POST("user/followStatus")
     Observable<ZYResponse<String>> isFollowStatus(@Query("toUserId") int toUserId);
 
+    @POST("audio/addPlayCount")
+    Observable<ZYResponse> reportPlay(@Query("id") int audioId);
+
+    @POST("audio/addDownloadCount")
+    Observable<ZYResponse> reportDownload(@Query("id") int audioId);
 }

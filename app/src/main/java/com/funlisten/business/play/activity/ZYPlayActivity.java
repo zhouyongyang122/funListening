@@ -44,6 +44,10 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
         context.overridePendingTransition(R.anim.slide_up, R.anim.slide_up);
     }
 
+    public static void toPlayActivity(Activity context) {
+        context.startActivity(createIntent(context, 0, 0, null));
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +68,9 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
         int mAlbumId = intent.getIntExtra(ALBUM_ID, 0);
         int mAudioId = intent.getIntExtra(AUDIO_ID, 0);
         ZYLog.e(getClass().getSimpleName(), "onNewIntent: " + mAlbumId + ":" + mAudioId);
-        mPresenter.refreshPlay(mAlbumId, mAudioId);
+        if (mAlbumId > 0) {
+            mPresenter.refreshPlay(mAlbumId, mAudioId);
+        }
     }
 
     @Override

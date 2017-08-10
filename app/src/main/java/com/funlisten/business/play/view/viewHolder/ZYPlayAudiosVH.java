@@ -1,5 +1,6 @@
 package com.funlisten.business.play.view.viewHolder;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -81,7 +82,25 @@ public class ZYPlayAudiosVH extends ZYBaseViewHolder<List<ZYAudio>> {
             });
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+
+            refreshPlayType();
         }
+    }
+
+    void refreshPlayType() {
+        Drawable drawable = null;
+        if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_LOOP_TYPE) {
+            drawable = mContext.getResources().getDrawable(R.drawable.btn_change_or_cycle_n);
+            textPlayType.setText("循环");
+        } else if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_SINTANCE_TYPE) {
+            textPlayType.setText("单曲");
+            drawable = mContext.getResources().getDrawable(R.drawable.icon_single_cycle);
+        } else {
+            textPlayType.setText("随机");
+            drawable = mContext.getResources().getDrawable(R.drawable.icon_shuffle_playback);
+        }
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        textPlayType.setCompoundDrawables(null, drawable, null, null);
     }
 
     @Override
@@ -94,26 +113,29 @@ public class ZYPlayAudiosVH extends ZYBaseViewHolder<List<ZYAudio>> {
         switch (view.getId()) {
             case R.id.textPlayType:
                 if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_LOOP_TYPE) {
-                    textPlayType.setSelected(true);
-                    textPlayType.setText("随机");
                     ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_RANDOM_TYPE);
+                } else if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_SINTANCE_TYPE) {
+                    ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_SINTANCE_TYPE);
                 } else {
-                    textPlayType.setSelected(false);
-                    textPlayType.setText("循环");
                     ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_LOOP_TYPE);
                 }
+                refreshPlayType();
                 break;
             case R.id.textPlaySort:
                 Collections.reverse(mAudios);
                 ZYPlayManager.getInstance().setAudios(mAudios);
+                adapter.notifyDataSetChanged();
                 break;
             case R.id.textClose:
-                unAttachTo();
+                hide();
+                listener.onAudiosViewClose();
                 break;
         }
     }
 
     public interface PlayAudiosListener {
         void onAudiosItemClick(int position);
+
+        void onAudiosViewClose();
     }
 }

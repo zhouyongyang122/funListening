@@ -1,5 +1,6 @@
 package com.funlisten.business.play.view.viewHolder;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -120,17 +121,11 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, albumDetail.publisher.avatarUrl);
             textTitle.setText(albumDetail.name);
             textInfo.setText(albumDetail.favoriteCount + "人订阅 | " + albumDetail.playCount + "播放");
-            textSubscribe.setText(albumDetail.isFavorite ? "已订阅":"订阅");
+            textSubscribe.setText(albumDetail.isFavorite ? "已订阅" : "订阅");
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, albumDetail.coverUrl);
             refreshProgress(0, 1000);
 
-            if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_LOOP_TYPE) {
-                textPlayType.setSelected(false);
-                textPlayType.setText("循环");
-            } else {
-                textPlayType.setSelected(true);
-                textPlayType.setText("随机");
-            }
+            refreshPlayType();
         }
     }
 
@@ -139,7 +134,23 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         return R.layout.zy_view_play_header;
     }
 
-    @OnClick({R.id.imgPre, R.id.imgPlay, R.id.imgNext, R.id.textPlayList, R.id.textPlayType,R.id.textSubscribe})
+    public void refreshPlayType() {
+        Drawable drawable = null;
+        if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_LOOP_TYPE) {
+            drawable = mContext.getResources().getDrawable(R.drawable.btn_change_or_cycle_n);
+            textPlayType.setText("循环");
+        } else if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_SINTANCE_TYPE) {
+            textPlayType.setText("单曲");
+            drawable = mContext.getResources().getDrawable(R.drawable.icon_single_cycle);
+        } else {
+            textPlayType.setText("随机");
+            drawable = mContext.getResources().getDrawable(R.drawable.icon_shuffle_playback);
+        }
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        textPlayType.setCompoundDrawables(null, drawable, null, null);
+    }
+
+    @OnClick({R.id.imgPre, R.id.imgPlay, R.id.imgNext, R.id.textPlayList, R.id.textPlayType, R.id.textSubscribe})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgPre:
@@ -157,14 +168,13 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
             case R.id.textPlayType:
                 headerListener.onPlayTypeClick();
                 if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_LOOP_TYPE) {
-                    textPlayType.setSelected(true);
-                    textPlayType.setText("随机");
                     ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_RANDOM_TYPE);
+                } else if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_SINTANCE_TYPE) {
+                    ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_SINTANCE_TYPE);
                 } else {
-                    textPlayType.setSelected(false);
-                    textPlayType.setText("循环");
                     ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_LOOP_TYPE);
                 }
+                refreshPlayType();
                 break;
             case R.id.textSubscribe:
                 headerListener.onSubscribeClick(mData.albumDetail);
@@ -214,17 +224,17 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         }
 
         if (playEvent.state == STATE_ERROR) {
-            imgPlay.setImageResource(R.drawable.suspend);
+            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
         } else if (playEvent.state == STATE_PREPARING) {
-            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+            imgPlay.setImageResource(R.drawable.btn_playbar_n);
         } else if (playEvent.state == STATE_PREPARED) {
-            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+            imgPlay.setImageResource(R.drawable.btn_playbar_n);
         } else if (playEvent.state == STATE_PLAYING) {
-            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+            imgPlay.setImageResource(R.drawable.btn_playbar_n);
         } else if (playEvent.state == STATE_PAUSED) {
-            imgPlay.setImageResource(R.drawable.suspend);
+            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
         } else if (playEvent.state == STATE_NEED_BUY_PAUSED) {
-            imgPlay.setImageResource(R.drawable.suspend);
+            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
         } else if (playEvent.state == STATE_BUFFERING_START) {
 
         } else if (playEvent.state == STATE_BUFFERING_END) {
@@ -232,7 +242,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         } else if (playEvent.state == STATE_PREPARING_NEXT) {
 
         } else if (playEvent.state == STATE_COMPLETED) {
-            imgPlay.setImageResource(R.drawable.suspend);
+            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
         }
         if (playEvent.audio != null) {
             mData.audio = playEvent.audio;

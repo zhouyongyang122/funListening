@@ -41,12 +41,16 @@ public abstract class ZYBaseViewHolder<D> {
         }
     }
 
-    public void show(){
+    public void show() {
         mItemView.setVisibility(View.VISIBLE);
     }
 
-    public void hide(){
+    public void hide() {
         mItemView.setVisibility(View.GONE);
+    }
+
+    public boolean isVisible() {
+        return mItemView.getVisibility() == View.VISIBLE;
     }
 
     public View getDataBindingRoot(Context context, ViewGroup parent) {

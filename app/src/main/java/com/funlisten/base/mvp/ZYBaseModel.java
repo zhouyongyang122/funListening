@@ -122,4 +122,12 @@ public class ZYBaseModel {
         return mApi.followCancle(toUserId);
     }
 
+    public Observable<ZYResponse> reportPlay(int audioId) {
+        return mApi.reportPlay(audioId);
+    }
+
+    public Observable<ZYResponse> reportDownload(int audioId) {
+        return mApi.reportDownload(audioId);
+    }
+
 }

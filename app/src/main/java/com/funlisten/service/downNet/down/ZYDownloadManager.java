@@ -1,7 +1,11 @@
 package com.funlisten.service.downNet.down;
 
 import com.funlisten.base.bean.ZYIBaseBean;
+import com.funlisten.base.bean.ZYResponse;
+import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
+import com.funlisten.service.net.ZYNetSubscriber;
+import com.funlisten.service.net.ZYNetSubscription;
 import com.funlisten.utils.ZYFileUtils;
 import com.funlisten.utils.ZYLog;
 import com.funlisten.utils.ZYUrlUtils;
@@ -205,6 +209,16 @@ public class ZYDownloadManager {
                         }
                     })
                     .subscribe(downloadSubscriber);
+
+            try {
+                ZYNetSubscription.subscription(new ZYBaseModel().reportDownload(((ZYDownloadEntity) entity).audioId), new ZYNetSubscriber<ZYResponse>() {
+                    @Override
+                    public void onFail(String message) {
+                    }
+                });
+            } catch (Exception e) {
+
+            }
         }
 
         public void unsubscribe() {

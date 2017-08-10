@@ -66,11 +66,12 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     @Override
     protected void onItemClick(View view, int position) {
         ZYAudio data = mAdapter.getItem(position);
-        ZYPlayActivity.toPlayActivity(mActivity, albumDetail.id, data.id,mPresenter.getSortType());
+        ZYPlayActivity.toPlayActivity(mActivity, albumDetail.id, data.id, mPresenter.getSortType());
     }
 
     public void setAlbumDetail(ZYAlbumDetail albumDetail) {
         this.albumDetail = albumDetail;
+        homeHeaderVH.updateView(albumDetail, 0);
     }
 
     @Override
@@ -81,19 +82,36 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     @Override
     public void onSortClick() {
         mPresenter.changerSortType();
+        if (episodeVH.isVisible()) {
+            episodeVH.hide();
+        }
     }
 
     @Override
     public void onChoiceClick() {
-        episodeVH.updateView(albumDetail, 0);
-        episodeVH.show();
+        if (episodeVH.isVisible()) {
+            episodeVH.hide();
+        } else {
+            episodeVH.updateView(albumDetail, 0);
+            episodeVH.show();
+        }
     }
 
     @Override
     public void onDownloadClick() {
-         ArrayList<ZYAudio> list = new ArrayList<>();
+        ArrayList<ZYAudio> list = new ArrayList<>();
         list.addAll(mPresenter.getDataList());
-        mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity,list,albumDetail));
+        mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity, list, albumDetail));
+        if (episodeVH.isVisible()) {
+            episodeVH.hide();
+        }
+    }
+
+    @Override
+    public void onEpisodeClick() {
+        if (episodeVH.isVisible()) {
+            episodeVH.hide();
+        }
     }
 
     @Override

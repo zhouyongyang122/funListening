@@ -1,5 +1,7 @@
 package com.funlisten.business.download.view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -20,7 +22,8 @@ import com.funlisten.business.download.view.viewholder.ZYDownloadHomeItemVH;
  * Created by ZY on 17/7/12.
  */
 
-public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeContract.IPresenter, ZYDownloadEntity> implements ZYDownloadHomeContract.IView, ZYDownloadHomeHeaderVH.DownloadHomeHeaderListener {
+public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeContract.IPresenter, ZYDownloadEntity> implements ZYDownloadHomeContract.IView, ZYDownloadHomeHeaderVH.DownloadHomeHeaderListener,
+        ZYDownloadHomeItemVH.DownloadHomeItemListener {
 
     ZYDownloadHomeHeaderVH homeHeaderVH;
 
@@ -57,7 +60,7 @@ public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeCon
 
     @Override
     protected ZYBaseViewHolder<ZYDownloadEntity> createViewHolder() {
-        return new ZYDownloadHomeItemVH();
+        return new ZYDownloadHomeItemVH(this);
     }
 
     @Override
@@ -69,6 +72,25 @@ public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeCon
     public void onResume() {
         super.onResume();
         mPresenter.subscribe();
+    }
+
+    @Override
+    public void onDelClick(final ZYDownloadEntity data) {
+        new AlertDialog.Builder(mActivity).setTitle("删除").setMessage("是否删除音频?")
+                .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ZYDownloadEntity.delByAlbumId(data.albumId);
+                        mPresenter.getDataList().remove(data);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).create().show();
     }
 
     @Override

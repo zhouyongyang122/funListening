@@ -45,6 +45,12 @@ public class ZYDownloadHomeItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
 
     final int SIZE_M = 1024 * 1024;
 
+    DownloadHomeItemListener mListener;
+
+    public ZYDownloadHomeItemVH(DownloadHomeItemListener listener) {
+        mListener = listener;
+    }
+
     @Override
     public void updateView(ZYDownloadEntity data, int position) {
         if (data != null) {
@@ -65,6 +71,7 @@ public class ZYDownloadHomeItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layoutDel:
+                mListener.onDelClick(mData);
                 break;
         }
     }
@@ -73,4 +80,9 @@ public class ZYDownloadHomeItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     public int getLayoutResId() {
         return R.layout.zy_view_download_home_item;
     }
+
+    public interface DownloadHomeItemListener {
+        void onDelClick(ZYDownloadEntity data);
+    }
+
 }

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.funlisten.ZYApplication;
 import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.player.FZAudioPlayer;
@@ -100,7 +101,7 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
             audioPlayer.stop();
             stopProgressUpdate();
             sendCallBack(ZYPlayManager.STATE_PREPARING, "播放器初使化中");
-            audioPlayer.open(mCurrentPlayAudio.fileUrl, 0);
+            audioPlayer.open(ZYApplication.getInstance().getProxy(this).getProxyUrl(mCurrentPlayAudio.fileUrl, true), 0);
             reportAudioPlay();
 
             ZYNetSubscription.subscription(new ZYBaseModel().reportPlay(mCurrentPlayAudio.id), new ZYNetSubscriber<ZYResponse>() {

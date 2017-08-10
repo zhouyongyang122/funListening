@@ -132,7 +132,7 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
         downloadEntity.audioSort = audio.sort;
         downloadEntity.total = audio.fileLength;
         downloadEntity.url = audio.fileUrl;
-        File file = new File(ZYApplication.AUDIO_CACHE_DIR + albumDetail.id + "/" + audio.id + ".mp3");
+        File file = new File(ZYApplication.AUDIO_DOWNLOAD_DIR + albumDetail.id + "/" + audio.id + ".mp3");
         try {
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
@@ -212,6 +212,19 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
             return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.AlbumId.eq(albumId)).build().list();
         }
     }
+
+    public static void delByAlbumId(int albumId) {
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getWritableDaoSession().getZYDownloadEntityDao();
+            List<ZYDownloadEntity> results = downloadEntityDao.queryBuilder().where(
+                    ZYDownloadEntityDao.Properties.AlbumId.eq(albumId)
+            ).build().list();
+            if (results != null && results.size() > 0) {
+                downloadEntityDao.deleteInTx(results);
+            }
+        }
+    }
+
 
     public static List<ZYDownloadEntity> queryDownloaded() {
         synchronized (object) {

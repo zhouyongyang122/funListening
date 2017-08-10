@@ -8,10 +8,13 @@ import android.os.Environment;
 
 import com.bugtags.library.Bugtags;
 import com.bugtags.library.BugtagsOptions;
+import com.danikula.videocache.HttpProxyCacheServer;
+import com.danikula.videocache.file.FileNameGenerator;
 import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.service.db.ZYDBManager;
 import com.funlisten.service.downNet.down.ZYDownloadManager;
 import com.funlisten.thirdParty.statistics.DataStatistics;
+import com.funlisten.utils.ZYFileUtils;
 import com.funlisten.utils.ZYLog;
 import com.funlisten.utils.ZYUncaughtExceptionHandler;
 import com.zzhoujay.richtext.RichText;
@@ -31,11 +34,15 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
 
     public static final String IMG_CACHE_DIR = APP_ROOT_DIR + File.separator + "imgCache" + File.separator;
 
+    public static final String AUDIO_DOWNLOAD_DIR = APP_ROOT_DIR + File.separator + "audioDownload" + File.separator;
+
     public static final String AUDIO_CACHE_DIR = APP_ROOT_DIR + File.separator + "audioCache" + File.separator;
 
     private Activity currentActivity;
 
     private ArrayList<Activity> allActivities = new ArrayList<Activity>();
+
+    private HttpProxyCacheServer proxy;
 
     @Override
     public void onCreate() {
@@ -91,6 +98,11 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
         if (!file.exists()) {
             ZYLog.e(getClass().getSimpleName(), "AUDIO_CACHE_DIR: " + file.mkdirs() + file.getAbsolutePath());
         }
+
+        file = new File(AUDIO_DOWNLOAD_DIR);
+        if (!file.exists()) {
+            ZYLog.e(getClass().getSimpleName(), "AUDIO_DOWNLOAD_DIR: " + file.mkdirs() + file.getAbsolutePath());
+        }
     }
 
     public void initBugTags() {
@@ -134,5 +146,43 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
 
     @Override
     public void onUncaughtExceptionHappen(Thread thread, Throwable ex) {
+    }
+
+    public static HttpProxyCacheServer getProxy(Context context) {
+        ZYApplication app = null;
+        if (context == null) {
+            app = ZYApplication.getInstance();
+        } else {
+            app = (ZYApplication) context.getApplicationContext();
+        }
+
+        return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
+    }
+
+    private HttpProxyCacheServer newProxy() {
+        final File file = new File(AUDIO_CACHE_DIR);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        //获取缓存大小
+        long defalutSize = 100 * 1024 * 1024;
+        long avaliableSize = ZYFileUtils.getAvailableSDMemorySize(Environment.getExternalStorageDirectory().getAbsolutePath());
+        long size = avaliableSize / 10;
+        size = size < defalutSize ? defalutSize : size;
+
+        ZYLog.e(getClass().getSimpleName(), "videoCacheSize: " + ((float) size / (1024.0f * 1024.0f)) + "M");
+
+        return new HttpProxyCacheServer.Builder(this)
+                .cacheDirectory(file).maxCacheSize(size)
+                .fileNameGenerator(new FileNameGenerator() {
+                    @Override
+                    public String generate(String url) {
+                        StringBuffer sb = new StringBuffer(url);
+                        String fileName = sb.substring(url.lastIndexOf("/") + 1).replace(":", "_").replace(".", "");
+                        return fileName.substring(0, fileName.length() - 1);
+                    }
+                })
+                .build();
     }
 }

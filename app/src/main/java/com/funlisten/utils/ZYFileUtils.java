@@ -1,5 +1,8 @@
 package com.funlisten.utils;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
+import android.os.StatFs;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -275,5 +278,30 @@ public class ZYFileUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 获取sdcard剩余存储空间
+     *
+     * @return
+     */
+    @SuppressLint("NewApi")
+    public static long getAvailableSDMemorySize(String path) {
+        try {
+            StatFs stat = new StatFs(path);
+            long blockSize = 0;
+            long availableBlocks = 0;
+            if (Build.VERSION.SDK_INT < 18) {
+                blockSize = stat.getBlockSize();
+                availableBlocks = stat.getAvailableBlocks();
+            } else {
+                blockSize = stat.getBlockSizeLong();
+                availableBlocks = stat.getAvailableBlocksLong();
+            }
+            return availableBlocks * blockSize;
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return -1;
     }
 }

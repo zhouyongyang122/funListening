@@ -96,6 +96,7 @@ public class ZYSetFragment extends ZYBaseFragment {
     void refreshSize() {
         try {
             long size = ZYFileUtils.getDirWholeFileSize(new File(ZYApplication.IMG_CACHE_DIR));
+            size += ZYFileUtils.getDirWholeFileSize(new File(ZYApplication.AUDIO_CACHE_DIR));
             textCacheSize.setText(ZYFileUtils.formatFileSize(size));
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,6 +115,8 @@ public class ZYSetFragment extends ZYBaseFragment {
                 break;
             case R.id.layoutCache:
                 ZYToast.show(mActivity, "清理成功!");
+                ZYFileUtils.delete(new File(ZYApplication.IMG_CACHE_DIR), false);
+                ZYFileUtils.delete(new File(ZYApplication.AUDIO_CACHE_DIR), false);
                 textCacheSize.setText(ZYFileUtils.formatFileSize(0));
                 break;
             case R.id.layoutSuport:

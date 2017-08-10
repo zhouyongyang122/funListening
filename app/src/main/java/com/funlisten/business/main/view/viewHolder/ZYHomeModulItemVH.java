@@ -53,10 +53,12 @@ public class ZYHomeModulItemVH extends ZYBaseViewHolder<ZYHome.ModuleItem> {
                 mItemView.setPadding(ZYScreenUtils.dp2px(mContext, 3), 0, ZYScreenUtils.dp2px(mContext, 3), 0);
             }
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, mData.coverUrl);
-            textTitle.setText(data.name+"");
-            if("paid".equals(data.costType))
-            textPay.setVisibility(View.VISIBLE);
-            else   textPay.setVisibility(View.INVISIBLE);
+            textTitle.setText(data.name + "");
+            if ("paid".equals(data.costType)) {
+                textPay.setVisibility(View.VISIBLE);
+            } else {
+                textPay.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

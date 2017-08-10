@@ -159,8 +159,8 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
         mSubscriptions.add(ZYNetSubscription.subscription(mModel.isOrder("album", objectId), new ZYNetSubscriber<ZYResponse<Boolean>>() {
             @Override
             public void onSuccess(ZYResponse<Boolean> response) {
-                Boolean show = response.data;
-                mView.isShowPay(!show);
+                mAlbumDetail.isBuy = response.data;
+                mView.isShowPay(!mAlbumDetail.isBuy);
             }
 
             @Override

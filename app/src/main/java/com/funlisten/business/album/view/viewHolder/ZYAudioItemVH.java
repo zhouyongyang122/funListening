@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
@@ -43,11 +44,17 @@ public class ZYAudioItemVH extends ZYBaseViewHolder<ZYAudio> {
     @Bind(R.id.textTimeHours)
     TextView textTimeHours;
 
+    @Bind(R.id.layoutDownload)
+    RelativeLayout layoutDownload;
+
     @Bind(R.id.imgDownload)
     ImageView imgDownload;
 
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
+
+    @Bind(R.id.textAuditon)
+    TextView textAuditon;
 
     ZYAudio mData;
 
@@ -75,23 +82,33 @@ public class ZYAudioItemVH extends ZYBaseViewHolder<ZYAudio> {
     }
 
     private void refreshView() {
-        if (mDownloadEntity != null) {
-            if (mDownloadEntity.getState() == ZYDownState.FINISH) {
-                progressBar.setVisibility(View.GONE);
-                imgDownload.setVisibility(View.VISIBLE);
-                imgDownload.setSelected(true);
-            } else if (mDownloadEntity.getState() == ZYDownState.ERROR || mDownloadEntity.getState() == ZYDownState.PAUSE) {
+        if (listener.canDownload()) {
+            layoutDownload.setVisibility(View.VISIBLE);
+            if (mDownloadEntity != null) {
+                if (mDownloadEntity.getState() == ZYDownState.FINISH) {
+                    progressBar.setVisibility(View.GONE);
+                    imgDownload.setVisibility(View.VISIBLE);
+                    imgDownload.setSelected(true);
+                } else if (mDownloadEntity.getState() == ZYDownState.ERROR || mDownloadEntity.getState() == ZYDownState.PAUSE) {
+                    progressBar.setVisibility(View.GONE);
+                    imgDownload.setVisibility(View.VISIBLE);
+                    imgDownload.setSelected(false);
+                } else {
+                    progressBar.setVisibility(View.VISIBLE);
+                    imgDownload.setVisibility(View.GONE);
+                }
+            } else {
                 progressBar.setVisibility(View.GONE);
                 imgDownload.setVisibility(View.VISIBLE);
                 imgDownload.setSelected(false);
-            } else {
-                progressBar.setVisibility(View.VISIBLE);
-                imgDownload.setVisibility(View.GONE);
             }
         } else {
-            progressBar.setVisibility(View.GONE);
-            imgDownload.setVisibility(View.VISIBLE);
-            imgDownload.setSelected(false);
+            layoutDownload.setVisibility(View.GONE);
+            if (mData.isAudition()) {
+                textAuditon.setVisibility(View.VISIBLE);
+            } else {
+                textAuditon.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -133,7 +150,10 @@ public class ZYAudioItemVH extends ZYBaseViewHolder<ZYAudio> {
     }
 
     public interface AudioItemListener {
+
         ZYDownloadEntity onDownloadClick(ZYAudio audio);
+
+        boolean canDownload();
 
         void addEvents(ZYBaseViewHolder viewHolder);
     }

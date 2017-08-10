@@ -22,6 +22,7 @@ import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.service.downNet.down.ZYDownloadManager;
 import com.funlisten.utils.ZYLog;
 import com.funlisten.utils.ZYScreenUtils;
+import com.funlisten.utils.ZYToast;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,7 +67,11 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     @Override
     protected void onItemClick(View view, int position) {
         ZYAudio data = mAdapter.getItem(position);
-        ZYPlayActivity.toPlayActivity(mActivity, albumDetail.id, data.id, mPresenter.getSortType());
+        if (data.isAudition() || !albumDetail.isNeedBuy() || albumDetail.isBuy) {
+            ZYPlayActivity.toPlayActivity(mActivity, albumDetail.id, data.id, mPresenter.getSortType());
+        } else {
+            ZYToast.show(mActivity, "需要购买后才能听哦!");
+        }
     }
 
     public void setAlbumDetail(ZYAlbumDetail albumDetail) {
@@ -99,6 +104,12 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
 
     @Override
     public void onDownloadClick() {
+
+        if (!albumDetail.isBuy && albumDetail.isNeedBuy()) {
+            ZYToast.show(mActivity, "购买之后便可指下载,随时随地播放!");
+            return;
+        }
+
         ArrayList<ZYAudio> list = new ArrayList<>();
         list.addAll(mPresenter.getDataList());
         mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity, list, albumDetail));
@@ -125,6 +136,14 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
         ZYDownloadEntity downloadEntity = ZYDownloadEntity.createEntityByAudio(albumDetail, audio);
         ZYDownloadManager.getInstance().addAudio(downloadEntity);
         return downloadEntity;
+    }
+
+    @Override
+    public boolean canDownload() {
+        if (!albumDetail.isBuy && albumDetail.isNeedBuy()) {
+            return false;
+        }
+        return true;
     }
 
     @Override

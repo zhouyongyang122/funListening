@@ -81,6 +81,17 @@
             android:layout_marginRight="15dp" />
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/textAuditon"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="试听"
+        android:textColor="@color/c9"
+        android:textSize="@dimen/f4"
+        android:visibility="gone" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"

@@ -69,6 +69,12 @@ public class ZYAlbumDetail implements ZYIBaseBean {
 
     public String followSate = ZYBaseModel.FOLLOW_NO_STATE;
 
+    public boolean isBuy;
+
+    public boolean isNeedBuy() {
+        return costType.equals("paid");
+    }
+
     public String getCategoryNames() {
         String names = "";
         if (categoryList != null && categoryList.size() > 0) {

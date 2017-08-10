@@ -216,10 +216,6 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
     }
 
     @Override
-    public void onListener() {
-    }
-
-    @Override
     public void onPay() {
         mActivity.startActivity(ZYPayActivity.createIntent(mActivity, mPresenter.getAlbumDetail()));
     }

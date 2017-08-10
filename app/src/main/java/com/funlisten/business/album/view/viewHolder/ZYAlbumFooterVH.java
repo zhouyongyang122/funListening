@@ -33,12 +33,9 @@ public class ZYAlbumFooterVH extends ZYBaseViewHolder {
         return R.layout.gd_album_ft_item;
     }
 
-    @OnClick({R.id.listener,R.id.pay_tv})
-    public void OnClick(View view){
-        switch (view.getId()){
-            case R.id.listener:
-                footerListener.onListener();
-                break;
+    @OnClick({R.id.pay_tv})
+    public void OnClick(View view) {
+        switch (view.getId()) {
             case R.id.pay_tv:
                 footerListener.onPay();
                 break;
@@ -47,16 +44,15 @@ public class ZYAlbumFooterVH extends ZYBaseViewHolder {
 
     @Override
     public void attachTo(ViewGroup viewGroup) {
-        View view  = LayoutInflater.from(viewGroup.getContext()).inflate(getLayoutResId(), viewGroup, false);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ZYScreenUtils.dp2px(viewGroup.getContext(),50));
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(getLayoutResId(), viewGroup, false);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ZYScreenUtils.dp2px(viewGroup.getContext(), 50));
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         view.setLayoutParams(layoutParams);
         bindView(view);
         viewGroup.addView(getItemView());
     }
 
-    public interface AlbumFooterListener{
-        void onListener();
+    public interface AlbumFooterListener {
         void onPay();
     }
 }

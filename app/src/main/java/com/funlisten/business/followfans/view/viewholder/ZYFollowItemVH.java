@@ -80,7 +80,7 @@ public class ZYFollowItemVH extends ZYBaseViewHolder<ZYUserList> {
     private void changeColor(String followStatus) {
         if (ZYBaseModel.FOLLOW_NO_STATE.equals(followStatus)) {
             iconAttention.setImageResource(R.drawable.icon_attention_n);
-            followTv.setTextColor(mContext.getResources().getColor(R.color.c5));
+            followTv.setTextColor(mContext.getResources().getColor(R.color.c4));
             followTv.setText("加关注");
         } else {
             iconAttention.setImageResource(R.drawable.icon_attention_pre_n);

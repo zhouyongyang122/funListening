@@ -7,15 +7,8 @@ import com.funlisten.base.mvp.ZYListDataPresenter;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.comment.contract.ZYCommentContract;
 import com.funlisten.business.comment.model.ZYCommentModel;
-import com.funlisten.business.followfans.contract.GDFollowContract;
-import com.funlisten.business.followfans.model.GDFollowModel;
-import com.funlisten.business.login.model.bean.ZYUser;
-import com.funlisten.business.user.model.ZYUserList;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/12.

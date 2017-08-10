@@ -80,6 +80,8 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, mData.publisher.avatarUrl);
             textName.setText(mData.publisher.nickname);
             textFans.setText(mData.publisher.fans + " 粉丝");
+
+            updateFollowState();
         }
     }
 
@@ -112,13 +114,16 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
                 break;
             case R.id.imgAvatar:
                 //个人主页
-                mContext.startActivity(ZYProFlieActivity.createIntent(mContext, mData.publisherId+""));
+                mContext.startActivity(ZYProFlieActivity.createIntent(mContext, mData.publisherId + ""));
                 break;
         }
     }
 
     public void updateFollowState() {
-        if (mData.followSate == ZYBaseModel.FOLLOW_NO_STATE || mData.followSate == ZYBaseModel.FOLLOW_BE_STATE) {
+        if (textFollow == null) {
+            return;
+        }
+        if (mData.followSate != null && (mData.followSate.equals(ZYBaseModel.FOLLOW_NO_STATE) || mData.followSate.equals(ZYBaseModel.FOLLOW_BE_STATE))) {
             textFollow.setSelected(false);
             textFollow.setText("关注");
         } else {

@@ -58,11 +58,11 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".business.followfans.activity.GDFollowActivity"
+            android:name=".business.followfans.activity.ZYFollowActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".business.followfans.activity.GDFansActivity"
+            android:name=".business.followfans.activity.ZYFansActivity"
             android:screenOrientation="portrait" />
 
         <activity

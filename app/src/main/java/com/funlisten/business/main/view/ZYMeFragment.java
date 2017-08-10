@@ -17,17 +17,15 @@ import com.funlisten.base.event.ZYEventLoginSuc;
 import com.funlisten.base.event.ZYEventUpdateUserInfo;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.view.ZYPicSelect;
-import com.funlisten.base.view.ZYPicker;
 import com.funlisten.business.accountmanage.activity.ZYAccountManageActivity;
 import com.funlisten.business.download.activity.ZYDownloadHomeActivity;
-import com.funlisten.business.followfans.activity.GDFansActivity;
-import com.funlisten.business.followfans.activity.GDFollowActivity;
+import com.funlisten.business.followfans.activity.ZYFansActivity;
+import com.funlisten.business.followfans.activity.ZYFollowActivity;
 import com.funlisten.business.main.contract.ZYMeContract;
 import com.funlisten.business.mylike.activity.ZYMyLikeActivity;
 import com.funlisten.business.myorder.activity.ZYMyOrderActivity;
 import com.funlisten.business.photo.activity.ZYPhotoActivity;
 import com.funlisten.business.profile.activity.ZYProFlieActivity;
-import com.funlisten.service.db.ZYDBManager;
 import com.funlisten.business.user.activity.ZYSetActivity;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.business.login.model.ZYUserManager;
@@ -109,13 +107,13 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
-                mActivity.startActivity(new Intent(mActivity, GDFollowActivity.class));
+                mActivity.startActivity(new Intent(mActivity, ZYFollowActivity.class));
                 break;
             case R.id.textFans:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
-                mActivity.startActivity(new Intent(mActivity, GDFansActivity.class));
+                mActivity.startActivity(new Intent(mActivity, ZYFansActivity.class));
                 break;
             case R.id.layoutPic:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
@@ -199,5 +197,11 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
     @Override
     public void onPicSelected(Uri uri) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.getUserInfo();
     }
 }

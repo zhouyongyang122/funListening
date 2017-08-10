@@ -7,11 +7,15 @@ import com.funlisten.business.user.model.ZYUserList;
  * Created by Administrator on 2017/7/12.
  */
 
-public interface GDFollowContract {
+public interface ZYFollowContract {
 
     interface IView extends ZYListDataContract.View<IPresenter> {
     }
 
     interface IPresenter extends ZYListDataContract.Presenter<ZYUserList> {
+
+        void follow(final ZYUserList user);
+
+        void followCancle(final ZYUserList user);
     }
 }

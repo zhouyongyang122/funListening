@@ -116,7 +116,7 @@ public class ZYBaseModel {
     }
 
     /**
-     * 关注
+     * 取消关注
      */
     public Observable<ZYResponse> followCancle(String toUserId) {
         return mApi.followCancle(toUserId);

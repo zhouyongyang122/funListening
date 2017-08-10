@@ -193,7 +193,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ZYEventUpdateUserInfo updateUserInfo) {
-        initUserInfo();
+        mPresenter.getUserInfo();
     }
 
     @Override

@@ -30,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/white"
+            android:inputType="number"
             android:gravity="center_vertical"
             android:hint="请输入手机号码 "
             android:paddingLeft="10dp"
@@ -53,6 +54,7 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:hint="请输入密码"
+        android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:textColor="@color/c2"
         android:textSize="@dimen/f2" />

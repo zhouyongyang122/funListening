@@ -8,62 +8,59 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="vertical"
-        android:background="@color/c8"
+        android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp">
+        android:layout_marginTop="30dp"
+        android:background="@color/c8"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/pwd_old"
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:background="@color/c8"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ"
             android:gravity="center|left"
             android:hint="旧密码"
-            android:inputType="number"
-            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ"
+            android:inputType="textPassword"
             android:maxLength="18"
             android:paddingLeft="10dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/c4"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            />
+            android:layout_marginRight="10dp"
+            android:background="@color/c4" />
 
         <EditText
             android:id="@+id/pwd_one"
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:background="@color/c8"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ"
             android:gravity="center|left"
             android:hint="6-18位字母数字组合密码"
-            android:inputType="number"
-            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ"
+            android:inputType="textPassword"
             android:maxLength="18"
-            android:paddingLeft="10dp"
-           />
+            android:paddingLeft="10dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/c4"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            />
+            android:layout_marginRight="10dp"
+            android:background="@color/c4" />
 
         <EditText
             android:id="@+id/pwd_two"
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:background="@color/c8"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ"
             android:gravity="center|left"
             android:hint="确认新密码"
-            android:inputType="number"
-            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ"
+            android:inputType="textPassword"
             android:maxLength="18"
             android:paddingLeft="10dp" />
 

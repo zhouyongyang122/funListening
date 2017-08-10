@@ -36,7 +36,7 @@ import butterknife.OnClick;
  * 个人资料
  */
 
-public class ZYPersonDataActivity extends ZYBaseActivity<ZYPersonContract.IPresenter> implements  ZYPicSelect.PicSelectListener ,ZYPersonContract.IView{
+public class ZYPersonDataActivity extends ZYBaseActivity<ZYPersonContract.IPresenter> implements ZYPicSelect.PicSelectListener, ZYPersonContract.IView {
     @Bind(R.id.head_img)
     ImageView headImg;
 
@@ -67,107 +67,113 @@ public class ZYPersonDataActivity extends ZYBaseActivity<ZYPersonContract.IPrese
     ZYWheelSelectDialog dialogsex;
     ZYWheelSelectDialog dialogage;
     ArrayList<ZYProvince.City> cityList = new ArrayList<>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gd_person_data_layout);
         showTitle("个人资料");
         zyUser = ZYUserManager.getInstance().getUser();
-        personPresenter = new ZYPersonPresenter(this,new ZYPersonModel());
+        personPresenter = new ZYPersonPresenter(this, new ZYPersonModel());
         personPresenter.subscribe();
         init();
     }
 
-    private  void init(){
-        if(zyUser != null){
-            ZYImageLoadHelper.getImageLoader().loadCircleImage(this,headImg,zyUser.avatarUrl,R.drawable.def_avatar,R.drawable.def_avatar);
+    private void init() {
+        if (zyUser != null) {
+            ZYImageLoadHelper.getImageLoader().loadCircleImage(this, headImg, zyUser.avatarUrl, R.drawable.def_avatar, R.drawable.def_avatar);
             nickName.setText(zyUser.nickname);
-            sex.setText(zyUser.sex);
-            if(TextUtils.isEmpty(zyUser.intro)){
+            if (zyUser.sex != null && zyUser.sex.equals("female")) {
+                sex.setText("女");
+            } else {
+                sex.setText("男");
+            }
+            if (TextUtils.isEmpty(zyUser.intro)) {
                 changeIntro.setText("去填写");
                 changeIntro.setTextColor(getResources().getColor(R.color.c9));
-            }else {
+            } else {
                 changeIntro.setText("修改");
                 changeIntro.setTextColor(getResources().getColor(R.color.c3));
             }
-            age.setText(TextUtils.isEmpty(zyUser.age) ? "无":zyUser.age);
-            synopsis.setText(TextUtils.isEmpty(zyUser.intro) ? "这个人很懒，什么都没写......":zyUser.intro);
+            age.setText(TextUtils.isEmpty(zyUser.age) ? "无" : zyUser.age);
+            synopsis.setText(TextUtils.isEmpty(zyUser.intro) ? "这个人很懒，什么都没写......" : zyUser.intro);
             zone.setText(zyUser.areaName);
         }
 
     }
 
-    @OnClick({R.id.head_img,R.id.sex_line,R.id.age_line,R.id.area_line, R.id.nick_line,R.id.synopsis_line,R.id.finish})
-    public  void OnClick(View view){
-        switch (view.getId()){
+    @OnClick({R.id.head_img, R.id.sex_line, R.id.age_line, R.id.area_line, R.id.nick_line, R.id.synopsis_line, R.id.finish})
+    public void OnClick(View view) {
+        switch (view.getId()) {
             case R.id.head_img:
                 if (picSelect == null) {
-                    picSelect = new ZYPicSelect(ZYPersonDataActivity.this,ZYPersonDataActivity.this);
+                    picSelect = new ZYPicSelect(ZYPersonDataActivity.this, ZYPersonDataActivity.this);
                 }
                 picSelect.showSelectDialog();
                 break;
             case R.id.nick_line:
-                ZYEditDialog dialog = new ZYEditDialog(mActivity,0);
+                ZYEditDialog dialog = new ZYEditDialog(mActivity, 0);
                 dialog.setOnSelectText(new ZYEditDialog.OnSelectText() {
                     @Override
                     public void onSelecte(String text) {
-                        zyUser.nickname = text+"";
-                        nickName.setText(text+"");
+                        zyUser.nickname = text + "";
+                        nickName.setText(text + "");
                     }
                 });
                 dialog.show();
                 break;
             case R.id.sex_line:
-                if(dialogsex == null){
-                    dialogsex = new ZYWheelSelectDialog(this, new String[]{"男","女"}, new ZYWheelSelectDialog.WheelSelectListener() {
+                if (dialogsex == null) {
+                    dialogsex = new ZYWheelSelectDialog(this, new String[]{"男", "女"}, new ZYWheelSelectDialog.WheelSelectListener() {
                         @Override
                         public void onWheelSelected(ZYWheelSelectDialog dialog, int position, String value) {
-                            zyUser.sex = value;
-                            sex.setText(zyUser.sex);
+                            zyUser.sex = value.equals("男") ? "male" : "female";
+                            sex.setText(value);
                         }
                     });
                 }
                 dialogsex.showDialog(0);
                 break;
             case R.id.age_line:
-                if(dialogage == null){
-                    dialogage = new ZYWheelSelectDialog(this, new String[]{"00","90","80","70"}, new ZYWheelSelectDialog.WheelSelectListener() {
+                if (dialogage == null) {
+                    dialogage = new ZYWheelSelectDialog(this, new String[]{"00", "90", "80", "70"}, new ZYWheelSelectDialog.WheelSelectListener() {
                         @Override
                         public void onWheelSelected(ZYWheelSelectDialog dialog, int position, String value) {
                             zyUser.age = value;
-                            age.setText(TextUtils.isEmpty(zyUser.age) ? "无":zyUser.age);
+                            age.setText(TextUtils.isEmpty(zyUser.age) ? "无" : zyUser.age);
                         }
                     });
                 }
                 dialogage.showDialog(0);
                 break;
             case R.id.area_line:
-                Intent intent = new Intent(ZYPersonDataActivity.this,ZYAreaActivity.class);
+                Intent intent = new Intent(ZYPersonDataActivity.this, ZYAreaActivity.class);
                 ArrayList<ZYProvince> list = personPresenter.getProvince();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("province",list);
+                bundle.putSerializable("province", list);
                 intent.putExtras(bundle);
-                startActivityForResult(intent,400);
+                startActivityForResult(intent, 400);
                 break;
-            case  R.id.synopsis_line:
-                ZYEditDialog dialogs = new ZYEditDialog(mActivity,0);
+            case R.id.synopsis_line:
+                ZYEditDialog dialogs = new ZYEditDialog(mActivity, 0);
                 dialogs.setOnSelectText(new ZYEditDialog.OnSelectText() {
                     @Override
                     public void onSelecte(String text) {
-                        zyUser.intro = text+"";
-                        synopsis.setText(text+"");
+                        zyUser.intro = text + "";
+                        synopsis.setText(text + "");
                     }
                 });
                 dialogs.show();
                 break;
             case R.id.finish:
-                HashMap<String,String> map = new HashMap();
-                if(!TextUtils.isEmpty(zyUser.nickname)) map.put("nickname",zyUser.nickname);
-                if(!TextUtils.isEmpty(zyUser.sex)) map.put("sex","男".equals(zyUser.sex) ? "male":"female");
-                if(!TextUtils.isEmpty(zyUser.age)) map.put("ageRange",zyUser.age);
-                if(!TextUtils.isEmpty(zyUser.areaCode)) map.put("areaCode",zyUser.areaCode);
-                if(!TextUtils.isEmpty(zyUser.areaName)) map.put("areaName",zyUser.areaName);
-                if(!TextUtils.isEmpty(zyUser.intro)) map.put("intro",zyUser.intro);
+                HashMap<String, String> map = new HashMap();
+                if (!TextUtils.isEmpty(zyUser.nickname)) map.put("nickname", zyUser.nickname);
+                if (!TextUtils.isEmpty(zyUser.sex))
+                    map.put("sex", "男".equals(zyUser.sex) ? "male" : "female");
+                if (!TextUtils.isEmpty(zyUser.age)) map.put("ageRange", zyUser.age);
+                if (!TextUtils.isEmpty(zyUser.areaCode)) map.put("areaCode", zyUser.areaCode);
+                if (!TextUtils.isEmpty(zyUser.areaName)) map.put("areaName", zyUser.areaName);
+                if (!TextUtils.isEmpty(zyUser.intro)) map.put("intro", zyUser.intro);
                 personPresenter.updateUserDetail(map);
                 break;
         }
@@ -176,21 +182,21 @@ public class ZYPersonDataActivity extends ZYBaseActivity<ZYPersonContract.IPrese
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(picSelect != null)
-        picSelect.onActivityResult(requestCode,resultCode,data);
+        if (picSelect != null)
+            picSelect.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 400 && resultCode == 400 && data != null){
-            int index  =  data.getIntExtra("position",-1);
+        if (requestCode == 400 && resultCode == 400 && data != null) {
+            int index = data.getIntExtra("position", -1);
             cityList.clear();
             cityList.addAll(personPresenter.getProvince().get(index).cities);
-            Intent intent = new Intent(ZYPersonDataActivity.this,ZYAreaActivity.class);
+            Intent intent = new Intent(ZYPersonDataActivity.this, ZYAreaActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("city",cityList);
+            bundle.putSerializable("city", cityList);
             intent.putExtras(bundle);
-            startActivityForResult(intent,401);
+            startActivityForResult(intent, 401);
         }
-        if(requestCode == 401 && resultCode == 401 && data != null){
-            int indexs  =  data.getIntExtra("position",-1);
+        if (requestCode == 401 && resultCode == 401 && data != null) {
+            int indexs = data.getIntExtra("position", -1);
             ZYProvince.City city = cityList.get(indexs);
             zyUser.areaCode = city.cityCode;
             zyUser.areaName = city.cityName;
@@ -206,9 +212,9 @@ public class ZYPersonDataActivity extends ZYBaseActivity<ZYPersonContract.IPrese
 
     @Override
     public void onPicSelected(Uri uri) {
-        File file = new File(ZYApplication.IMG_CACHE_DIR+"temp.png");
-        ZYUtils.compressToSize(uri.getPath(),file,100*1024);
-        ZYImageLoadHelper.getImageLoader().loadCircleImage(this,headImg,uri.getPath(),R.drawable.def_avatar,R.drawable.def_avatar);
+        File file = new File(ZYApplication.IMG_CACHE_DIR + "temp.png");
+        ZYUtils.compressToSize(uri.getPath(), file, 100 * 1024);
+        ZYImageLoadHelper.getImageLoader().loadCircleImage(this, headImg, uri.getPath(), R.drawable.def_avatar, R.drawable.def_avatar);
         personPresenter.updateUserAvatar(file);
     }
 }

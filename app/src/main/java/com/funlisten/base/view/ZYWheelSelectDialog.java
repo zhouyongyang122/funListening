@@ -129,7 +129,7 @@ public class ZYWheelSelectDialog implements OnWheelChangedListener {
         public StringArrayAdapter(Context context, String[] items) {
             super(context, items);
             setTextSize(mFontSize);
-            setTextColor(ZYResourceUtils.getColor(R.color.c6));
+            setTextColor(ZYResourceUtils.getColor(R.color.c4));
         }
     }
 

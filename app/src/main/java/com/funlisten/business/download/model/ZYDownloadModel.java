@@ -12,7 +12,7 @@ import java.util.List;
 public class ZYDownloadModel extends ZYBaseModel {
 
     public List<ZYDownloadEntity> getAlbums() {
-        return ZYDownloadEntity.queryAlbums();
+        return ZYDownloadEntity.queryDownloadedAlbums();
     }
 
     public List<ZYDownloadEntity> getAlbumAudios(int albumId) {
@@ -20,10 +20,10 @@ public class ZYDownloadModel extends ZYBaseModel {
     }
 
     public ZYDownloadEntity queryAudioByNotFinishedState() {
-        return ZYDownloadEntity.queryAudioByNotFinishedState();
+        return ZYDownloadEntity.queryNotFinishedFristAudio();
     }
 
     public List<ZYDownloadEntity> queryAudiosByNotFinishedState() {
-        return ZYDownloadEntity.queryAudiosByNotFinishedState();
+        return ZYDownloadEntity.queryNotFinishedAudios();
     }
 }

@@ -98,6 +98,7 @@ public class ZYSetFragment extends ZYBaseFragment {
             long size = ZYFileUtils.getDirWholeFileSize(new File(ZYApplication.IMG_CACHE_DIR));
             size += ZYFileUtils.getDirWholeFileSize(new File(ZYApplication.AUDIO_CACHE_DIR));
             textCacheSize.setText(ZYFileUtils.formatFileSize(size));
+            return;
         } catch (Exception e) {
             e.printStackTrace();
         }

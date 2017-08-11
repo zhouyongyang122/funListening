@@ -47,10 +47,10 @@ public class ZYDownloadedItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     public void updateView(ZYDownloadEntity data, int position) {
         if (data != null) {
             mData = data;
-            textName.setText("第 " + data.audioSort + " 期 | " + mData.audioName);
+            textName.setText("第 " + data.getAudio().sort + " 期 | " + mData.getAudio().title);
             textSize.setText(String.format("%.2fM", ((float) mData.total / SIZE_M)));
-            textDay.setText(ZYDateUtils.getTimeString(mData.audioCreateTime, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.YYMMDDHH));
-            textTime.setText(ZYDateUtils.getTimeString(mData.audioCreateTime, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.HHMM24));
+            textDay.setText(ZYDateUtils.getTimeString(mData.getAudio().gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.YYMMDDHH));
+            textTime.setText(ZYDateUtils.getTimeString(mData.getAudio().gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.HHMM24));
 
         }
     }

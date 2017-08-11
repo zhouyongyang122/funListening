@@ -46,7 +46,7 @@ public class ZYDownloadHomeFragment extends ZYListDateFragment<ZYDownloadHomeCon
     @Override
     protected void onItemClick(View view, int position) {
         ZYDownloadEntity downloadEntity = mAdapter.getItem(position);
-        mActivity.startActivity(ZYDownloadedActivity.createIntent(mActivity, downloadEntity.albumId, downloadEntity.albumName));
+        mActivity.startActivity(ZYDownloadedActivity.createIntent(mActivity, downloadEntity.albumId, downloadEntity.getAlbumDetail().name));
     }
 
     @Override

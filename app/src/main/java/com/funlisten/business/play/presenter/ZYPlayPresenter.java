@@ -9,6 +9,7 @@ import com.funlisten.base.mvp.ZYBasePresenter;
 import com.funlisten.business.album.model.ZYAlbumModel;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.album.model.bean.ZYComment;
+import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.play.contract.ZYPlayContract;
 import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.business.play.model.ZYPlayModel;
@@ -63,7 +64,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
     public void subscribe() {
         mView.showLoading();
         Observable<ZYResponse<ZYListResponse<ZYComment>>> observable = Observable.zip(
-                mModel.getAlbumDetail(mAlbumId), mModel.getComments("audio",mAudioId + "", 1, 5), mModel.getAudios(1, 1000, mAlbumId, mSortType), new Func3<ZYResponse<ZYAlbumDetail>, ZYResponse<ZYListResponse<ZYComment>>, ZYResponse<ZYListResponse<ZYAudio>>, ZYResponse<ZYListResponse<ZYComment>>>() {
+                mModel.getAlbumDetail(mAlbumId), mModel.getComments("audio", mAudioId + "", 1, 5), mModel.getAudios(1, 1000, mAlbumId, mSortType), new Func3<ZYResponse<ZYAlbumDetail>, ZYResponse<ZYListResponse<ZYComment>>, ZYResponse<ZYListResponse<ZYAudio>>, ZYResponse<ZYListResponse<ZYComment>>>() {
                     @Override
                     public ZYResponse<ZYListResponse<ZYComment>> call(ZYResponse<ZYAlbumDetail> albumRes, ZYResponse<ZYListResponse<ZYComment>> commentsRes, ZYResponse<ZYListResponse<ZYAudio>> audiosRes) {
                         mAlbumDetail = albumRes.data;
@@ -87,7 +88,25 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
 
             @Override
             public void onFail(String message) {
-                mView.showError();
+                ZYDownloadEntity entity = ZYDownloadEntity.queryById(mAudioId, mAlbumId);
+                if (entity.isDowloaded()) {
+                    mAlbumDetail = entity.getAlbumDetail();
+                    List<ZYDownloadEntity> entities = ZYDownloadEntity.queryAlbumDownloadedAudios(mAlbumId);
+                    List<ZYAudio> audios = new ArrayList<ZYAudio>();
+                    for (ZYDownloadEntity audio : entities) {
+                        audios.add(audio.getAudio());
+                    }
+                    if (audios == null || audios.size() <= 0) {
+                        mView.showError();
+                        return;
+                    }
+                    mAudios.addAll(audios);
+                    mCurPlayAudio = getAudioById();
+                    mView.refreshView();
+                    mView.hideLoading();
+                } else {
+                    mView.showError();
+                }
             }
         }));
     }
@@ -155,12 +174,15 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
     }
 
     ZYAudio getAudioById() {
-        for (ZYAudio audio : mAudios) {
-            if (audio.id == mAudioId) {
-                return audio;
+        if (mAudios.size() > 0) {
+            for (ZYAudio audio : mAudios) {
+                if (audio.id == mAudioId) {
+                    return audio;
+                }
             }
+            return mAudios.get(0);
         }
-        return mAudios.get(0);
+        return null;
     }
 
     public ArrayList<ZYAudio> getAudios() {

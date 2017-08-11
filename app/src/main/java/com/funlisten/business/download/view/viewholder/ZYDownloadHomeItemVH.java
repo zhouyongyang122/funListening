@@ -56,10 +56,10 @@ public class ZYDownloadHomeItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
         if (data != null) {
             mItemView.setVisibility(View.VISIBLE);
             mData = data;
-            ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, data.albumCoverUrl);
-            textTitle.setText(mData.albumName);
-            textName.setText(mData.albumPublisher);
-            textUpdateCount.setText("已经更新到" + mData.audioUpatedCount + "集");
+            ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, data.getAlbumDetail().coverUrl);
+            textTitle.setText(mData.getAlbumDetail().name);
+            textName.setText(mData.getAlbumDetail().publisher.nickname);
+            textUpdateCount.setText("已经更新到" + mData.getAlbumDetail().audioCount + "集");
             textDownCount.setText("已经下载" + mData.audioDowloadedCount + "集");
             textSize.setText(String.format("%.2fM", ((float) mData.albumDownloadedSize / SIZE_M)));
         } else {

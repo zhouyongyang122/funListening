@@ -47,7 +47,7 @@ public class ZYDownloadingItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     public void updateView(ZYDownloadEntity data, int position) {
         if (data != null) {
             mData = data;
-            textName.setText("第 " + data.audioSort + " 期 | " + mData.audioName);
+            textName.setText("第 " + data.getAudio().sort + " 期 | " + mData.getAudio().title);
             refresh();
         }
     }

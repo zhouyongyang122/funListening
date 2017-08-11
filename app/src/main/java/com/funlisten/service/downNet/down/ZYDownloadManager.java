@@ -95,7 +95,7 @@ public class ZYDownloadManager {
         new Thread() {
             @Override
             public void run() {
-                List<ZYDownloadEntity> list = ZYDownloadEntity.queryAudioByPauseState();
+                List<ZYDownloadEntity> list = ZYDownloadEntity.queryPauseAudios();
                 if (list != null && list.size() > 0) {
                     for (ZYDownloadEntity downloadEntity : list) {
                         downloadEntity.setState(ZYDownState.WAIT);
@@ -116,7 +116,7 @@ public class ZYDownloadManager {
         new Thread() {
             @Override
             public void run() {
-                List<ZYDownloadEntity> list = ZYDownloadEntity.queryAudiosByDowloadState();
+                List<ZYDownloadEntity> list = ZYDownloadEntity.queryDownloadingAudios();
                 if (list != null && list.size() > 0) {
                     for (ZYDownloadEntity downloadEntity : list) {
                         downloadEntity.setState(ZYDownState.PAUSE);
@@ -129,7 +129,7 @@ public class ZYDownloadManager {
 
     public void deleteAllAudio() {
         cancleAll();
-        ZYDownloadEntity.deleteAudiosNotFinishedState();
+        ZYDownloadEntity.deleteNotFinishedAudios();
     }
 
     public void delAudio(ZYIDownBase downBase) {

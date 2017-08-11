@@ -73,9 +73,9 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
         }
         if (mData != null && textName != null) {
             layoutRoot.setVisibility(View.VISIBLE);
-            ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, mData.albumCoverUrl);
-            textPublisher.setText("超级演说家: " + mData.albumPublisher);
-            textName.setText(mData.audioName);
+            ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, mData.getAlbumDetail().coverUrl);
+            textPublisher.setText("超级演说家: " + mData.getAlbumDetail().publisher.nickname);
+            textName.setText(mData.getAudio().title);
             updateProgress();
         } else if (layoutRoot != null) {
             layoutRoot.setVisibility(View.GONE);
@@ -108,7 +108,7 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
     public void onEvent(ZYEventDowloadUpdate dowloadUpdate) {
         if (dowloadUpdate.downloadEntity != null && dowloadUpdate.downloadEntity.getId().equals(mData.id)) {
             if (dowloadUpdate.downloadEntity.getState() == ZYDownState.FINISH) {
-                mData = ZYDownloadEntity.queryAudioByNotFinishedState();
+                mData = ZYDownloadEntity.queryNotFinishedFristAudio();
                 updateView(mData, 0);
                 if (mData == null) {
                     listener.onDownloadAllFinished();

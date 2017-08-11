@@ -12,6 +12,7 @@ import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.player.FZAudioPlayer;
 import com.funlisten.base.player.FZIPlayer;
+import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.play.model.FZAudionPlayEvent;
 import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.business.play.model.bean.ZYAudio;
@@ -79,6 +80,14 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         return START_STICKY;
     }
 
+    public FZAudioPlayer getAudioPlayer() {
+        if (audioPlayer == null) {
+            audioPlayer = new FZAudioPlayer(getApplicationContext(), "ZYPlayService");
+            audioPlayer.setPlayerCallBack(this);
+        }
+        return audioPlayer;
+    }
+
     public void play(ZYAudio currenPlayAudio, List<ZYAudio> audios) {
         setAudios(audios);
         mCurrentPlayAudio = currenPlayAudio;
@@ -92,16 +101,18 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
 
 
     private void play() {
-        if (audioPlayer == null) {
-            audioPlayer = new FZAudioPlayer(getApplicationContext(), "ZYPlayService");
-            audioPlayer.setPlayerCallBack(this);
-        }
         if (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isAudition() || mCurrentPlayAudio.isBuy()) {
             ZYPlayHistory.saveByAudio(mCurrentPlayAudio, 0);
-            audioPlayer.stop();
+            getAudioPlayer().stop();
             stopProgressUpdate();
             sendCallBack(ZYPlayManager.STATE_PREPARING, "播放器初使化中");
-            audioPlayer.open(ZYApplication.getInstance().getProxy(this).getProxyUrl(mCurrentPlayAudio.fileUrl, true), 0);
+            String localPath = ZYDownloadEntity.getDownloadeLocalPath(mCurrentPlayAudio.id, mCurrentPlayAudio.albumId);
+            if (localPath == null) {
+                getAudioPlayer().open(ZYApplication.getInstance().getProxy(this).getProxyUrl(mCurrentPlayAudio.fileUrl, true), 0);
+            } else {
+                ZYLog.e(getClass().getSimpleName(), "play:local: " + localPath);
+                getAudioPlayer().open(localPath, 0);
+            }
             reportAudioPlay();
 
             ZYNetSubscription.subscription(new ZYBaseModel().reportPlay(mCurrentPlayAudio.id), new ZYNetSubscriber<ZYResponse>() {
@@ -110,13 +121,13 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
                 }
             });
         } else {
-            audioPlayer.stop();
+            getAudioPlayer().stop();
             sendCallBack(ZYPlayManager.STATE_NEED_BUY_PAUSED, "暂停播放,收费视频");
         }
     }
 
     public void startOrPuase() {
-        if (audioPlayer.isPlaying()) {
+        if (getAudioPlayer().isPlaying()) {
             puase();
         } else {
             start();
@@ -124,24 +135,24 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
     }
 
     public void start() {
-        if (!audioPlayer.isPlaying()) {
+        if (!getAudioPlayer().isPlaying()) {
             startProgressUpdate(0);
-            audioPlayer.start(true);
+            getAudioPlayer().start(true);
             sendCallBack(ZYPlayManager.STATE_PLAYING, "正在播放");
         }
     }
 
     public void puase() {
-        if (audioPlayer.isPlaying()) {
+        if (getAudioPlayer().isPlaying()) {
             stopProgressUpdate();
-            audioPlayer.pause();
+            getAudioPlayer().pause();
             sendCallBack(ZYPlayManager.STATE_PAUSED, "暂停播放");
         }
     }
 
     public void seekTo(int currentProgress, int totalProgress) {
         float progress = (float) currentProgress / (float) totalProgress;
-        audioPlayer.seekTo((int) (progress * audioPlayer.getDuration()));
+        getAudioPlayer().seekTo((int) (progress * audioPlayer.getDuration()));
     }
 
     @Override
@@ -191,7 +202,7 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
             if (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isAudition() || mCurrentPlayAudio.isBuy()) {
                 play();
             } else {
-                audioPlayer.stop();
+                getAudioPlayer().stop();
                 sendCallBack(ZYPlayManager.STATE_NEED_BUY_PAUSED, "暂停播放,收费视频");
             }
         } else {
@@ -200,10 +211,10 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
     }
 
     public boolean isPlaying() {
-        if (audioPlayer == null) {
+        if (getAudioPlayer() == null) {
             return false;
         }
-        return audioPlayer.isPlaying();
+        return getAudioPlayer().isPlaying();
     }
 
     /**

@@ -440,7 +440,7 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
 
     public static String getDownloadeLocalPath(int audioId, int albumId) {
         ZYDownloadEntity entity = queryById(audioId, albumId);
-        if (entity.isDowloaded()) {
+        if (entity != null && entity.isDowloaded()) {
             File file = new File(entity.savePath);
             if (file.exists()) {
                 return entity.savePath;

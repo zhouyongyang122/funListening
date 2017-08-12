@@ -247,7 +247,7 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         int curPosition = mAudios.indexOf(mCurrentPlayAudio);
         int position = 0;
         if (playType == PLAY_LOOP_TYPE) {
-            position = curPosition++;
+            position = ++curPosition;
         } else if (playType == PLAY_SINTANCE_TYPE) {
             position = curPosition;
         } else {
@@ -272,7 +272,7 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         int curPosition = mAudios.indexOf(mCurrentPlayAudio);
         int position = 0;
         if (playType == PLAY_LOOP_TYPE) {
-            position = isNext ? curPosition++ : curPosition--;
+            position = isNext ? ++curPosition : --curPosition;
         } else {
             position = new Random().nextInt(mAudios.size());
         }

@@ -18,6 +18,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import butterknife.Bind;
 
 /**
@@ -34,6 +36,9 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
 
     @Bind(R.id.textName)
     TextView textName;
+
+    @Bind(R.id.textDownCount)
+    TextView textDownCount;
 
     @Bind(R.id.textPublisher)
     TextView textPublisher;
@@ -77,6 +82,7 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
             textPublisher.setText("超级演说家: " + mData.getAlbumDetail().publisher.nickname);
             textName.setText(mData.getAudio().title);
             updateProgress();
+            refresh();
         } else if (layoutRoot != null) {
             layoutRoot.setVisibility(View.GONE);
         }
@@ -99,6 +105,16 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
         progressBar.setProgress((int) progress);
     }
 
+    private void refresh() {
+        List values = ZYDownloadEntity.queryNotFinishedAudios();
+        if (values != null) {
+            textDownCount.setText("下载中(" + values.size() + ")");
+        } else {
+            textDownCount.setText("下载中(" + 0 + ")");
+        }
+    }
+
+
     @Override
     public int getLayoutResId() {
         return R.layout.zy_view_download_home_header;
@@ -117,6 +133,7 @@ public class ZYDownloadHomeHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
                 mData = (ZYDownloadEntity) dowloadUpdate.downloadEntity;
                 updateProgress();
             }
+            refresh();
         }
     }
 

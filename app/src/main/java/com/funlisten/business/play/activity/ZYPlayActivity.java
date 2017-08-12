@@ -48,6 +48,10 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
         context.startActivity(createIntent(context, 0, 0, null));
     }
 
+    public static Intent createIntent(Context context) {
+        return new Intent(context, ZYPlayActivity.class);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

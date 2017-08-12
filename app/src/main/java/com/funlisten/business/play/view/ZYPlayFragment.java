@@ -139,7 +139,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
                 }
                 break;
             case R.id.textComment:
-                mActivity.startActivity(ZYCommentActivity.createIntent(mActivity, "audio", mPresenter.getCurPlayAudio().id + "",true));
+                mActivity.startActivity(ZYCommentActivity.createIntent(mActivity, "audio", mPresenter.getCurPlayAudio().id + "", true));
                 break;
         }
     }
@@ -157,7 +157,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         ZYPlay play = new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getCurPlayAudio());
         headerVH.setUpdated(false);
         headerVH.updateView(play, 0);
-        ZYPlayManager.getInstance().play(mPresenter.getCurPlayAudio(), mPresenter.getAudios());
+        ZYPlayManager.getInstance().play(mPresenter.getCurPlayAudio(), mPresenter.getAudios(), mPresenter.getAlbumDetail());
     }
 
     @Override
@@ -246,7 +246,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
 
     @Override
     public void moreComment() {
-        mActivity.startActivity(ZYCommentActivity.createIntent(mActivity, "audio", mPresenter.getCurPlayAudio().id + "",true));
+        mActivity.startActivity(ZYCommentActivity.createIntent(mActivity, "audio", mPresenter.getCurPlayAudio().id + "", true));
     }
 
     @Override
@@ -274,14 +274,14 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             int position = new Random(mPresenter.getAudios().size()).nextInt();
             audio = mPresenter.getAudios().get(position);
             mPresenter.setCurPlayAudio(audio);
-            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios());
+            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios(), mPresenter.getAlbumDetail());
             return;
         }
         int position = mPresenter.getAudios().indexOf(mPresenter.getCurPlayAudio());
         if (position >= 1) {
             audio = mPresenter.getAudios().get(--position);
             mPresenter.setCurPlayAudio(audio);
-            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios());
+            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios(), mPresenter.getAlbumDetail());
         } else {
             ZYToast.show(mActivity, "当前为第一集");
         }
@@ -298,14 +298,14 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             int position = new Random().nextInt(mPresenter.getAudios().size());
             audio = mPresenter.getAudios().get(position);
             mPresenter.setCurPlayAudio(audio);
-            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios());
+            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios(),mPresenter.getAlbumDetail());
             return;
         }
         int position = mPresenter.getAudios().indexOf(mPresenter.getCurPlayAudio());
         if (position < mPresenter.getAudios().size() - 1) {
             audio = mPresenter.getAudios().get(++position);
             mPresenter.setCurPlayAudio(audio);
-            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios());
+            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios(), mPresenter.getAlbumDetail());
         } else {
             ZYToast.show(mActivity, "已经是最后一集了");
         }
@@ -317,7 +317,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     @Override
     public void onAudiosItemClick(int position) {
         mPresenter.setCurPlayAudio(mPresenter.getAudios().get(position));
-        ZYPlayManager.getInstance().play(mPresenter.getAudios().get(position), mPresenter.getAudios());
+        ZYPlayManager.getInstance().play(mPresenter.getAudios().get(position), mPresenter.getAudios(), mPresenter.getAlbumDetail());
     }
 
     @Override

@@ -223,6 +223,7 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         MobclickAgent.onKillProcess(mActivity);
+                        ZYPlayManager.getInstance().clearNotification();
                         finish();
                         System.exit(0);
                     }

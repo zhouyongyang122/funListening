@@ -3,6 +3,9 @@ package com.funlisten.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -52,6 +55,31 @@ public class ZYUtils {
             return false;
         }
         return false;
+    }
+
+    public static Bitmap drawable2Bitmap(Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
+        Bitmap bitmap;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     public static boolean existSDCard() {
@@ -118,7 +146,7 @@ public class ZYUtils {
         return false;
     }
 
-    public static byte[] toByteArray( File f) throws IOException {
+    public static byte[] toByteArray(File f) throws IOException {
         if (!f.exists()) {
             throw new FileNotFoundException("path not found!");
         }
@@ -151,35 +179,31 @@ public class ZYUtils {
      * 检测密码复杂度
      * 6-18位字母与数字组合密码；对于少于六位、纯数字或者纯字母的密码不可用
      */
-    public static boolean checkPassword(Context context, String password){
-        if (TextUtils.isEmpty(password)){
+    public static boolean checkPassword(Context context, String password) {
+        if (TextUtils.isEmpty(password)) {
             ZYToast.show(context, context.getString(R.string.toast_password_not_null));
             return false;
-        }else {
+        } else {
             // 密码长度大于6为位
-            if (password.length() < 6)
-            {
+            if (password.length() < 6) {
                 ZYToast.show(context, context.getString(R.string.toast_password_limit));
                 return false;
             }
 
             // 密码不能全为同一符号
-            if (isContainSameoneChar(password))
-            {
+            if (isContainSameoneChar(password)) {
                 ZYToast.show(context, context.getString(R.string.toast_password_limit));
                 return false;
             }
 
             // 密码不能全为数字
-            if (isContainDigitalOnly(password))
-            {
+            if (isContainDigitalOnly(password)) {
                 ZYToast.show(context, context.getString(R.string.toast_password_limit));
                 return false;
             }
 
             // 密码不能全为字母
-            if (isContainCharaterOnly(password))
-            {
+            if (isContainCharaterOnly(password)) {
                 ZYToast.show(context, context.getString(R.string.toast_password_limit));
                 return false;
             }
@@ -190,13 +214,10 @@ public class ZYUtils {
     /**
      * 判断字符串是否为同一字符
      */
-    public static boolean isContainSameoneChar(String str)
-    {
+    public static boolean isContainSameoneChar(String str) {
         char c = str.charAt(0);
-        for (int i = 0; i < str.length(); i++)
-        {
-            if (c != str.charAt(i))
-            {
+        for (int i = 0; i < str.length(); i++) {
+            if (c != str.charAt(i)) {
                 return false;
             }
         }
@@ -206,10 +227,8 @@ public class ZYUtils {
     /**
      * 判断字符串是否为纯字母
      */
-    public static boolean isContainCharaterOnly(String str)
-    {
-        if (str.matches("[a-zA-Z]*"))
-        {
+    public static boolean isContainCharaterOnly(String str) {
+        if (str.matches("[a-zA-Z]*")) {
             return true;
         }
         return false;
@@ -218,8 +237,7 @@ public class ZYUtils {
     /**
      * 判断是否是纯数字
      */
-    public static boolean isContainDigitalOnly(String pwd)
-    {
+    public static boolean isContainDigitalOnly(String pwd) {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(pwd);
         return isNum.matches();

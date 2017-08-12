@@ -7,6 +7,8 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import com.funlisten.ZYApplication;
+import com.funlisten.base.activity.picturePicker.ZYAlbum;
+import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.play.ZYPlayService;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.play.model.bean.ZYPlayHistory;
@@ -65,8 +67,8 @@ public class ZYPlayManager {
         return instance;
     }
 
-    public void play(ZYAudio currentAudio, List<ZYAudio> audios) {
-        playService.play(currentAudio, audios);
+    public void play(ZYAudio currentAudio, List<ZYAudio> audios, ZYAlbumDetail albumDetail) {
+        playService.play(currentAudio, audios, albumDetail);
     }
 
     public void setAudios(List<ZYAudio> audios) {
@@ -113,6 +115,10 @@ public class ZYPlayManager {
      */
     public boolean isPlaying() {
         return playService.isPlaying();
+    }
+
+    public void clearNotification() {
+        playService.clearNotification();
     }
 
     public void startPlaySer() {

@@ -1,5 +1,6 @@
 package com.funlisten.business.download.view.viewholder;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,7 +54,7 @@ public class ZYDownloadHomeItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
 
     @Override
     public void updateView(ZYDownloadEntity data, int position) {
-        if (data != null) {
+        if (data != null && !TextUtils.isEmpty(data.id)) {
             mItemView.setVisibility(View.VISIBLE);
             mData = data;
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, data.getAlbumDetail().coverUrl);

@@ -27,7 +27,7 @@ public class ZYAlbumModel extends ZYBaseModel {
     }
 
     public Observable<ZYResponse<ZYListResponse<ZYAlbumDetail>>> getAblums(int pageIndex, int pageSize, int categoryId, int publisherId) {
-        return mApi.getAlbums(pageIndex, pageSize, categoryId, publisherId);
+        return mApi.getAlbums(pageIndex, pageSize, publisherId);
     }
 
     public Observable<ZYResponse<ZYListResponse<ZYAlbumDetail>>> getAblums(int pageIndex, int pageSize, int categoryId) {

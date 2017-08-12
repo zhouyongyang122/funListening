@@ -41,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="15dp"
+            android:visibility="invisible"
             android:src="@drawable/nav_btn_share_n" />
     </LinearLayout>
 </LinearLayout>

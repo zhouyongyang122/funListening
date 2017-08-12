@@ -49,7 +49,10 @@ public class ZYMobileBindActivity extends ZYBaseActivity implements ZYAccountMan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gd_moblie_bind_layout);
         presenter = new ZYAccountManagerPresenter(new ZYAccountManageModel(),this);
-        showTitle("手机绑定");
+        if(TextUtils.isEmpty(ZYUserManager.getInstance().getUser().phone)){
+            showTitle("更换手机号码");
+        } showTitle("手机绑定");
+
         bindTv.setEnabled(false);
     }
 

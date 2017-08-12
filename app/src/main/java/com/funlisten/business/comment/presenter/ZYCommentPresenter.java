@@ -46,7 +46,7 @@ public class ZYCommentPresenter extends ZYListDataPresenter<ZYCommentContract.IV
         mSubscriptions.add(ZYNetSubscription.subscription(mModel.suport(comment.id + "", ZYBaseModel.COMMENT_TYPE), new ZYNetSubscriber<ZYResponse>() {
             @Override
             public void onSuccess(ZYResponse response) {
-//                mView.showDatas(mDatas);
+                loadData();
             }
 
             @Override
@@ -62,6 +62,7 @@ public class ZYCommentPresenter extends ZYListDataPresenter<ZYCommentContract.IV
             @Override
             public void onSuccess(ZYResponse response) {
 //                mView.showDatas(mDatas);
+                loadData();
             }
 
             @Override

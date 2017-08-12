@@ -16,8 +16,8 @@ import rx.Observable;
 
 public class ZYProfileModel extends ZYBaseModel {
 
-   public  Observable<ZYResponse<ZYListResponse<ZYAlbumDetail>>> getAlbums(int pageIndex, int pageSize,int categoryId,int publisherId){
-       return mApi.getAlbums(pageIndex,pageSize,categoryId,publisherId);
+   public  Observable<ZYResponse<ZYListResponse<ZYAlbumDetail>>> getAlbums(int pageIndex, int pageSize,int publisherId){
+       return mApi.getAlbumTwo(pageIndex,pageSize,publisherId);
    }
 
     public Observable<ZYResponse<ZYUser>> getUserInfo( String userId){

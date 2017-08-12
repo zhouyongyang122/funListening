@@ -57,7 +57,7 @@ public class ZYPhotoItemVH extends ZYBaseViewHolder<ZYPhoto> {
 //        if (data.isSelect) {
 //            imageBtn.setImageResource(R.drawable.nav_btn_paused_n);
 //        } else imageBtn.setImageResource(R.drawable.xiangce_xuanzhong_s);
-        imageBtn.setSelected(data.isSelect);
+        imageBtn.setSelected(!data.isSelect);
     }
 
     @Override

@@ -64,7 +64,7 @@ public class ZYPhotoPresenter extends ZYListDataPresenter<ZYPhotoContract.IView,
     @Override
     public void deletePhoto(final ArrayList<ZYPhoto> list) {
         String ids ="";
-        for (ZYPhoto photo:list) ids = photo.id+",";
+        for (ZYPhoto photo:list) ids += photo.id+",";
         mView.showProgress();
         mSubscriptions.add(ZYNetSubscription.subscription(mModel.delPhoto(ids),new ZYNetSubscriber<ZYResponse>(){
 

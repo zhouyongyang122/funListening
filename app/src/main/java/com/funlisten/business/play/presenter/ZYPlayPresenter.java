@@ -78,8 +78,10 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
             @Override
             public void onSuccess(ZYResponse<ZYListResponse<ZYComment>> response) {
                 if (response.data != null && response.data.data != null && response.data.data.size() > 0) {
+                    mComments.clear();
                     mComments.addAll(response.data.data);
                 } else {
+                    mComments.clear();
                     mComments.add(new ZYComment(-1));
                 }
                 mView.refreshView();
@@ -89,7 +91,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
             @Override
             public void onFail(String message) {
                 ZYDownloadEntity entity = ZYDownloadEntity.queryById(mAudioId, mAlbumId);
-                if (entity.isDowloaded()) {
+                if (entity != null && entity.isDowloaded()) {
                     mAlbumDetail = entity.getAlbumDetail();
                     List<ZYDownloadEntity> entities = ZYDownloadEntity.queryAlbumDownloadedAudios(mAlbumId);
                     List<ZYAudio> audios = new ArrayList<ZYAudio>();
@@ -111,17 +113,46 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
         }));
     }
 
-    @Override
-    public void isFavorite(String type, int objectId) {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.isFavorite(type, objectId), new ZYNetSubscriber<ZYResponse<Boolean>>() {
+
+    public void loadComment(){
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.getComments("audio",mAudioId + "", 1, 5),new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYComment>>>(){
             @Override
-            public void onSuccess(ZYResponse<Boolean> response) {
+            public void onSuccess(ZYResponse<ZYListResponse<ZYComment>> response) {
                 super.onSuccess(response);
-                mView.setCollect(response.data);
+                if (response.data != null && response.data.data != null && response.data.data.size() > 0) {
+                    mComments.clear();
+                    mComments.addAll(response.data.data);
+                } else {
+                    mComments.clear();
+                    mComments.add(new ZYComment(-1));
+                }
+                mView.refreshComment();
             }
 
             @Override
             public void onFail(String message) {
+
+            }
+        }));
+    }
+
+    @Override
+    public void isFavorite(final String type, int objectId) {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.isFavorite(type, objectId), new ZYNetSubscriber<ZYResponse<Boolean>>() {
+            @Override
+            public void onSuccess(ZYResponse<Boolean> response) {
+                super.onSuccess(response);
+                if(ZYBaseModel.AUDIO_TYPE.equals(type)){
+                    mView.setCollect(response.data);
+                }else if(ZYBaseModel.ALBUM_TYPE.equals(type)){
+
+                }
+
+            }
+
+            @Override
+            public void onFail(String message) {
+                ZYLog.e(message);
             }
         }));
     }
@@ -145,6 +176,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
         mSubscriptions.add(ZYNetSubscription.subscription(mModel.favoriteCancel(objectId + "", type), new ZYNetSubscriber<ZYResponse<Object>>() {
             @Override
             public void onSuccess(ZYResponse<Object> response) {
+                ZYLog.d(response.data.toString());
             }
 
             @Override
@@ -160,6 +192,15 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
             this.mAudioId = audio;
             this.mAlbumId = album;
             subscribe();
+        }
+    }
+
+    public void refreshPlay( int audio){
+        if (mAlbumDetail == null ||  mCurPlayAudio.id != audio) {
+            ZYPlayManager.getInstance().puase();
+            this.mAudioId = audio;
+            isFavorite("audio",audio);
+            loadComment();
         }
     }
 

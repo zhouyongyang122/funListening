@@ -17,6 +17,7 @@ import com.funlisten.R;
 import com.funlisten.ZYApplication;
 import com.funlisten.base.mvp.ZYBaseFragmentActivity;
 import com.funlisten.base.view.ZYPicSelect;
+import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.business.photo.model.ZYPhotoModel;
 import com.funlisten.business.photo.presenter.ZYPhotoPresenter;
 import com.funlisten.business.photo.view.ZYPhotoFragment;
@@ -45,7 +46,7 @@ public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> imp
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showTitle("我的相册");
+        showTitle("相册");
         userId = getIntent().getStringExtra("userId");
         zyPhotoPresenter = new ZYPhotoPresenter(mFragment,new ZYPhotoModel(),userId);
         button = (Button) LayoutInflater.from(this).inflate(R.layout.photo_delete,null);
@@ -54,7 +55,13 @@ public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> imp
         button.setLayoutParams(layoutParams);
         mRootView.addView(button);
         button.setVisibility(View.GONE);
+        String localId = ZYUserManager.getInstance().getUser().id;
+        if(userId.equals(localId)){
+            initView();
+        }
 
+    }
+    private void initView(){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

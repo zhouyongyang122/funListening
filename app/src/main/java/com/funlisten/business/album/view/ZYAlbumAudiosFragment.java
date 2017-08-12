@@ -112,7 +112,7 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
 
         ArrayList<ZYAudio> list = new ArrayList<>();
         list.addAll(mPresenter.getDataList());
-        mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity, list, albumDetail));
+        mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity, albumDetail,mPresenter.getTotalCount()));
         if (episodeVH.isVisible()) {
             episodeVH.hide();
         }

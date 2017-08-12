@@ -20,5 +20,7 @@ public interface ZYAlbumAudiosContract {
         void changerSortType();
 
         void choiceEpisode(int start);
+
+        int getTotalCount();
     }
 }

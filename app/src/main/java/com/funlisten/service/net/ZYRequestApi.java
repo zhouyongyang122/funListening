@@ -51,7 +51,8 @@ public interface ZYRequestApi {
     Observable<ZYResponse<List<ZYCategory>>> getCategorys(@Query("level") int level);
 
     @POST("album/list")
-    Observable<ZYResponse<ZYListResponse<ZYAlbumDetail>>> getAlbums(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Query("categoryId") int categoryId, @Query("publisherId") int publisherId);
+//    Observable<ZYResponse<ZYListResponse<ZYAlbumDetail>>> getAlbums(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Query("categoryId") int categoryId, @Query("publisherId") int publisherId);
+    Observable<ZYResponse<ZYListResponse<ZYAlbumDetail>>> getAlbumTwo(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Query("publisherId") int publisherId);
 
     @POST("album/list")
     Observable<ZYResponse<ZYListResponse<ZYAlbumDetail>>> getAlbums(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Query("categoryId") int categoryId);

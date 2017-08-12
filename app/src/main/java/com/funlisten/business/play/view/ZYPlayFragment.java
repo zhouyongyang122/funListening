@@ -29,6 +29,7 @@ import com.funlisten.business.play.model.FZAudionPlayEvent;
 import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.play.model.bean.ZYPlay;
+import com.funlisten.business.play.presenter.ZYPlayPresenter;
 import com.funlisten.business.play.view.viewHolder.ZYPlayActionBarVH;
 import com.funlisten.business.play.view.viewHolder.ZYPlayAudiosVH;
 import com.funlisten.business.play.view.viewHolder.ZYPlayHeaderVH;
@@ -130,12 +131,12 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
                 break;
             case R.id.textCollect:
                 ZYAudio zyAudio = mPresenter.getCurPlayAudio();
-                if (textCollect.isSelected()) {
+                if (!textCollect.isSelected()) {
                     setCollect(true);
-                    mPresenter.favoriteCancel(ZYBaseModel.AUDIO_TYPE, zyAudio.id);
+                    mPresenter.favorite(ZYBaseModel.AUDIO_TYPE, zyAudio.id);
                 } else {
                     setCollect(false);
-                    mPresenter.favorite(ZYBaseModel.AUDIO_TYPE, zyAudio.id);
+                    mPresenter.favoriteCancel(ZYBaseModel.AUDIO_TYPE, zyAudio.id);
                 }
                 break;
             case R.id.textComment:
@@ -151,7 +152,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         mPresenter.isFavorite("audio", audio.id);
 
         ZYDownloadEntity downloadEntity = ZYDownloadEntity.queryById(audio.id, audio.albumId);
-        refreshDown(downloadEntity);
+        if(downloadEntity != null) refreshDown(downloadEntity);
 
         adapter.notifyDataSetChanged();
         ZYPlay play = new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getCurPlayAudio());
@@ -161,17 +162,22 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     }
 
     @Override
+    public void refreshComment() {
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void setCollect(boolean isCollect) {
         if (isCollect) {
-            Drawable drawable = getResources().getDrawable(R.drawable.tab_icon_collect_n);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            textCollect.setCompoundDrawables(null, drawable, null, null);
-            textCollect.setSelected(false);
-        } else {
             Drawable drawable = getResources().getDrawable(R.drawable.icon_collect_pxx);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             textCollect.setCompoundDrawables(null, drawable, null, null);
             textCollect.setSelected(true);
+        } else {
+            Drawable drawable = getResources().getDrawable(R.drawable.tab_icon_collect_n);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            textCollect.setCompoundDrawables(null, drawable, null, null);
+            textCollect.setSelected(false);
         }
     }
 
@@ -179,23 +185,25 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         if (isDown) {
             Drawable drawable = getResources().getDrawable(R.drawable.icon_downloadi_pxx);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            textCollect.setCompoundDrawables(null, drawable, null, null);
-            textCollect.setSelected(false);
+            textDown.setCompoundDrawables(null, drawable, null, null);
+            textDown.setSelected(false);
         } else {
             Drawable drawable = getResources().getDrawable(R.drawable.tab_icon_download_n);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            textCollect.setCompoundDrawables(null, drawable, null, null);
-            textCollect.setSelected(true);
+            textDown.setCompoundDrawables(null, drawable, null, null);
+            textDown.setSelected(true);
         }
     }
 
     private void isCheckDown(ZYDownloadEntity mDownloadEntity, ZYAudio audio) {
         if (mDownloadEntity != null) {
             if (mDownloadEntity.getState() == ZYDownState.FINISH) {
-                ZYToast.show(mActivity, "以下载");
-            } else if (mDownloadEntity.getState() == ZYDownState.ERROR || mDownloadEntity.getState() == ZYDownState.PAUSE) {
+                ZYToast.show(mActivity, "已下载");
+            } else if (mDownloadEntity.getState() == ZYDownState.ERROR ) {
                 textDown.setText("下载失败");
-            } else if (mDownloadEntity.getState() == ZYDownState.DOWNING) {
+            }  else if (mDownloadEntity.getState() == ZYDownState.PAUSE){
+                textDown.setText("下载暂停");
+            }else if (mDownloadEntity.getState() == ZYDownState.DOWNING) {
                 ZYToast.show(mActivity, "下载中");
             }
         } else {
@@ -273,6 +281,10 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_RANDOM_TYPE) {
             int position = new Random(mPresenter.getAudios().size()).nextInt();
             audio = mPresenter.getAudios().get(position);
+
+            ZYPlayPresenter playPresenter = (ZYPlayPresenter) mPresenter;//刷新界面
+            playPresenter.refreshPlay(audio.id);
+
             mPresenter.setCurPlayAudio(audio);
             ZYPlayManager.getInstance().play(audio, mPresenter.getAudios(), mPresenter.getAlbumDetail());
             return;
@@ -280,6 +292,10 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         int position = mPresenter.getAudios().indexOf(mPresenter.getCurPlayAudio());
         if (position >= 1) {
             audio = mPresenter.getAudios().get(--position);
+
+            ZYPlayPresenter playPresenter = (ZYPlayPresenter) mPresenter;//刷新界面
+            playPresenter.refreshPlay(audio.id);
+
             mPresenter.setCurPlayAudio(audio);
             ZYPlayManager.getInstance().play(audio, mPresenter.getAudios(), mPresenter.getAlbumDetail());
         } else {
@@ -297,6 +313,10 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_RANDOM_TYPE) {
             int position = new Random().nextInt(mPresenter.getAudios().size());
             audio = mPresenter.getAudios().get(position);
+
+            ZYPlayPresenter playPresenter = (ZYPlayPresenter) mPresenter;//刷新界面
+            playPresenter.refreshPlay(audio.id);
+
             mPresenter.setCurPlayAudio(audio);
             ZYPlayManager.getInstance().play(audio, mPresenter.getAudios(),mPresenter.getAlbumDetail());
             return;
@@ -304,6 +324,10 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         int position = mPresenter.getAudios().indexOf(mPresenter.getCurPlayAudio());
         if (position < mPresenter.getAudios().size() - 1) {
             audio = mPresenter.getAudios().get(++position);
+
+            ZYPlayPresenter playPresenter = (ZYPlayPresenter) mPresenter;//刷新界面
+            playPresenter.refreshPlay(audio.id);
+
             mPresenter.setCurPlayAudio(audio);
             ZYPlayManager.getInstance().play(audio, mPresenter.getAudios(), mPresenter.getAlbumDetail());
         } else {

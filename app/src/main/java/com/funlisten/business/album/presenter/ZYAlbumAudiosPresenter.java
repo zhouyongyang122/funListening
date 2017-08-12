@@ -19,6 +19,8 @@ public class ZYAlbumAudiosPresenter extends ZYListDataPresenter<ZYAlbumAudiosCon
 
     String mSortType = ZYAlbumModel.SORT_ASC;
 
+    int totalCount;
+
     public ZYAlbumAudiosPresenter(ZYAlbumAudiosContract.IView view, ZYAlbumModel model, int albumId) {
         super(view, model);
         mAlbumId = albumId;
@@ -37,6 +39,7 @@ public class ZYAlbumAudiosPresenter extends ZYListDataPresenter<ZYAlbumAudiosCon
 
             @Override
             public void onSuccess(ZYResponse<ZYListResponse<ZYAudio>> response) {
+                totalCount = response.data.totalCount;
                 success(response);
             }
 
@@ -67,5 +70,10 @@ public class ZYAlbumAudiosPresenter extends ZYListDataPresenter<ZYAlbumAudiosCon
 
     public String getSortType() {
         return mSortType;
+    }
+
+    @Override
+    public int getTotalCount() {
+        return totalCount;
     }
 }

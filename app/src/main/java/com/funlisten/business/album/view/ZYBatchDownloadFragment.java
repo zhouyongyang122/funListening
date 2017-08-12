@@ -12,6 +12,7 @@ import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
 import com.funlisten.base.mvp.ZYBaseRecyclerFragment;
 import com.funlisten.base.view.ZYSwipeRefreshRecyclerView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.business.album.contract.ZYABatchDownContract;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.album.model.bean.ZYAlbumEpisode;
 import com.funlisten.business.album.model.bean.ZYBatchDownHeaderInfo;
@@ -32,11 +33,11 @@ import java.util.ArrayList;
  * Created by gd on 2017/7/26.
  */
 
-public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment implements
+public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment<ZYABatchDownContract.IPresenter> implements
         ZYBatchDownloadItemVH.OnItemSelectAudio ,ZYBatchDownFooterVH.AllSelectListen,ZYAlbumHomeEpisodeVH.AlbumHomeEpisodeListener,
-        ZYBatchDownHeaderVH.AudioSelectionsListener {
+        ZYBatchDownHeaderVH.AudioSelectionsListener , ZYABatchDownContract.IView{
 
-    protected ZYBaseRecyclerAdapter mAdapter;
+   protected ZYBaseRecyclerAdapter mAdapter;
 
     ArrayList<ZYAudio> selectList = new ArrayList<>();
 
@@ -50,27 +51,25 @@ public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment implements
 
     ArrayList<ZYAudio> noList = new ArrayList<>();
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  super.onCreateView(inflater, container, savedInstanceState);
-        Bundle bundle = getArguments();
-        albumDetail = (ZYAlbumDetail) bundle.getSerializable("album");
-        init((ArrayList<ZYAudio>)bundle.getSerializable("audiolist"));
+        albumDetail = mPresenter.getAlbumDetail();
         footerVH = new ZYBatchDownFooterVH(this);
         footerVH.attachTo(mRootView);
         footerVH.updateView(null,0);
-
         episodeVH = new ZYAlbumHomeEpisodeVH(this);
         episodeVH.attachTo(mRootView);
+        episodeVH.updateView(albumDetail,0);
         episodeVH.hide();
-
+        init();
         return view;
     }
 
-    public void init(ArrayList<ZYAudio> list){
-        for(ZYAudio audio:list){
+    public void init(){
+        ArrayList<ZYAudio> list = mPresenter.getDatas();
+        for(ZYAudio audio:list){//过滤已下载的
             if(!ZYDownloadEntity.audioIsDown(audio)) noList.add(audio);
         }
         mAdapter  = createAdapter(noList);
@@ -143,12 +142,25 @@ public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment implements
     @Override
     public void onEpisodeItemClick(ZYAlbumEpisode episode) {
         episodeVH.hide();
-        mRefreshRecyclerView.getRecyclerView().scrollToPosition(episode.start);
+//        mRefreshRecyclerView.getRecyclerView().scrollToPosition(episode.start);
+        final LinearLayoutManager manager = (LinearLayoutManager) mRefreshRecyclerView.getRecyclerView().getLayoutManager();
+        manager.scrollToPositionWithOffset(episode.start, 0);
+        manager.setStackFromEnd(true);
     }
 
     @Override
     public void onSelections() {
         episodeVH.updateView(albumDetail, 0);
         episodeVH.show();
+    }
+
+    @Override
+    public void showDatas(ArrayList<ZYAudio> datas) {
+        noList.clear();
+        for(ZYAudio audio:datas){//过滤已下载的
+            if(!ZYDownloadEntity.audioIsDown(audio)) noList.add(audio);
+        }
+        headerVH.updateView(new ZYBatchDownHeaderInfo(noList.size()),0);
+        mAdapter.notifyDataSetChanged();
     }
 }

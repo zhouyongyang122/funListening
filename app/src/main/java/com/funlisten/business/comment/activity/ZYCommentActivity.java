@@ -53,7 +53,7 @@ public class ZYCommentActivity extends ZYBaseFragmentActivity<ZYCommentFragment>
     public void onBackPressed() {
         super.onBackPressed();
         if (getIntent().getBooleanExtra("isBackToPlay", false)) {
-            ZYPlayActivity.toPlayActivity(mActivity);
+            ZYPlayActivity.toPlayActivity(mActivity,true);
         }
     }
 }

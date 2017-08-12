@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.funlisten.R;
 import com.funlisten.base.mvp.ZYListDateFragment;
+import com.funlisten.business.album.activity.ZYAlbumHomeActivity;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.photo.activity.ZYPhotoActivity;
 import com.funlisten.business.profile.contract.ZYProfileContract;
@@ -53,7 +54,7 @@ public class ZYProfileFragment extends ZYListDateFragment<ZYProfileContract.IPre
 
     @Override
     protected void onItemClick(View view, int position) {
-
+        mActivity.startActivity(ZYAlbumHomeActivity.createIntent(mActivity,mPresenter.getDataList().get(position).id));
     }
 
 

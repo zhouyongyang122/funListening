@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 
 import com.funlisten.R;
 import com.funlisten.base.mvp.ZYBaseFragmentActivity;
+import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.business.play.presenter.ZYPlayPresenter;
 import com.funlisten.business.play.view.ZYPlayFragment;
 import com.funlisten.utils.ZYLog;
@@ -44,8 +45,10 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
         context.overridePendingTransition(R.anim.slide_up, R.anim.slide_up);
     }
 
-    public static void toPlayActivity(Activity context) {
-        context.startActivity(createIntent(context, 0, 0, null));
+    public static void toPlayActivity(Activity context,boolean isRefreshComment) {
+        Intent intent = new Intent(context, ZYPlayActivity.class);
+        intent.putExtra("isRefreshComment", isRefreshComment);
+        context.startActivity(intent);
     }
 
     public static Intent createIntent(Context context) {
@@ -64,6 +67,7 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
         int mAudioId = getIntent().getIntExtra(AUDIO_ID, 0);
         String sortType = getIntent().getStringExtra(SORT_TYPE);
         mPresenter = new ZYPlayPresenter(mFragment, mAlbumId, mAudioId, sortType);
+        mPresenter.isFavorite(ZYBaseModel.ALBUM_TYPE,mAlbumId);
     }
 
     @Override
@@ -74,6 +78,9 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
         ZYLog.e(getClass().getSimpleName(), "onNewIntent: " + mAlbumId + ":" + mAudioId);
         if (mAlbumId > 0) {
             mPresenter.refreshPlay(mAlbumId, mAudioId);
+        }
+        if(intent.getBooleanExtra("isRefreshComment",false)){
+            mPresenter.loadComment();
         }
     }
 

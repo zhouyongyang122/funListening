@@ -37,6 +37,7 @@ public class ZYCommentActivity extends ZYBaseFragmentActivity<ZYCommentFragment>
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new ZYCommentPresenter(mFragment, new ZYCommentModel(), getIntent().getStringExtra("type"), getIntent().getStringExtra("objectId"));
+        showTitle("评论");
     }
 
     @Override

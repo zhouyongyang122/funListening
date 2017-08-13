@@ -153,7 +153,8 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
     private void play() {
         refreshNotificationTitle();
 
-        if (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isAudition() || mCurrentPlayAudio.isBuy()) {
+//        if (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isAudition() || mCurrentPlayAudio.isBuy()) {
+        if (!mAlbumDetail.isNeedBuy() || mAlbumDetail.isBuy || mCurrentPlayAudio.isAudition()) {
             ZYPlayHistory.saveByAudio(mCurrentPlayAudio, 0);
             getAudioPlayer().stop();
             stopProgressUpdate();
@@ -187,11 +188,16 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
     }
 
     public void start() {
-        if (!getAudioPlayer().isPlaying()) {
-            startProgressUpdate(0);
-            getAudioPlayer().start(true);
-            sendCallBack(ZYPlayManager.STATE_PLAYING, "正在播放");
-            refreshNotificationPlayStatus(true);
+
+        if (!mAlbumDetail.isNeedBuy() || mAlbumDetail.isBuy || mCurrentPlayAudio.isAudition()) {
+            if (!getAudioPlayer().isPlaying()) {
+                startProgressUpdate(0);
+                getAudioPlayer().start(true);
+                sendCallBack(ZYPlayManager.STATE_PLAYING, "正在播放");
+                refreshNotificationPlayStatus(true);
+            }
+        } else {
+            sendCallBack(ZYPlayManager.STATE_NEED_BUY_PAUSED, "暂停播放,收费视频");
         }
     }
 
@@ -256,7 +262,8 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         if (position < mAudios.size() - 1) {
             sendCallBack(ZYPlayManager.STATE_PREPARING_NEXT, "准备播放下一集");
             mCurrentPlayAudio = mAudios.get(position);
-            if (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isAudition() || mCurrentPlayAudio.isBuy()) {
+//            if (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isAudition() || mCurrentPlayAudio.isBuy()) {
+            if (!mAlbumDetail.isNeedBuy() || mAlbumDetail.isBuy || mCurrentPlayAudio.isAudition()) {
                 play();
             } else {
                 getAudioPlayer().stop();
@@ -281,7 +288,8 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         if (hasAudio) {
             sendCallBack(ZYPlayManager.STATE_PREPARING_NEXT, isNext ? "准备播放下一集" : "准备播放上一集");
             mCurrentPlayAudio = mAudios.get(position);
-            if (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isAudition() || mCurrentPlayAudio.isBuy()) {
+//            if (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isAudition() || mCurrentPlayAudio.isBuy()) {
+            if (!mAlbumDetail.isNeedBuy() || mAlbumDetail.isBuy || mCurrentPlayAudio.isAudition()) {
                 play();
             } else {
                 getAudioPlayer().stop();

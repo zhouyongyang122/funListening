@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.funlisten.base.event.ZYEventPaySuc;
 import com.funlisten.base.mvp.ZYListDateFragment;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.activity.ZYBatchDownloadActivity;
@@ -25,6 +26,8 @@ import com.funlisten.utils.ZYScreenUtils;
 import com.funlisten.utils.ZYToast;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -162,5 +165,10 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
         } catch (Exception e) {
 
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ZYEventPaySuc paySuc) {
+        mPresenter.subscribe();
     }
 }

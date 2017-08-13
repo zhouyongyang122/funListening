@@ -152,7 +152,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         mPresenter.isFavorite("audio", audio.id);
 
         ZYDownloadEntity downloadEntity = ZYDownloadEntity.queryById(audio.id, audio.albumId);
-        if(downloadEntity != null) refreshDown(downloadEntity);
+        if (downloadEntity != null) refreshDown(downloadEntity);
 
         adapter.notifyDataSetChanged();
         ZYPlay play = new ZYPlay(mPresenter.getAlbumDetail(), mPresenter.getCurPlayAudio());
@@ -199,11 +199,11 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
         if (mDownloadEntity != null) {
             if (mDownloadEntity.getState() == ZYDownState.FINISH) {
                 ZYToast.show(mActivity, "已下载");
-            } else if (mDownloadEntity.getState() == ZYDownState.ERROR ) {
+            } else if (mDownloadEntity.getState() == ZYDownState.ERROR) {
                 textDown.setText("下载失败");
-            }  else if (mDownloadEntity.getState() == ZYDownState.PAUSE){
+            } else if (mDownloadEntity.getState() == ZYDownState.PAUSE) {
                 textDown.setText("下载暂停");
-            }else if (mDownloadEntity.getState() == ZYDownState.DOWNING) {
+            } else if (mDownloadEntity.getState() == ZYDownState.DOWNING) {
                 ZYToast.show(mActivity, "下载中");
             }
         } else {
@@ -318,7 +318,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             playPresenter.refreshPlay(audio.id);
 
             mPresenter.setCurPlayAudio(audio);
-            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios(),mPresenter.getAlbumDetail());
+            ZYPlayManager.getInstance().play(audio, mPresenter.getAudios(), mPresenter.getAlbumDetail());
             return;
         }
         int position = mPresenter.getAudios().indexOf(mPresenter.getCurPlayAudio());
@@ -391,7 +391,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             } else if (playEvent.state == STATE_PAUSED) {
 
             } else if (playEvent.state == STATE_NEED_BUY_PAUSED) {
-
+                ZYToast.show(mActivity, "音频需要购买哦!");
             } else if (playEvent.state == STATE_BUFFERING_START) {
 
             } else if (playEvent.state == STATE_BUFFERING_END) {

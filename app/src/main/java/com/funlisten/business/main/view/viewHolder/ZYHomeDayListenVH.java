@@ -12,6 +12,7 @@ import com.funlisten.R;
 import com.funlisten.ZYApplication;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.dailylisten.activity.ZYDailyListenActivity;
+import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.business.search.view.WarpLinearLayout;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.business.main.model.bean.ZYHome;
@@ -70,6 +71,7 @@ public class ZYHomeDayListenVH extends ZYBaseViewHolder<ZYHome.DayListening> imp
         try {
             int audioId = Integer.parseInt(v.getTag().toString());
             //跳转到音频详情页
+            ZYPlayActivity.toPlayActivity(ZYApplication.getInstance().getCurrentActivity(), albumId, audioId);
         } catch (Exception e) {
 
         }

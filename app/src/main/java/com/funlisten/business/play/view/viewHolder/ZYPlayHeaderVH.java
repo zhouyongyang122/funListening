@@ -169,7 +169,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
                 headerListener.onPlayTypeClick();
                 if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_LOOP_TYPE) {
                     ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_RANDOM_TYPE);
-                } else if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_SINTANCE_TYPE) {
+                } else if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_RANDOM_TYPE) {
                     ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_SINTANCE_TYPE);
                 } else {
                     ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_LOOP_TYPE);

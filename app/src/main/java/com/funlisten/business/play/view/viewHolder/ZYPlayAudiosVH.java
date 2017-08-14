@@ -12,6 +12,7 @@ import com.funlisten.base.activity.picturePicker.ZYAlbum;
 import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
 import com.funlisten.base.bean.ZYListResponse;
 import com.funlisten.base.bean.ZYResponse;
+import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.view.ZYRefreshListener;
 import com.funlisten.base.view.ZYSwipeRefreshRecyclerView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
@@ -57,6 +58,8 @@ public class ZYPlayAudiosVH extends ZYBaseViewHolder<List<ZYAudio>> {
 
     PlayAudiosListener listener;
 
+    String mSortType = ZYBaseModel.SORT_DESC;
+
     public ZYPlayAudiosVH(PlayAudiosListener listener) {
         this.listener = listener;
     }
@@ -84,6 +87,19 @@ public class ZYPlayAudiosVH extends ZYBaseViewHolder<List<ZYAudio>> {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
             refreshPlayType();
+
+            refreshSortType();
+        }
+    }
+
+    void refreshSortType() {
+        if (textPlaySort == null) {
+            return;
+        }
+        if (mSortType.equals(ZYBaseModel.SORT_DESC)) {
+            textPlaySort.setSelected(false);
+        } else {
+            textPlaySort.setSelected(true);
         }
     }
 
@@ -114,7 +130,7 @@ public class ZYPlayAudiosVH extends ZYBaseViewHolder<List<ZYAudio>> {
             case R.id.textPlayType:
                 if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_LOOP_TYPE) {
                     ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_RANDOM_TYPE);
-                } else if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_SINTANCE_TYPE) {
+                } else if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_RANDOM_TYPE) {
                     ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_SINTANCE_TYPE);
                 } else {
                     ZYPlayManager.getInstance().setPlayType(ZYPlayService.PLAY_LOOP_TYPE);
@@ -125,6 +141,13 @@ public class ZYPlayAudiosVH extends ZYBaseViewHolder<List<ZYAudio>> {
                 Collections.reverse(mAudios);
                 ZYPlayManager.getInstance().setAudios(mAudios);
                 adapter.notifyDataSetChanged();
+
+                if (mSortType.equals(ZYBaseModel.SORT_DESC)) {
+                    mSortType = ZYBaseModel.SORT_ASC;
+                } else {
+                    mSortType = ZYBaseModel.SORT_DESC;
+                }
+                refreshSortType();
                 break;
             case R.id.textClose:
                 hide();

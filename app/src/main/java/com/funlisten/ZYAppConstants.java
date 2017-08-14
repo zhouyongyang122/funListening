@@ -10,7 +10,7 @@ public class ZYAppConstants {
     public static final String WECHAT_APP_KEY = "wx2ce9b87064d829d5";
     public static final String WECHAT_APP_SECRET = "3661eb56e04171cbfb74b698be6cc295";
     public static final String WECHAT_GET_AUTH_TOKEN = "https://api.weixin.qq.com/sns/oauth2/access_token";
-    public static final String WECHAT_GET_USER_INFO  = "https://api.weixin.qq.com/sns/userinfo";
+    public static final String WECHAT_GET_USER_INFO = "https://api.weixin.qq.com/sns/userinfo";
 
     //新浪
     public static final String SINA_APP_KEY = "2955025736";
@@ -25,5 +25,9 @@ public class ZYAppConstants {
 
     //bugtags
     public static final String BUGTAGS_KEY = "4ce5faa31620a5fe2a5e0d32886ff7eb";
+
+    public static String getShareUrl(int albumId) {
+        return "http://tingshuishuo.cn/album/album.html?id=" + albumId;
+    }
 }
 

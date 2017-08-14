@@ -1,5 +1,7 @@
 package com.funlisten.business.play.view;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
+import com.funlisten.ZYAppConstants;
 import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
 import com.funlisten.base.event.ZYEventDowloadUpdate;
 import com.funlisten.base.mvp.ZYBaseFragment;
@@ -35,7 +38,11 @@ import com.funlisten.business.play.view.viewHolder.ZYPlayAudiosVH;
 import com.funlisten.business.play.view.viewHolder.ZYPlayHeaderVH;
 import com.funlisten.service.downNet.down.ZYDownState;
 import com.funlisten.service.downNet.down.ZYDownloadManager;
+import com.funlisten.thirdParty.image.ZYIImageLoader;
+import com.funlisten.thirdParty.image.ZYImageLoadHelper;
+import com.funlisten.utils.SRShareUtils;
 import com.funlisten.utils.ZYToast;
+import com.third.loginshare.entity.ShareEntity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -128,6 +135,27 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
                 isCheckDown(downloadEntitys, audio);
                 break;
             case R.id.textShare:
+                ZYImageLoadHelper.getImageLoader().loadFromMediaStore(this, mPresenter.getAlbumDetail().coverUrl, new ZYIImageLoader.OnLoadLocalImageFinishListener() {
+                    @Override
+                    public void onLoadFinish(@Nullable final Bitmap bitmap) {
+                        mActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ShareEntity shareEntity = new ShareEntity();
+                                shareEntity.avatarUrl = mPresenter.getAlbumDetail().coverUrl;
+                                if (bitmap != null) {
+                                    shareEntity.avatarBitmap = bitmap;
+                                } else {
+                                    shareEntity.avatarBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                                }
+                                shareEntity.webUrl = ZYAppConstants.getShareUrl(mPresenter.getAlbumDetail().id);
+                                shareEntity.title = mPresenter.getAlbumDetail().name;
+                                shareEntity.text = mPresenter.getAlbumDetail().title;
+                                new SRShareUtils(mActivity, shareEntity).share();
+                            }
+                        });
+                    }
+                });
                 break;
             case R.id.textCollect:
                 ZYAudio zyAudio = mPresenter.getCurPlayAudio();
@@ -279,7 +307,7 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     public void onPreClick(ZYPlay play) {
         ZYAudio audio = null;
         if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_RANDOM_TYPE) {
-            int position = new Random(mPresenter.getAudios().size()).nextInt();
+            int position = new Random().nextInt(mPresenter.getAudios().size());
             audio = mPresenter.getAudios().get(position);
 
             ZYPlayPresenter playPresenter = (ZYPlayPresenter) mPresenter;//刷新界面

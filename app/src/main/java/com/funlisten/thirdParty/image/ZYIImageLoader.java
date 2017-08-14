@@ -1,5 +1,6 @@
 package com.funlisten.thirdParty.image;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
@@ -51,6 +52,7 @@ public interface ZYIImageLoader {
 
     void loadRoundImage(Object object, ImageView imageView, String imgUrl, int radius, int resDefault, int resError, OnLoadImageFinishListener onLoadImageFinishListener);
 
+    void loadFromMediaStore(Object object, final String imgUrl,final OnLoadLocalImageFinishListener onLoadLocalImageFinishListener);
 
     boolean checkParams(Object object, ImageView imageView, String imgUrl);
 
@@ -64,6 +66,10 @@ public interface ZYIImageLoader {
 
     ZYIImageLoader setColorFilter(int color);
 
+    interface OnLoadLocalImageFinishListener {
+
+        void onLoadFinish(@Nullable Bitmap bitmap);
+    }
 
     interface OnLoadImageFinishListener {
 

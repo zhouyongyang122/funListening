@@ -32,6 +32,9 @@ public class ZYMyOrderVH extends ZYBaseViewHolder<ZYFavorite> {
     @Bind(R.id.title)
     TextView title;
 
+    @Bind(R.id.textSubTitle)
+    TextView textSubTitle;
+
     @Bind(R.id.play_count)
     TextView playCount;
 
@@ -43,19 +46,20 @@ public class ZYMyOrderVH extends ZYBaseViewHolder<ZYFavorite> {
 
     @Override
     public void updateView(ZYFavorite data, int position) {
-        ZYImageLoadHelper.getImageLoader().loadImage(mContext,coverUrl,data.album.coverUrl);
+        ZYImageLoadHelper.getImageLoader().loadImage(mContext, coverUrl, data.album.coverUrl);
         showPay("paid".equals(data.album.costType));
-        title.setText(TextUtils.isEmpty(data.album.title)? "没有提供标题":data.album.title);
-        playCount.setText(data.album.playCount+"");
-        audioCount.setText("更新至"+data.album.audioCount+"集");
+        title.setText(TextUtils.isEmpty(data.album.name) ? "" : data.album.name);
+        textSubTitle.setText(TextUtils.isEmpty(data.album.title) ? "" : data.album.title);
+        playCount.setText(data.album.playCount + "");
+        audioCount.setText("更新至" + data.album.audioCount + "集");
         textTime.setText(ZYDateUtils.getTimeString(data.gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.HHMM24));
     }
 
-    private void showPay(boolean isShow){
-        if(isShow){
+    private void showPay(boolean isShow) {
+        if (isShow) {
             payIcon.setVisibility(View.VISIBLE);
             payTv.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             payIcon.setVisibility(View.GONE);
             payTv.setVisibility(View.GONE);
         }

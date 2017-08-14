@@ -250,7 +250,7 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
     }
 
     private void playNext() {
-        int curPosition = mAudios.indexOf(mCurrentPlayAudio);
+        int curPosition = getCurIndex();
         int position = 0;
         if (playType == PLAY_LOOP_TYPE) {
             position = ++curPosition;
@@ -260,8 +260,8 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
             position = new Random().nextInt(mAudios.size());
         }
         if (position < mAudios.size() - 1) {
-            sendCallBack(ZYPlayManager.STATE_PREPARING_NEXT, "准备播放下一集");
             mCurrentPlayAudio = mAudios.get(position);
+            sendCallBack(ZYPlayManager.STATE_PREPARING_NEXT, "准备播放下一集");
 //            if (mCurrentPlayAudio.isFree() || mCurrentPlayAudio.isAudition() || mCurrentPlayAudio.isBuy()) {
             if (!mAlbumDetail.isNeedBuy() || mAlbumDetail.isBuy || mCurrentPlayAudio.isAudition()) {
                 play();
@@ -276,7 +276,7 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
     }
 
     private void notificationPlayNextOrPre(boolean isNext) {
-        int curPosition = mAudios.indexOf(mCurrentPlayAudio);
+        int curPosition = getCurIndex();
         int position = 0;
         if (playType == PLAY_LOOP_TYPE) {
             position = isNext ? ++curPosition : --curPosition;
@@ -355,6 +355,21 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
         EventBus.getDefault().post(playEvent);
     }
 
+    private int getCurIndex() {
+        int index = 0;
+        try {
+            for (ZYAudio audio : mAudios) {
+                if (audio.id == mCurrentPlayAudio.id) {
+                    return index;
+                }
+                index++;
+            }
+        } catch (Exception e) {
+
+        }
+        return 0;
+    }
+
     private CompositeSubscription getSubscription() {
         if (mSubscription == null) {
             mSubscription = new CompositeSubscription();
@@ -419,7 +434,9 @@ public class ZYPlayService extends Service implements FZIPlayer.PlayerCallBack {
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.nav_btn_quick_play_green_n);
         mNotify = mBuilder.build();
-        mNotify.bigContentView = mRemoteView;
+        if (Build.VERSION.SDK_INT >= 24) {
+            mNotify.bigContentView = mRemoteView;
+        }
         mNotify.flags = Notification.FLAG_ONGOING_EVENT;
         mNotificationManager.notify(mNotifyId, mNotify);
     }

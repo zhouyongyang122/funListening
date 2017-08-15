@@ -136,7 +136,7 @@ public class ZYPersonDataActivity extends ZYBaseActivity<ZYPersonContract.IPrese
                 break;
             case R.id.age_line:
                 if (dialogage == null) {
-                    dialogage = new ZYWheelSelectDialog(this, new String[]{"00", "90", "80", "70"}, new ZYWheelSelectDialog.WheelSelectListener() {
+                    dialogage = new ZYWheelSelectDialog(this, new String[]{"00后", "90后", "80后", "70后"}, new ZYWheelSelectDialog.WheelSelectListener() {
                         @Override
                         public void onWheelSelected(ZYWheelSelectDialog dialog, int position, String value) {
                             zyUser.age = value;

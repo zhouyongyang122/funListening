@@ -8,13 +8,12 @@ import com.funlisten.base.mvp.ZYListDateFragment;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.download.contract.ZYDownloadedContract;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
-import com.funlisten.business.download.view.viewholder.ZYDownloadedItemVH;
 import com.funlisten.business.download.view.viewholder.ZYDownloadingHeaderVH;
 import com.funlisten.business.download.view.viewholder.ZYDownloadingItemVH;
 import com.funlisten.business.play.activity.ZYPlayActivity;
+import com.funlisten.service.downNet.down.ZYDownState;
 import com.funlisten.service.downNet.down.ZYDownloadManager;
 import com.funlisten.utils.ZYLog;
-import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -34,7 +33,18 @@ public class ZYDownloadingFragment extends ZYListDateFragment<ZYDownloadedContra
     @Override
     protected void onItemClick(View view, int position) {
         ZYDownloadEntity downloadEntity = mAdapter.getItem(position);
-        ZYPlayActivity.toPlayActivity(mActivity, downloadEntity.albumId, downloadEntity.audioId);
+//        ZYPlayActivity.toPlayActivity(mActivity, downloadEntity.albumId, downloadEntity.audioId);
+        if (downloadEntity.getState() == ZYDownState.FINISH) {
+            return;
+        }
+        if (downloadEntity.getState() == ZYDownState.PAUSE || downloadEntity.getState() == ZYDownState.ERROR) {
+            downloadEntity.stateValue = ZYDownState.WAIT.getState();
+            ZYDownloadManager.getInstance().cancleAudio(downloadEntity.getId());
+        } else {
+            downloadEntity.stateValue = ZYDownState.PAUSE.getState();
+            ZYDownloadManager.getInstance().addAudio(downloadEntity);
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -62,9 +72,9 @@ public class ZYDownloadingFragment extends ZYListDateFragment<ZYDownloadedContra
             @Override
             public void onDownAllClick(boolean isDowAll) {
                 if (isDowAll) {
-                    ZYDownloadManager.getInstance().startAllAudio();
+                    ZYDownloadManager.getInstance().startAllAudioAsy();
                 } else {
-                    ZYDownloadManager.getInstance().puaseAllAudio(true);
+                    ZYDownloadManager.getInstance().puaseAllAudioAsy();
                 }
                 mPresenter.refresh();
             }

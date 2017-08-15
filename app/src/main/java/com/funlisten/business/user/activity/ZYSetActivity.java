@@ -21,6 +21,7 @@ public class ZYSetActivity extends ZYBaseFragmentActivity<ZYSetFragment> {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showTitle("设置");
     }
 
     @Override

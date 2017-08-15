@@ -16,9 +16,10 @@
 
         <ImageView
             android:id="@+id/imgIcon"
-            android:layout_width="12.5dp"
+            android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_centerVertical="true"
+            android:scaleType="centerInside"
             android:src="@drawable/home_icon_rmph_d" />
 
         <ImageView

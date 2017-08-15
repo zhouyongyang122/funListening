@@ -45,7 +45,7 @@ public class ZYFollowFragment extends ZYListDateFragment<ZYFollowContract.IPrese
     @Override
     protected void onItemClick(View view, int position) {
         ZYUserList user = mAdapter.getItem(position);
-        startActivity(ZYProFlieActivity.createIntent(mActivity, user.user.userId));
+        startActivity(ZYProFlieActivity.createIntent(mActivity, user.user.id));
     }
 
 

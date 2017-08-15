@@ -44,7 +44,7 @@ public class ZYDownloadHomeItemVH extends ZYBaseViewHolder<ZYDownloadEntity> {
 
     ZYDownloadEntity mData;
 
-    final int SIZE_M = 1024 * 1024;
+    final float SIZE_M = 1024 * 1204.0f;
 
     DownloadHomeItemListener mListener;
 

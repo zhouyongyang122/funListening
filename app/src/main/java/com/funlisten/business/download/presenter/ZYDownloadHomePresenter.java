@@ -44,4 +44,9 @@ public class ZYDownloadHomePresenter extends ZYListDataPresenter<ZYDownloadHomeC
             ZYLog.e(getClass().getSimpleName(), "error: " + e.getMessage());
         }
     }
+
+    @Override
+    public void setAsc(boolean asc) {
+
+    }
 }

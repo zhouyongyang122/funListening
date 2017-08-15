@@ -109,6 +109,19 @@ public class ZYDownloadManager {
         }.start();
     }
 
+    public void startAllAudioAsy() {
+        List<ZYDownloadEntity> list = ZYDownloadEntity.queryPauseAudios();
+        if (list != null && list.size() > 0) {
+            for (ZYDownloadEntity downloadEntity : list) {
+                downloadEntity.setState(ZYDownState.WAIT);
+            }
+            ZYDownloadEntity.updateAudios(list);
+            ArrayList<ZYIDownBase> audios = new ArrayList<ZYIDownBase>();
+            audios.addAll(list);
+            addAudios(audios);
+        }
+    }
+
     public void puaseAllAudio(boolean needCancle) {
         if (needCancle) {
             cancleAll();
@@ -125,6 +138,17 @@ public class ZYDownloadManager {
                 }
             }
         }.start();
+    }
+
+    public void puaseAllAudioAsy() {
+        cancleAll();
+        List<ZYDownloadEntity> list = ZYDownloadEntity.queryDownloadingAudios();
+        if (list != null && list.size() > 0) {
+            for (ZYDownloadEntity downloadEntity : list) {
+                downloadEntity.setState(ZYDownState.PAUSE);
+            }
+            ZYDownloadEntity.updateAudios(list);
+        }
     }
 
     public void deleteAllAudio() {

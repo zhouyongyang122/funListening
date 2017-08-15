@@ -32,4 +32,6 @@ public class ZYComment implements ZYIBaseBean {
     public int likeCount;//点赞数
 
     public ZYUser user;
+
+    public boolean showMore;
 }

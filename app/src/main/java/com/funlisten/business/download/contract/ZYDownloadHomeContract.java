@@ -14,6 +14,6 @@ public interface ZYDownloadHomeContract {
     }
 
     interface IPresenter extends ZYListDataContract.Presenter<ZYDownloadEntity> {
-
+        void setAsc(boolean asc);
     }
 }

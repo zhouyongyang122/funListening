@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
 
+import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.mvp.ZYListDateFragment;
+import com.funlisten.base.player.FZBasePlayer;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.download.contract.ZYDownloadHomeContract;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
@@ -16,7 +18,9 @@ import com.funlisten.business.play.activity.ZYPlayActivity;
  * Created by ZY on 17/7/13.
  */
 
-public class ZYDownloadedFragment extends ZYListDateFragment<ZYDownloadHomeContract.IPresenter, ZYDownloadEntity> implements ZYDownloadHomeContract.IView, ZYDownloadedItemVH.DownloadedItemListener {
+public class ZYDownloadedFragment extends ZYListDateFragment<ZYDownloadHomeContract.IPresenter, ZYDownloadEntity> implements ZYDownloadHomeContract.IView
+        , ZYDownloadedItemVH.DownloadedItemListener
+        , ZYDownloadedHeaderVH.DownloadedHeaderListener {
 
     ZYDownloadedHeaderVH headerVH;
 
@@ -29,7 +33,7 @@ public class ZYDownloadedFragment extends ZYListDateFragment<ZYDownloadHomeContr
     @Override
     protected void init() {
         super.init();
-        headerVH = new ZYDownloadedHeaderVH();
+        headerVH = new ZYDownloadedHeaderVH(this);
         mAdapter.addHeader(headerVH);
     }
 
@@ -43,6 +47,18 @@ public class ZYDownloadedFragment extends ZYListDateFragment<ZYDownloadHomeContr
         ZYDownloadEntity entity = (ZYDownloadEntity) object;
         entity.audioDowloadedCount = mPresenter.getDataList().size();
         headerVH.updateView(entity, 0);
+    }
+
+    @Override
+    public void onSortClick(String sortType) {
+        if (sortType.equals(ZYBaseModel.SORT_DESC)) {
+            //降序
+            mPresenter.setAsc(false);
+        } else {
+            //升弃
+            mPresenter.setAsc(true);
+        }
+        mPresenter.refresh();
     }
 
     @Override

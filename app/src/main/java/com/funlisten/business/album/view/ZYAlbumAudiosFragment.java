@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.funlisten.base.event.ZYEventPaySuc;
 import com.funlisten.base.mvp.ZYListDateFragment;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.activity.ZYBatchDownloadActivity;
@@ -17,6 +18,7 @@ import com.funlisten.business.album.view.viewHolder.ZYAlbumAudiosHeaderVH;
 import com.funlisten.business.album.view.viewHolder.ZYAlbumHomeEpisodeVH;
 import com.funlisten.business.album.view.viewHolder.ZYAudioItemVH;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
+import com.funlisten.business.pay.activity.ZYPayActivity;
 import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.service.downNet.down.ZYDownloadManager;
@@ -25,6 +27,8 @@ import com.funlisten.utils.ZYScreenUtils;
 import com.funlisten.utils.ZYToast;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -70,7 +74,8 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
         if (data.isAudition() || !albumDetail.isNeedBuy() || albumDetail.isBuy) {
             ZYPlayActivity.toPlayActivity(mActivity, albumDetail.id, data.id, mPresenter.getSortType());
         } else {
-            ZYToast.show(mActivity, "需要购买后才能听哦!");
+//            ZYToast.show(mActivity, "需要购买后才能听哦!");
+            mActivity.startActivity(ZYPayActivity.createIntent(mActivity, albumDetail));
         }
     }
 
@@ -112,7 +117,7 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
 
         ArrayList<ZYAudio> list = new ArrayList<>();
         list.addAll(mPresenter.getDataList());
-        mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity, albumDetail,mPresenter.getTotalCount()));
+        mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity, albumDetail, mPresenter.getTotalCount()));
         if (episodeVH.isVisible()) {
             episodeVH.hide();
         }
@@ -162,5 +167,10 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
         } catch (Exception e) {
 
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ZYEventPaySuc paySuc) {
+        mPresenter.subscribe();
     }
 }

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.funlisten.R;
+import com.funlisten.base.activity.pictureView.ZYPictureViewActivity;
+import com.funlisten.base.activity.pictureView.ZYPictureViewer;
 import com.funlisten.base.mvp.ZYListDateFragment;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.photo.ZYPhoto;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
  * Created by gd on 2017/7/14.
  */
 
-public class ZYPhotoFragment extends ZYListDateFragment<ZYPhotoContract.IPresenter,ZYPhoto> implements ZYPhotoContract.IView {
+public class ZYPhotoFragment extends ZYListDateFragment<ZYPhotoContract.IPresenter, ZYPhoto> implements ZYPhotoContract.IView {
 
     private ArrayList<ZYPhoto> photeList = new ArrayList<>();
 
@@ -36,18 +38,18 @@ public class ZYPhotoFragment extends ZYListDateFragment<ZYPhotoContract.IPresent
         View view = super.onCreateView(inflater, container, savedInstanceState);
         mRefreshRecyclerView.setRefreshEnable(false);
         mRefreshRecyclerView.getRecyclerView().setBackgroundColor(ZYResourceUtils.getColor(R.color.c8));
-        mRefreshRecyclerView.getRecyclerView().setPadding(ZYScreenUtils.dp2px(mActivity,2),0,ZYScreenUtils.dp2px(mActivity,2),0);
+        mRefreshRecyclerView.getRecyclerView().setPadding(ZYScreenUtils.dp2px(mActivity, 2), 0, ZYScreenUtils.dp2px(mActivity, 2), 0);
         return view;
     }
 
     ZYPhotoSelect photoSelect = new ZYPhotoSelect() {
         @Override
         public void onSelect(ZYPhoto photo) {
-            if(!photo.isSelect){
+            if (!photo.isSelect) {
                 photo.isSelect = true;
                 photeList.add(photo);
-            }else {
-                photo.isSelect= false;
+            } else {
+                photo.isSelect = false;
                 photeList.remove(photo);
             }
         }
@@ -55,20 +57,28 @@ public class ZYPhotoFragment extends ZYListDateFragment<ZYPhotoContract.IPresent
 
     @Override
     protected void onItemClick(View view, int position) {
-    }
-   public void  refreshPhoto(boolean isEdit){
-       ZYPhotoItemVH.isEdit = isEdit;
-       mAdapter.notifyDataSetChanged();
+        ArrayList<String> urls = new ArrayList<String>();
+        for (ZYPhoto photo : mPresenter.getDataList()) {
+            urls.add(photo.photoUrl);
+        }
+        ZYPictureViewer.create().withIndex(position).withData(urls).start(mActivity);
     }
 
-    public void clearPhoto(){
-        for(ZYPhoto photo:photeList)photo.isSelect = false;
+    public void refreshPhoto(boolean isEdit) {
+        ZYPhotoItemVH.isEdit = isEdit;
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public void clearPhoto() {
+        for (ZYPhoto photo : photeList) photo.isSelect = false;
         photeList.clear();
     }
-    public ArrayList<ZYPhoto> getPhoteList(){
+
+    public ArrayList<ZYPhoto> getPhoteList() {
         return photeList;
     }
-    public ArrayList<ZYPhoto> getPhoto(){
+
+    public ArrayList<ZYPhoto> getPhoto() {
         return photeList;
     }
 

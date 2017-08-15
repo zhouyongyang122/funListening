@@ -184,6 +184,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".base.activity.pictureView.ZYPictureViewActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".business.accountmanage.activity.ZYMobileBindActivity"
             android:screenOrientation="portrait" />
 

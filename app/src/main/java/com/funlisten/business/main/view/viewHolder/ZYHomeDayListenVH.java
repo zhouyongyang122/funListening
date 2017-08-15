@@ -71,7 +71,7 @@ public class ZYHomeDayListenVH extends ZYBaseViewHolder<ZYHome.DayListening> imp
         try {
             int audioId = Integer.parseInt(v.getTag().toString());
             //跳转到音频详情页
-           ZYPlayActivity.toPlayActivity(ZYApplication.getInstance().getCurrentActivity(),albumId,audioId);
+            ZYPlayActivity.toPlayActivity(ZYApplication.getInstance().getCurrentActivity(), albumId, audioId);
         } catch (Exception e) {
 
         }

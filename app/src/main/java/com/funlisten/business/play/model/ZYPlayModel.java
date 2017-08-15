@@ -67,4 +67,11 @@ public class ZYPlayModel extends ZYBaseModel {
         return mApi.getAudios(pageIndex, pageSize, albumId, direction);
     }
 
+    /***
+     * 是否已经订购
+     * **/
+    public  Observable<ZYResponse<Boolean>> isOrder(String type,String  objectId){
+        return mApi.isOrder(type,objectId);
+    }
+
 }

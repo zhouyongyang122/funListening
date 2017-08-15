@@ -230,6 +230,9 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ZYEventPaySuc paySuc) {
-        mPresenter.subscribe();
+//        mPresenter.subscribe();
+        mPresenter.getAlbumDetail().isBuy = true;
+        footerVH.hide();
+        setMargin(0);
     }
 }

@@ -2,6 +2,7 @@ package com.funlisten.business.download.view.viewholder;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.TextView;
 
@@ -45,13 +46,16 @@ public class ZYDownloadingHeaderVH extends ZYBaseViewHolder<Object> {
             case R.id.textDown:
                 isAllDownloading = !isAllDownloading;
                 listener.onDownAllClick(isAllDownloading);
+                Drawable drawable = null;
                 if (isAllDownloading) {
-                    textDown.setSelected(true);
+                    drawable = mContext.getResources().getDrawable(R.drawable.icon_all_suspended_n);
                     textDown.setText("全部暂停");
                 } else {
+                    drawable = mContext.getResources().getDrawable(R.drawable.icon_all_started_n);
                     textDown.setText("全部下载");
-                    textDown.setSelected(false);
                 }
+                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                textDown.setCompoundDrawables(drawable, null, null, null);
                 break;
         }
     }

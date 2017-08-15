@@ -35,6 +35,8 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
     @Id
     public String id;
 
+    public int sort;//音频序列
+
     public int albumId;
 
     public String albumJson;
@@ -63,7 +65,7 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
 
     //专辑已经下载的大小
     @Transient
-    public int albumDownloadedSize;
+    public long albumDownloadedSize;
 
     //已经下载了多少集
     @Transient
@@ -72,9 +74,10 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
     @Transient
     public static Object object = new Object();
 
-    @Generated(hash = 542894390)
-    public ZYDownloadEntity(String id, int albumId, String albumJson, int audioId, String audioJson, long total, long current, String url, String savePath, int stateValue) {
+    @Generated(hash = 1936273873)
+    public ZYDownloadEntity(String id, int sort, int albumId, String albumJson, int audioId, String audioJson, long total, long current, String url, String savePath, int stateValue) {
         this.id = id;
+        this.sort = sort;
         this.albumId = albumId;
         this.albumJson = albumJson;
         this.audioId = audioId;
@@ -101,6 +104,7 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
         ZYDownloadEntity downloadEntity = new ZYDownloadEntity();
         downloadEntity.id = audio.id + "_" + audio.albumId;
         downloadEntity.albumId = audio.albumId;
+        downloadEntity.sort = audio.sort;
         downloadEntity.audioId = audio.id;
         downloadEntity.total = audio.fileLength;
         downloadEntity.url = audio.fileUrl;
@@ -223,6 +227,29 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
         synchronized (object) {
             ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
             return downloadEntityDao.queryBuilder().where(ZYDownloadEntityDao.Properties.AlbumId.eq(albumId)).build().list();
+        }
+    }
+
+    /**
+     * 查询专辑下的音频列表
+     *
+     * @param albumId
+     * @return
+     */
+    public static List<ZYDownloadEntity> queryAlbumAudios(int albumId, boolean asc) {
+        synchronized (object) {
+            ZYDownloadEntityDao downloadEntityDao = ZYDBManager.getInstance().getReadableDaoSession().getZYDownloadEntityDao();
+            if (asc) {
+                return downloadEntityDao.queryBuilder().
+                        where(ZYDownloadEntityDao.Properties.AlbumId.eq(albumId)).
+                        orderAsc(ZYDownloadEntityDao.Properties.Sort).
+                        build().list();
+            } else {
+                return downloadEntityDao.queryBuilder().
+                        where(ZYDownloadEntityDao.Properties.AlbumId.eq(albumId)).
+                        orderDesc(ZYDownloadEntityDao.Properties.Sort).
+                        build().list();
+            }
         }
     }
 
@@ -470,22 +497,6 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
         this.albumId = albumId;
     }
 
-    public int getAlbumDownloadedSize() {
-        return this.albumDownloadedSize;
-    }
-
-    public void setAlbumDownloadedSize(int albumDownloadedSize) {
-        this.albumDownloadedSize = albumDownloadedSize;
-    }
-
-    public int getAudioDowloadedCount() {
-        return this.audioDowloadedCount;
-    }
-
-    public void setAudioDowloadedCount(int audioDowloadedCount) {
-        this.audioDowloadedCount = audioDowloadedCount;
-    }
-
     public String getUrl() {
         return this.url;
     }
@@ -599,5 +610,13 @@ public class ZYDownloadEntity extends ZYBaseEntity implements ZYIDownBase {
 
     public void setAudioJson(String audioJson) {
         this.audioJson = audioJson;
+    }
+
+    public int getSort() {
+        return this.sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
     }
 }

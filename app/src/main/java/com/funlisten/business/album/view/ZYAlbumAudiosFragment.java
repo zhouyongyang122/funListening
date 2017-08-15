@@ -18,6 +18,7 @@ import com.funlisten.business.album.view.viewHolder.ZYAlbumAudiosHeaderVH;
 import com.funlisten.business.album.view.viewHolder.ZYAlbumHomeEpisodeVH;
 import com.funlisten.business.album.view.viewHolder.ZYAudioItemVH;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
+import com.funlisten.business.pay.activity.ZYPayActivity;
 import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.service.downNet.down.ZYDownloadManager;
@@ -73,7 +74,8 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
         if (data.isAudition() || !albumDetail.isNeedBuy() || albumDetail.isBuy) {
             ZYPlayActivity.toPlayActivity(mActivity, albumDetail.id, data.id, mPresenter.getSortType());
         } else {
-            ZYToast.show(mActivity, "需要购买后才能听哦!");
+//            ZYToast.show(mActivity, "需要购买后才能听哦!");
+            mActivity.startActivity(ZYPayActivity.createIntent(mActivity, albumDetail));
         }
     }
 
@@ -115,7 +117,7 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
 
         ArrayList<ZYAudio> list = new ArrayList<>();
         list.addAll(mPresenter.getDataList());
-        mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity, albumDetail,mPresenter.getTotalCount()));
+        mActivity.startActivity(ZYBatchDownloadActivity.createIntent(mActivity, albumDetail, mPresenter.getTotalCount()));
         if (episodeVH.isVisible()) {
             episodeVH.hide();
         }

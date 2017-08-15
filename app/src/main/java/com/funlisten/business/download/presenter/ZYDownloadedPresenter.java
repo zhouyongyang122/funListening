@@ -16,6 +16,8 @@ public class ZYDownloadedPresenter extends ZYListDataPresenter<ZYDownloadHomeCon
 
     int albumId;
 
+    boolean isAsc = true;
+
     public ZYDownloadedPresenter(ZYDownloadHomeContract.IView view, int albumId) {
         super(view, new ZYDownloadModel());
         this.albumId = albumId;
@@ -24,7 +26,7 @@ public class ZYDownloadedPresenter extends ZYListDataPresenter<ZYDownloadHomeCon
     @Override
     protected void loadData() {
         try {
-            List<ZYDownloadEntity> audios = mModel.getAlbumAudios(albumId);
+            List<ZYDownloadEntity> audios = mModel.getAlbumAudios(albumId, isAsc);
             int totalSize = 0;
             for (ZYDownloadEntity downloadEntity : audios) {
                 totalSize += downloadEntity.total;
@@ -34,9 +36,13 @@ public class ZYDownloadedPresenter extends ZYListDataPresenter<ZYDownloadHomeCon
             mView.showList(false);
             ZYDownloadEntity album = audios.get(0);
             album.albumDownloadedSize = totalSize;
-            mView.refresh(audios.get(0));
+            mView.refresh(album);
         } catch (Exception e) {
             ZYLog.e(getClass().getSimpleName(), "error: " + e.getMessage());
         }
+    }
+
+    public void setAsc(boolean asc) {
+        isAsc = asc;
     }
 }

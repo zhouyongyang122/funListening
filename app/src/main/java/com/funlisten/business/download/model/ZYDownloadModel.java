@@ -15,8 +15,8 @@ public class ZYDownloadModel extends ZYBaseModel {
         return ZYDownloadEntity.queryDownloadedAlbums();
     }
 
-    public List<ZYDownloadEntity> getAlbumAudios(int albumId) {
-        return ZYDownloadEntity.queryAlbumAudios(albumId);
+    public List<ZYDownloadEntity> getAlbumAudios(int albumId, boolean asc) {
+        return ZYDownloadEntity.queryAlbumAudios(albumId, asc);
     }
 
     public ZYDownloadEntity queryAudioByNotFinishedState() {

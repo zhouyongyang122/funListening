@@ -99,6 +99,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
             public void onSuccess(ZYResponse<ZYListResponse<ZYComment>> response) {
                 if (response.data != null && response.data.data != null && response.data.data.size() > 0) {
                     mComments.clear();
+                    response.data.data.get(response.data.data.size() - 1).showMore = true;
                     mComments.addAll(response.data.data);
                 } else {
                     mComments.clear();
@@ -141,6 +142,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
                 super.onSuccess(response);
                 if (response.data != null && response.data.data != null && response.data.data.size() > 0) {
                     mComments.clear();
+                    response.data.data.get(response.data.data.size() - 1).showMore = true;
                     mComments.addAll(response.data.data);
                 } else {
                     mComments.clear();

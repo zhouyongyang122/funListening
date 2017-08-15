@@ -10,6 +10,7 @@ import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.utils.ZYToast;
+import com.iflytek.cloud.thirdparty.V;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -58,17 +59,21 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
                 layoutInfo.setVisibility(View.GONE);
                 return;
             }
-            textMore.setVisibility(View.GONE);
+            if (mData.showMore) {
+                textMore.setVisibility(View.VISIBLE);
+            } else {
+                textMore.setVisibility(View.GONE);
+            }
             layoutInfo.setVisibility(View.VISIBLE);
-            ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar,  mData.user == null ? "":mData.user.avatarUrl);
-            textName.setText( mData.user == null ? "":mData.user.nickname);
+            ZYImageLoadHelper.getImageLoader().loadCircleImage(this, imgAvatar, mData.user == null ? "" : mData.user.avatarUrl);
+            textName.setText(mData.user == null ? "" : mData.user.nickname);
             textTime.setText(mData.gmtCreate);
             refreshSuport();
             textDesc.setText(mData.content);
         }
     }
 
-    @OnClick({R.id.textSuport, R.id.imgAvatar,R.id.textMore})
+    @OnClick({R.id.textSuport, R.id.imgAvatar, R.id.textMore})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgAvatar:

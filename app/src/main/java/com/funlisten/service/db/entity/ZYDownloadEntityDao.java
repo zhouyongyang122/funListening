@@ -25,15 +25,16 @@ public class ZYDownloadEntityDao extends AbstractDao<ZYDownloadEntity, String> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, String.class, "id", true, "ID");
-        public final static Property AlbumId = new Property(1, int.class, "albumId", false, "ALBUM_ID");
-        public final static Property AlbumJson = new Property(2, String.class, "albumJson", false, "ALBUM_JSON");
-        public final static Property AudioId = new Property(3, int.class, "audioId", false, "AUDIO_ID");
-        public final static Property AudioJson = new Property(4, String.class, "audioJson", false, "AUDIO_JSON");
-        public final static Property Total = new Property(5, long.class, "total", false, "TOTAL");
-        public final static Property Current = new Property(6, long.class, "current", false, "CURRENT");
-        public final static Property Url = new Property(7, String.class, "url", false, "URL");
-        public final static Property SavePath = new Property(8, String.class, "savePath", false, "SAVE_PATH");
-        public final static Property StateValue = new Property(9, int.class, "stateValue", false, "STATE_VALUE");
+        public final static Property Sort = new Property(1, int.class, "sort", false, "SORT");
+        public final static Property AlbumId = new Property(2, int.class, "albumId", false, "ALBUM_ID");
+        public final static Property AlbumJson = new Property(3, String.class, "albumJson", false, "ALBUM_JSON");
+        public final static Property AudioId = new Property(4, int.class, "audioId", false, "AUDIO_ID");
+        public final static Property AudioJson = new Property(5, String.class, "audioJson", false, "AUDIO_JSON");
+        public final static Property Total = new Property(6, long.class, "total", false, "TOTAL");
+        public final static Property Current = new Property(7, long.class, "current", false, "CURRENT");
+        public final static Property Url = new Property(8, String.class, "url", false, "URL");
+        public final static Property SavePath = new Property(9, String.class, "savePath", false, "SAVE_PATH");
+        public final static Property StateValue = new Property(10, int.class, "stateValue", false, "STATE_VALUE");
     }
 
 
@@ -50,15 +51,16 @@ public class ZYDownloadEntityDao extends AbstractDao<ZYDownloadEntity, String> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"ZYDOWNLOAD_ENTITY\" (" + //
                 "\"ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: id
-                "\"ALBUM_ID\" INTEGER NOT NULL ," + // 1: albumId
-                "\"ALBUM_JSON\" TEXT," + // 2: albumJson
-                "\"AUDIO_ID\" INTEGER NOT NULL ," + // 3: audioId
-                "\"AUDIO_JSON\" TEXT," + // 4: audioJson
-                "\"TOTAL\" INTEGER NOT NULL ," + // 5: total
-                "\"CURRENT\" INTEGER NOT NULL ," + // 6: current
-                "\"URL\" TEXT," + // 7: url
-                "\"SAVE_PATH\" TEXT," + // 8: savePath
-                "\"STATE_VALUE\" INTEGER NOT NULL );"); // 9: stateValue
+                "\"SORT\" INTEGER NOT NULL ," + // 1: sort
+                "\"ALBUM_ID\" INTEGER NOT NULL ," + // 2: albumId
+                "\"ALBUM_JSON\" TEXT," + // 3: albumJson
+                "\"AUDIO_ID\" INTEGER NOT NULL ," + // 4: audioId
+                "\"AUDIO_JSON\" TEXT," + // 5: audioJson
+                "\"TOTAL\" INTEGER NOT NULL ," + // 6: total
+                "\"CURRENT\" INTEGER NOT NULL ," + // 7: current
+                "\"URL\" TEXT," + // 8: url
+                "\"SAVE_PATH\" TEXT," + // 9: savePath
+                "\"STATE_VALUE\" INTEGER NOT NULL );"); // 10: stateValue
     }
 
     /** Drops the underlying database table. */
@@ -75,31 +77,32 @@ public class ZYDownloadEntityDao extends AbstractDao<ZYDownloadEntity, String> {
         if (id != null) {
             stmt.bindString(1, id);
         }
-        stmt.bindLong(2, entity.getAlbumId());
+        stmt.bindLong(2, entity.getSort());
+        stmt.bindLong(3, entity.getAlbumId());
  
         String albumJson = entity.getAlbumJson();
         if (albumJson != null) {
-            stmt.bindString(3, albumJson);
+            stmt.bindString(4, albumJson);
         }
-        stmt.bindLong(4, entity.getAudioId());
+        stmt.bindLong(5, entity.getAudioId());
  
         String audioJson = entity.getAudioJson();
         if (audioJson != null) {
-            stmt.bindString(5, audioJson);
+            stmt.bindString(6, audioJson);
         }
-        stmt.bindLong(6, entity.getTotal());
-        stmt.bindLong(7, entity.getCurrent());
+        stmt.bindLong(7, entity.getTotal());
+        stmt.bindLong(8, entity.getCurrent());
  
         String url = entity.getUrl();
         if (url != null) {
-            stmt.bindString(8, url);
+            stmt.bindString(9, url);
         }
  
         String savePath = entity.getSavePath();
         if (savePath != null) {
-            stmt.bindString(9, savePath);
+            stmt.bindString(10, savePath);
         }
-        stmt.bindLong(10, entity.getStateValue());
+        stmt.bindLong(11, entity.getStateValue());
     }
 
     @Override
@@ -110,31 +113,32 @@ public class ZYDownloadEntityDao extends AbstractDao<ZYDownloadEntity, String> {
         if (id != null) {
             stmt.bindString(1, id);
         }
-        stmt.bindLong(2, entity.getAlbumId());
+        stmt.bindLong(2, entity.getSort());
+        stmt.bindLong(3, entity.getAlbumId());
  
         String albumJson = entity.getAlbumJson();
         if (albumJson != null) {
-            stmt.bindString(3, albumJson);
+            stmt.bindString(4, albumJson);
         }
-        stmt.bindLong(4, entity.getAudioId());
+        stmt.bindLong(5, entity.getAudioId());
  
         String audioJson = entity.getAudioJson();
         if (audioJson != null) {
-            stmt.bindString(5, audioJson);
+            stmt.bindString(6, audioJson);
         }
-        stmt.bindLong(6, entity.getTotal());
-        stmt.bindLong(7, entity.getCurrent());
+        stmt.bindLong(7, entity.getTotal());
+        stmt.bindLong(8, entity.getCurrent());
  
         String url = entity.getUrl();
         if (url != null) {
-            stmt.bindString(8, url);
+            stmt.bindString(9, url);
         }
  
         String savePath = entity.getSavePath();
         if (savePath != null) {
-            stmt.bindString(9, savePath);
+            stmt.bindString(10, savePath);
         }
-        stmt.bindLong(10, entity.getStateValue());
+        stmt.bindLong(11, entity.getStateValue());
     }
 
     @Override
@@ -146,15 +150,16 @@ public class ZYDownloadEntityDao extends AbstractDao<ZYDownloadEntity, String> {
     public ZYDownloadEntity readEntity(Cursor cursor, int offset) {
         ZYDownloadEntity entity = new ZYDownloadEntity( //
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
-            cursor.getInt(offset + 1), // albumId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // albumJson
-            cursor.getInt(offset + 3), // audioId
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // audioJson
-            cursor.getLong(offset + 5), // total
-            cursor.getLong(offset + 6), // current
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // url
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // savePath
-            cursor.getInt(offset + 9) // stateValue
+            cursor.getInt(offset + 1), // sort
+            cursor.getInt(offset + 2), // albumId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // albumJson
+            cursor.getInt(offset + 4), // audioId
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // audioJson
+            cursor.getLong(offset + 6), // total
+            cursor.getLong(offset + 7), // current
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // url
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // savePath
+            cursor.getInt(offset + 10) // stateValue
         );
         return entity;
     }
@@ -162,15 +167,16 @@ public class ZYDownloadEntityDao extends AbstractDao<ZYDownloadEntity, String> {
     @Override
     public void readEntity(Cursor cursor, ZYDownloadEntity entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setAlbumId(cursor.getInt(offset + 1));
-        entity.setAlbumJson(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setAudioId(cursor.getInt(offset + 3));
-        entity.setAudioJson(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setTotal(cursor.getLong(offset + 5));
-        entity.setCurrent(cursor.getLong(offset + 6));
-        entity.setUrl(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setSavePath(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setStateValue(cursor.getInt(offset + 9));
+        entity.setSort(cursor.getInt(offset + 1));
+        entity.setAlbumId(cursor.getInt(offset + 2));
+        entity.setAlbumJson(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setAudioId(cursor.getInt(offset + 4));
+        entity.setAudioJson(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setTotal(cursor.getLong(offset + 6));
+        entity.setCurrent(cursor.getLong(offset + 7));
+        entity.setUrl(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setSavePath(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setStateValue(cursor.getInt(offset + 10));
      }
     
     @Override

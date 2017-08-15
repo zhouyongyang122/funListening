@@ -73,17 +73,16 @@
         android:id="@+id/pwd_two"
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
         android:background="@color/c8"
+        android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ"
         android:gravity="center|left"
         android:hint="再次输入密码"
         android:inputType="textPassword"
-        android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ"
         android:maxLength="18"
-        android:paddingLeft="10dp"
-        />
+        android:paddingLeft="10dp" />
 
     <TextView
         android:id="@+id/bind_tv"

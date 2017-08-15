@@ -2,9 +2,12 @@ package com.funlisten.business.accountmanage.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.funlisten.R;
 import com.funlisten.base.mvp.ZYBaseActivity;
@@ -32,6 +35,9 @@ public class ZYModifyPwdActivity extends ZYBaseActivity implements ZYModifyPwd {
     @Bind(R.id.pwd_two)
     EditText pwdTwo;
 
+    @Bind(R.id.save_pwd)
+    TextView savePwd;
+
     ZYAccountManagerPresenter presenter;
 
     @Override
@@ -41,6 +47,33 @@ public class ZYModifyPwdActivity extends ZYBaseActivity implements ZYModifyPwd {
         showTitle("修改密码");
         presenter = new ZYAccountManagerPresenter(new ZYAccountManageModel());
         presenter.setModifyPwd(this);
+        pwdTwo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String old = pwdOld.getText().toString();
+                String pwd = pwdOne.getText().toString();
+                String pwds = pwdTwo.getText().toString();
+                if(TextUtils.isEmpty(old) || TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwds)){
+                    savePwd.setBackgroundResource(R.color.c5);
+                    return;
+                }
+                if(pwd.equals(pwds) && pwd.length() >=6){
+                    savePwd.setBackgroundResource(R.color.c1);
+                }else {
+                    savePwd.setBackgroundResource(R.color.c5);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @OnClick({R.id.save_pwd})

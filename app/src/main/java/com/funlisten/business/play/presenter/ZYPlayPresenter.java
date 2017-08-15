@@ -135,8 +135,8 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
     }
 
 
-    public void loadComment() {
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.getComments("audio", mAudioId + "", 1, 5), new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYComment>>>() {
+    public void loadComment(){
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.getComments("audio",mAudioId + "", 1, 5),new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYComment>>>(){
             @Override
             public void onSuccess(ZYResponse<ZYListResponse<ZYComment>> response) {
                 super.onSuccess(response);
@@ -164,10 +164,10 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
             @Override
             public void onSuccess(ZYResponse<Boolean> response) {
                 super.onSuccess(response);
-                if (ZYBaseModel.AUDIO_TYPE.equals(type)) {
+                if(ZYBaseModel.AUDIO_TYPE.equals(type)){
                     mView.setCollect(response.data);
-                } else if (ZYBaseModel.ALBUM_TYPE.equals(type)) {
-
+                }else if(ZYBaseModel.ALBUM_TYPE.equals(type)){
+                    mView.refreshFavorite(response.data);
                 }
 
             }
@@ -217,11 +217,11 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
         }
     }
 
-    public void refreshPlay(int audio) {
-        if (mAlbumDetail == null || mCurPlayAudio.id != audio) {
+    public void refreshPlay( int audio){
+        if (mAlbumDetail == null ||  mCurPlayAudio.id != audio) {
             ZYPlayManager.getInstance().puase();
             this.mAudioId = audio;
-            isFavorite("audio", audio);
+            isFavorite("audio",audio);
             loadComment();
         }
     }
@@ -246,22 +246,6 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
             return mAudios.get(0);
         }
         return null;
-    }
-
-    public void isOrder(String objectId) {
-        if (ZYUserManager.getInstance().isGuesterUser(false)) {
-            return;
-        }
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.isOrder("album", objectId), new ZYNetSubscriber<ZYResponse<Boolean>>() {
-            @Override
-            public void onSuccess(ZYResponse<Boolean> response) {
-                mAlbumDetail.isBuy = response.data;
-            }
-
-            @Override
-            public void onFail(String message) {
-            }
-        }));
     }
 
     public ArrayList<ZYAudio> getAudios() {

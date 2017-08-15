@@ -92,6 +92,7 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     @Override
     public void onSortClick() {
         mPresenter.changerSortType();
+        homeHeaderVH.refreshSortView( mPresenter.getSortType());
         if (episodeVH.isVisible()) {
             episodeVH.hide();
         }

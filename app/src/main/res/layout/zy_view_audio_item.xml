@@ -17,6 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="第1期 | 梦想小城"
+            android:ellipsize="end"
+            android:maxEms="14"
+            android:maxLines="1"
             android:textColor="@color/c1"
             android:textSize="@dimen/f3" />
 

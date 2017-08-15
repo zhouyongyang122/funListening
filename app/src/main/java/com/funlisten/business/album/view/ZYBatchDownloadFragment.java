@@ -130,6 +130,7 @@ public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment<ZYABatchDown
             ZYToast.show(mActivity,"请选择下载项");
             return;
         }
+        ZYToast.show(mActivity,"下载开始...");
         ArrayList<ZYIDownBase> arrayList = new ArrayList<>();
         for(ZYAudio audio :selectList){
             ZYDownloadEntity downloadEntity = ZYDownloadEntity.createEntityByAudio(albumDetail, audio);

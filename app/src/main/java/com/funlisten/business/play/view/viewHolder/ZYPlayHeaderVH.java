@@ -182,7 +182,8 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         }
     }
 
-    public void updateSubscribeState() {
+    public void updateSubscribeState(boolean isFavorite) {
+        mData.albumDetail.isFavorite = isFavorite;
         if (mData.albumDetail.isFavorite) {
             textSubscribe.setText("已订阅");
         } else {
@@ -278,5 +279,6 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         void onPlayTypeClick();
 
         void onSubscribeClick(ZYAlbumDetail detail);
+
     }
 }

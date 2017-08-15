@@ -18,6 +18,7 @@ public interface ZYPlayContract {
         void refreshView();
         void setCollect(boolean isCollect);
         void refreshComment();
+        void refreshFavorite(boolean isFavorite);
     }
 
     interface IPresenter extends ZYIBasePresenter {

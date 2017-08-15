@@ -55,6 +55,7 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
         return new Intent(context, ZYPlayActivity.class);
     }
 
+    int mAlbumId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +64,15 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
         if (ZYStatusBarUtils.isCanLightStatusBar()) {
             ZYStatusBarUtils.tintStatusBar(this, Color.TRANSPARENT, 0);
         }
-        int mAlbumId = getIntent().getIntExtra(ALBUM_ID, 0);
+        mAlbumId = getIntent().getIntExtra(ALBUM_ID, 0);
         int mAudioId = getIntent().getIntExtra(AUDIO_ID, 0);
         String sortType = getIntent().getStringExtra(SORT_TYPE);
         mPresenter = new ZYPlayPresenter(mFragment, mAlbumId, mAudioId, sortType);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         mPresenter.isFavorite(ZYBaseModel.ALBUM_TYPE,mAlbumId);
     }
 

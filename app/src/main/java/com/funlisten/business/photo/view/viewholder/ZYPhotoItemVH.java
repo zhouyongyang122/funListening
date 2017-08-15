@@ -41,11 +41,15 @@ public class ZYPhotoItemVH extends ZYBaseViewHolder<ZYPhoto> {
         ZYImageLoadHelper.getImageLoader().loadImage(this, photoImage, data.photoUrl, R.color.c1, R.color.c1);
         if (isEdit) imgLine.setVisibility(View.VISIBLE);
         else imgLine.setVisibility(View.GONE);
+        imageBtn.setSelected(data.isSelect);
         imageBtn.setTag(data);
+        imgLine.setTag(data);
+
     }
 
-    @OnClick({R.id.image_btn})
+    @OnClick({R.id.image_btn,R.id.img_selected_line})
     public void onClick(View view) {
+        if(!isEdit) return;
         ZYPhoto data = (ZYPhoto) view.getTag();
         if (photoSelect != null) {
             isCheck(data);
@@ -66,6 +70,9 @@ public class ZYPhotoItemVH extends ZYBaseViewHolder<ZYPhoto> {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) photoImage.getLayoutParams();
         layoutParams.height = (ZYScreenUtils.getScreenWidth(mContext) - ZYScreenUtils.dp2px(mContext, 5)) / 4;
         photoImage.setLayoutParams(layoutParams);
+        imgLine.setLayoutParams(layoutParams);
+
+
     }
 
     @Override

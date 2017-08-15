@@ -3,7 +3,9 @@ package com.funlisten.business.accountmanage.activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -55,6 +57,36 @@ public class ZYForgotPasswordActivity extends ZYBaseActivity implements ZYAccoun
         presenter = new ZYAccountManagerPresenter(new ZYAccountManageModel(),this);
         bindTv.setEnabled(false);
         showTitle("找回密码");
+//        pwdTwo.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                String old = verifyCode.getText().toString();
+//                String pwd = pwdOne.getText().toString();
+//                String pwds = pwdTwo.getText().toString();
+//                if(TextUtils.isEmpty(old) || TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwds)){
+//                    bindTv.setBackgroundResource(R.color.c5);
+//                    bindTv.setEnabled(false);
+//                    return;
+//                }
+//                if(pwd.equals(pwds) && pwd.length() >=6){
+//                    bindTv.setBackgroundResource(R.color.c1);
+//                    bindTv.setEnabled(true);
+//                }else {
+//                    bindTv.setBackgroundResource(R.color.c5);
+//                    bindTv.setEnabled(false);
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
     }
     @OnClick({R.id.verify_time,R.id.bind_tv})
     public void OnClick(View view){
@@ -134,5 +166,11 @@ public class ZYForgotPasswordActivity extends ZYBaseActivity implements ZYAccoun
     public void checkCodeSuccces() {
         oncancel();
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        oncancel();
+        super.onDestroy();
     }
 }

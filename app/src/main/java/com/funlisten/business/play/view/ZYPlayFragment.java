@@ -396,9 +396,13 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             mPresenter.favorite(ZYBaseModel.ALBUM_TYPE, detail.id);
             detail.isFavorite = true;
         }
-        headerVH.updateSubscribeState();
+        headerVH.updateSubscribeState(detail.isFavorite);
     }
 
+    @Override
+    public void refreshFavorite(boolean isFavorite) {
+        headerVH.updateSubscribeState(isFavorite);
+    }
 
     @Override
     public void onPlayOrPauseClick(ZYPlay play) {

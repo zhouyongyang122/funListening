@@ -97,6 +97,7 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
         textSuport.setText(mData.likeCount + "");
         if (mData.isLiked) {
             textSuport.setSelected(true);
+
         } else {
             textSuport.setSelected(false);
         }

@@ -113,6 +113,7 @@ public class ZYProfileHeader extends ZYBaseViewHolder<ZYProfileHeaderInfo> {
     }
 
     public void showPhoto(List<ZYPhoto> list) {
+        image_line.removeAllViews();
         for (ZYPhoto photo:list){
             ImageView view = createImage();
             image_line.addView(view);

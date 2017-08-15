@@ -1,10 +1,12 @@
 package com.funlisten.business.album.view.viewHolder;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.TextView;
 
 import com.funlisten.R;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.business.album.model.ZYAlbumModel;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 
 import butterknife.Bind;
@@ -20,6 +22,9 @@ public class ZYAlbumAudiosHeaderVH extends ZYBaseViewHolder<Object> {
 
     @Bind(R.id.textEpisode)
     TextView textEpisode;
+
+    @Bind(R.id.textSort)
+    TextView textSort;
 
     ZYAlbumDetail albumDetail;
 
@@ -58,6 +63,20 @@ public class ZYAlbumAudiosHeaderVH extends ZYBaseViewHolder<Object> {
             case R.id.textSort:
                 listener.onSortClick();
                 break;
+        }
+    }
+
+    public void refreshSortView(String sortTye){
+        if (sortTye == ZYAlbumModel.SORT_ASC) {
+            Drawable drawable = mContext.getResources().getDrawable(R.drawable.btn_reverse_order_n);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            textSort.setCompoundDrawables(drawable, null, null, null);
+            textSort.setText("正序");
+        } else {
+            Drawable drawable =  mContext.getResources().getDrawable(R.drawable.btn_sorting_n);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            textSort.setCompoundDrawables(drawable, null, null, null);
+            textSort.setText("反序");
         }
     }
 

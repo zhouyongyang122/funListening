@@ -67,6 +67,7 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
             @Override
             public void onSuccess(ZYResponse<ZYListResponse<ZYComment>> response) {
                 super.onSuccess(response);
+                mDatas.clear();
                 mDatas.add(new ZYAlbumTitle("评论"));
                 List<ZYComment> mComments = response.data.data;
                 if (mComments != null && mComments.size() > 0) {
@@ -89,7 +90,8 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
         mSubscriptions.add(ZYNetSubscription.subscription(mModel.suport(comment.id + "", ZYBaseModel.COMMENT_TYPE), new ZYNetSubscriber<ZYResponse>() {
             @Override
             public void onSuccess(ZYResponse response) {
-                mView.showDatas(mDatas);
+                loadComments();
+//                mView.showDatas(mDatas);
             }
 
             @Override
@@ -104,7 +106,8 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
         mSubscriptions.add(ZYNetSubscription.subscription(mModel.suportCanlce(comment.id + "", ZYBaseModel.COMMENT_TYPE), new ZYNetSubscriber<ZYResponse>() {
             @Override
             public void onSuccess(ZYResponse response) {
-                mView.showDatas(mDatas);
+                loadComments();
+//                mView.showDatas(mDatas);
             }
 
             @Override

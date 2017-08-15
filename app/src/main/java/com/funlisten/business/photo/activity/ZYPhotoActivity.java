@@ -22,6 +22,7 @@ import com.funlisten.business.photo.model.ZYPhotoModel;
 import com.funlisten.business.photo.presenter.ZYPhotoPresenter;
 import com.funlisten.business.photo.view.ZYPhotoFragment;
 import com.funlisten.utils.ZYLog;
+import com.funlisten.utils.ZYToast;
 import com.funlisten.utils.ZYUtils;
 
 import java.io.File;
@@ -65,13 +66,16 @@ public class ZYPhotoActivity extends ZYBaseFragmentActivity<ZYPhotoFragment> imp
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mFragment.getPhoteList().size() <=0 ){
+                    ZYToast.show(ZYPhotoActivity.this,"没有选择任何照片");
+                    return;
+                }
                 button.setVisibility(View.GONE);
                 showRightImg2(true);
                 setRighImgPhoto(R.drawable.icon_select_n);
                 isEdit = !isEdit;
                 mFragment.refreshPhoto(isEdit);
-                if(mFragment.getPhoteList().size() >0)
-                    zyPhotoPresenter.deletePhoto(mFragment.getPhoteList());
+                zyPhotoPresenter.deletePhoto(mFragment.getPhoteList());
             }
         });
         showActionRightImg(R.drawable.icon_select_n, new View.OnClickListener() {

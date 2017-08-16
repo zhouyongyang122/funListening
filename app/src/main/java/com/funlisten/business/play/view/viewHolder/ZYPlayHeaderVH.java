@@ -225,17 +225,17 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         }
 
         if (playEvent.state == STATE_ERROR) {
-            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+            imgPlay.setImageResource(R.drawable.play);
         } else if (playEvent.state == STATE_PREPARING) {
-            imgPlay.setImageResource(R.drawable.btn_playbar_n);
+            imgPlay.setImageResource(R.drawable.suspend);
         } else if (playEvent.state == STATE_PREPARED) {
-            imgPlay.setImageResource(R.drawable.btn_playbar_n);
+            imgPlay.setImageResource(R.drawable.suspend);
         } else if (playEvent.state == STATE_PLAYING) {
-            imgPlay.setImageResource(R.drawable.btn_playbar_n);
+            imgPlay.setImageResource(R.drawable.suspend);
         } else if (playEvent.state == STATE_PAUSED) {
-            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+            imgPlay.setImageResource(R.drawable.play);
         } else if (playEvent.state == STATE_NEED_BUY_PAUSED) {
-            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+            imgPlay.setImageResource(R.drawable.play);
         } else if (playEvent.state == STATE_BUFFERING_START) {
 
         } else if (playEvent.state == STATE_BUFFERING_END) {
@@ -243,7 +243,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         } else if (playEvent.state == STATE_PREPARING_NEXT) {
 
         } else if (playEvent.state == STATE_COMPLETED) {
-            imgPlay.setImageResource(R.drawable.btn_zantingbofang_n);
+            imgPlay.setImageResource(R.drawable.play);
         }
         if (playEvent.audio != null) {
             mData.audio = playEvent.audio;

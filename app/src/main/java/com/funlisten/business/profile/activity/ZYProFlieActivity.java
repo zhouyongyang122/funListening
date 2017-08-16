@@ -32,12 +32,12 @@ public class ZYProFlieActivity extends ZYBaseFragmentActivity<ZYProfileFragment>
         super.onCreate(savedInstanceState);
         presenter = new ZYProfilePresenter(mFragment, new ZYProfileModel(), 0, getIntent().getStringExtra("uid"));
         showTitle(" ");
-        showActionRightImg(R.drawable.nav_btn_share_n, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        showActionRightImg(R.drawable.nav_btn_share_n, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
 

@@ -28,7 +28,7 @@ public class ZYMyOrderActivity extends ZYBaseFragmentActivity<ZYMyOrderFragment>
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showTitle("我的订阅");
+
         type = getIntent().getIntExtra("type",-1);
         if(type == 1) showTitle("我的订阅");
         else showTitle("我的订单");

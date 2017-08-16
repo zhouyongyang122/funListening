@@ -82,6 +82,13 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     public void setAlbumDetail(ZYAlbumDetail albumDetail) {
         this.albumDetail = albumDetail;
         homeHeaderVH.updateView(albumDetail, 0);
+        mPresenter.isOrder(albumDetail.id+"");
+    }
+
+    @Override
+    public void refreshBuy(boolean isBuy) {
+        this.albumDetail.isBuy = isBuy;
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -173,5 +180,6 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ZYEventPaySuc paySuc) {
         mPresenter.subscribe();
+        refreshBuy(true);//购买成功后刷新界面
     }
 }

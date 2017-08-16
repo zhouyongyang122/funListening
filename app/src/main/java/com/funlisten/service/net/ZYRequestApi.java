@@ -234,7 +234,7 @@ public interface ZYRequestApi {
      * @return
      */
     @POST("user/albumAudio")
-    Observable<ZYResponse<ZYListResponse<ZYOrder>>> getorders(@Query("type") String type, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+    Observable<ZYResponse<ZYListResponse<ZYFavorite>>> getorders(@Query("type") String type, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 
     /***
      * 是否已经订购

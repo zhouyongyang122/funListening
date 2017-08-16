@@ -83,8 +83,10 @@ public class ZYCommentItemVH extends ZYBaseViewHolder<Object> {
             case R.id.textSuport:
                 if (mData.isLiked) {
                     mListener.suportCancle(mData);
+                    mData.isLiked = false;
                 } else {
                     mListener.suport(mData);
+                    mData.isLiked = true;
                 }
                 break;
             case R.id.textMore:

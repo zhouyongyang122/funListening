@@ -3,6 +3,7 @@ package com.funlisten.business.accountmanage.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -32,7 +33,7 @@ public class ZYAccountManageActivity extends ZYBaseActivity {
         initView();
     }
     private  void initView(){
-        phone.setText(zyUser.phone+"");
+        phone.setText(TextUtils.isEmpty(zyUser.phone) ? "":zyUser.phone);
     }
 
     @OnClick({R.id.phone_line,R.id.password_line})

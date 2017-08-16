@@ -14,7 +14,7 @@ import rx.Observable;
  */
 
 public class ZYMyOrderModel extends ZYBaseModel {
-    public Observable<ZYResponse<ZYListResponse<ZYOrder>>> getorders(String type, int pageIndex, int pageSize){
+    public Observable<ZYResponse<ZYListResponse<ZYFavorite>>> getorders(String type, int pageIndex, int pageSize){
         return mApi.getorders(type,pageIndex,pageSize);
     }
 

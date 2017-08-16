@@ -10,6 +10,7 @@ import com.funlisten.business.play.model.bean.ZYAudio;
 public interface ZYAlbumAudiosContract {
 
     interface IView extends ZYListDataContract.View<IPresenter> {
+       void  refreshBuy(boolean isBuy);
     }
 
     interface IPresenter extends ZYListDataContract.Presenter<ZYAudio> {
@@ -22,5 +23,7 @@ public interface ZYAlbumAudiosContract {
         void choiceEpisode(int start);
 
         int getTotalCount();
+
+        void isOrder(String objectId);
     }
 }

@@ -72,6 +72,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
                         @Override
                         public ZYResponse<ZYListResponse<ZYComment>> call(ZYResponse<ZYAlbumDetail> albumRes, ZYResponse<ZYListResponse<ZYComment>> commentsRes, ZYResponse<ZYListResponse<ZYAudio>> audiosRes) {
                             mAlbumDetail = albumRes.data;
+                            isFavorite(ZYBaseModel.ALBUM_TYPE,mAlbumId);
                             mAudios.clear();
                             mAudios.addAll(audiosRes.data.data);
                             mCurPlayAudio = getAudioById();

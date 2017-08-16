@@ -45,7 +45,7 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
         context.overridePendingTransition(R.anim.slide_up, R.anim.slide_up);
     }
 
-    public static void toPlayActivity(Activity context,boolean isRefreshComment) {
+    public static void toPlayActivity(Activity context, boolean isRefreshComment) {
         Intent intent = new Intent(context, ZYPlayActivity.class);
         intent.putExtra("isRefreshComment", isRefreshComment);
         context.startActivity(intent);
@@ -56,6 +56,7 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
     }
 
     int mAlbumId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +74,7 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.isFavorite(ZYBaseModel.ALBUM_TYPE,mAlbumId);
+        mPresenter.isFavorite(ZYBaseModel.ALBUM_TYPE, mAlbumId);
     }
 
     @Override
@@ -85,7 +86,7 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
         if (mAlbumId > 0) {
             mPresenter.refreshPlay(mAlbumId, mAudioId);
         }
-        if(intent.getBooleanExtra("isRefreshComment",false)){
+        if (intent.getBooleanExtra("isRefreshComment", false)) {
             mPresenter.loadComment();
         }
     }

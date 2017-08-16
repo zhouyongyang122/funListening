@@ -17,6 +17,8 @@ public interface ZYAlbumDetailContract {
 
     interface IView extends ZYIBaseView<IPresenter> {
         void showDatas(ArrayList<Object> datas);
+
+        void refreshComment();
     }
 
     interface IPresenter extends ZYIBasePresenter {

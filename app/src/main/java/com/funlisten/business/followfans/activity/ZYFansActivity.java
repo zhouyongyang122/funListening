@@ -17,8 +17,8 @@ public class ZYFansActivity extends ZYBaseFragmentActivity<ZYFollowFragment> {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showTitle("关注");
-        new ZYFollowPresenter(mFragment, ZYUserManager.getInstance().getUser().userId,ZYFollowModel.FANS_TYPE);
+        showTitle("粉丝");
+        new ZYFollowPresenter(mFragment, ZYUserManager.getInstance().getUser().userId, ZYFollowModel.FANS_TYPE);
     }
 
     @Override

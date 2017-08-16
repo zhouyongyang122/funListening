@@ -54,6 +54,7 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
         mView.showLoading();
         if (details != null && details.size() > 0) {
             mDetails = details;
+            mDatas.clear();
             for (ZYAlbumDetail.Detail detail : details) {
                 mDatas.add(new ZYAlbumTitle(detail.title));
                 mDatas.add(detail);
@@ -67,7 +68,6 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
             @Override
             public void onSuccess(ZYResponse<ZYListResponse<ZYComment>> response) {
                 super.onSuccess(response);
-                mDatas.clear();
                 mDatas.add(new ZYAlbumTitle("评论"));
                 List<ZYComment> mComments = response.data.data;
                 if (mComments != null && mComments.size() > 0) {
@@ -86,12 +86,13 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
     }
 
     @Override
-    public void suport(ZYComment comment) {
+    public void suport(final ZYComment comment) {
         mSubscriptions.add(ZYNetSubscription.subscription(mModel.suport(comment.id + "", ZYBaseModel.COMMENT_TYPE), new ZYNetSubscriber<ZYResponse>() {
             @Override
             public void onSuccess(ZYResponse response) {
-                loadComments();
-//                mView.showDatas(mDatas);
+                comment.isLiked = true;
+                comment.likeCount++;
+                mView.refreshComment();
             }
 
             @Override
@@ -102,12 +103,13 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
     }
 
     @Override
-    public void suportCancle(ZYComment comment) {
+    public void suportCancle(final ZYComment comment) {
         mSubscriptions.add(ZYNetSubscription.subscription(mModel.suportCanlce(comment.id + "", ZYBaseModel.COMMENT_TYPE), new ZYNetSubscriber<ZYResponse>() {
             @Override
             public void onSuccess(ZYResponse response) {
-                loadComments();
-//                mView.showDatas(mDatas);
+                comment.isLiked = false;
+                comment.likeCount--;
+                mView.refreshComment();
             }
 
             @Override
@@ -125,7 +127,6 @@ public class ZYAlbumDetailPresenter extends ZYBasePresenter implements ZYAlbumDe
     public ArrayList<Object> getDatas() {
         return mDatas;
     }
-
 
 
 }

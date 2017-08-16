@@ -79,9 +79,11 @@ public class ZYDownloadedHeaderVH extends ZYBaseViewHolder<ZYDownloadEntity> {
                 if (mSortType.equals(ZYBaseModel.SORT_ASC)) {
                     mSortType = ZYBaseModel.SORT_DESC;
                     textSort.setSelected(true);
+                    textSort.setText("倒序");
                 } else {
                     mSortType = ZYBaseModel.SORT_ASC;
                     textSort.setSelected(false);
+                    textSort.setText("正序");
                 }
                 mListener.onSortClick(mSortType);
                 break;

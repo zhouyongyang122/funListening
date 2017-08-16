@@ -72,7 +72,7 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
                         @Override
                         public ZYResponse<ZYListResponse<ZYComment>> call(ZYResponse<ZYAlbumDetail> albumRes, ZYResponse<ZYListResponse<ZYComment>> commentsRes, ZYResponse<ZYListResponse<ZYAudio>> audiosRes) {
                             mAlbumDetail = albumRes.data;
-                            isFavorite(ZYBaseModel.ALBUM_TYPE,mAlbumId);
+                            isFavorite(ZYBaseModel.ALBUM_TYPE, mAlbumId);
                             mAudios.clear();
                             mAudios.addAll(audiosRes.data.data);
                             mCurPlayAudio = getAudioById();
@@ -136,8 +136,8 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
     }
 
 
-    public void loadComment(){
-        mSubscriptions.add(ZYNetSubscription.subscription(mModel.getComments("audio",mAudioId + "", 1, 5),new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYComment>>>(){
+    public void loadComment() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.getComments("audio", mAudioId + "", 1, 5), new ZYNetSubscriber<ZYResponse<ZYListResponse<ZYComment>>>() {
             @Override
             public void onSuccess(ZYResponse<ZYListResponse<ZYComment>> response) {
                 super.onSuccess(response);
@@ -165,9 +165,9 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
             @Override
             public void onSuccess(ZYResponse<Boolean> response) {
                 super.onSuccess(response);
-                if(ZYBaseModel.AUDIO_TYPE.equals(type)){
+                if (ZYBaseModel.AUDIO_TYPE.equals(type)) {
                     mView.setCollect(response.data);
-                }else if(ZYBaseModel.ALBUM_TYPE.equals(type)){
+                } else if (ZYBaseModel.ALBUM_TYPE.equals(type)) {
                     mView.refreshFavorite(response.data);
                 }
 
@@ -218,11 +218,11 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
         }
     }
 
-    public void refreshPlay( int audio){
-        if (mAlbumDetail == null ||  mCurPlayAudio.id != audio) {
+    public void refreshPlay(int audio) {
+        if (mAlbumDetail == null || mCurPlayAudio.id != audio) {
             ZYPlayManager.getInstance().puase();
             this.mAudioId = audio;
-            isFavorite("audio",audio);
+            isFavorite("audio", audio);
             loadComment();
         }
     }
@@ -247,6 +247,40 @@ public class ZYPlayPresenter extends ZYBasePresenter implements ZYPlayContract.I
             return mAudios.get(0);
         }
         return null;
+    }
+
+    @Override
+    public void suport(final ZYComment comment) {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.suport(comment.id + "", ZYBaseModel.COMMENT_TYPE), new ZYNetSubscriber<ZYResponse>() {
+            @Override
+            public void onSuccess(ZYResponse response) {
+                comment.likeCount++;
+                comment.isLiked = true;
+                mView.refreshComment();
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
+            }
+        }));
+    }
+
+    @Override
+    public void suportCancle(final ZYComment comment) {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.suportCanlce(comment.id + "", ZYBaseModel.COMMENT_TYPE), new ZYNetSubscriber<ZYResponse>() {
+            @Override
+            public void onSuccess(ZYResponse response) {
+                comment.likeCount--;
+                comment.isLiked = false;
+                mView.refreshComment();
+            }
+
+            @Override
+            public void onFail(String message) {
+                super.onFail(message);
+            }
+        }));
     }
 
     public ArrayList<ZYAudio> getAudios() {

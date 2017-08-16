@@ -27,6 +27,7 @@ import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
 import com.funlisten.business.comment.activity.ZYCommentActivity;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.play.ZYPlayService;
+import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.business.play.contract.ZYPlayContract;
 import com.funlisten.business.play.model.FZAudionPlayEvent;
 import com.funlisten.business.play.model.ZYPlayManager;
@@ -261,8 +262,8 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
 
     @Override
     public void onBackPressed() {
-        finish();
-        mActivity.overridePendingTransition(0, R.anim.slide_down);
+        ((ZYPlayActivity) mActivity).onBackPressed();
+//        mActivity.overridePendingTransition(0, R.anim.slide_down);
     }
 
     @Override
@@ -272,12 +273,12 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
 
     @Override
     public void suport(ZYComment comment) {
-
+        mPresenter.suport(comment);
     }
 
     @Override
     public void suportCancle(ZYComment comment) {
-
+        mPresenter.suportCancle(comment);
     }
 
     @Override

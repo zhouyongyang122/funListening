@@ -97,6 +97,11 @@ public class ZYAlbumDetailFragment extends ZYBaseRecyclerFragment<ZYAlbumDetailC
     }
 
     @Override
+    public void refreshComment() {
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void showDatas(ArrayList<Object> datas) {
         showList(false);
     }
@@ -113,6 +118,6 @@ public class ZYAlbumDetailFragment extends ZYBaseRecyclerFragment<ZYAlbumDetailC
 
     @Override
     public void moreComment() {
-        mActivity.startActivity(ZYCommentActivity.createIntent(mActivity,"album",mPresenter.getAlbumId()+""));
+        mActivity.startActivity(ZYCommentActivity.createIntent(mActivity, "album", mPresenter.getAlbumId() + ""));
     }
 }

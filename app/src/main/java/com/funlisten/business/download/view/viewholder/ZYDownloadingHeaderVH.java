@@ -34,7 +34,7 @@ public class ZYDownloadingHeaderVH extends ZYBaseViewHolder<Object> {
 
     @Override
     public void updateView(Object data, int position) {
-
+        refreshState();
     }
 
     @OnClick({R.id.textDown, R.id.textClearAll})
@@ -46,17 +46,28 @@ public class ZYDownloadingHeaderVH extends ZYBaseViewHolder<Object> {
             case R.id.textDown:
                 isAllDownloading = !isAllDownloading;
                 listener.onDownAllClick(isAllDownloading);
-                Drawable drawable = null;
-                if (isAllDownloading) {
-                    drawable = mContext.getResources().getDrawable(R.drawable.icon_all_suspended_n);
-                    textDown.setText("全部暂停");
-                } else {
-                    drawable = mContext.getResources().getDrawable(R.drawable.icon_all_started_n);
-                    textDown.setText("全部下载");
-                }
-                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                textDown.setCompoundDrawables(drawable, null, null, null);
+                refreshState();
                 break;
+        }
+    }
+
+    public void refreshDownloadAllState(boolean hasPaseedEntity) {
+        isAllDownloading = !hasPaseedEntity;
+        refreshState();
+    }
+
+    void refreshState() {
+        if (textDown != null) {
+            Drawable drawable = null;
+            if (isAllDownloading) {
+                drawable = mContext.getResources().getDrawable(R.drawable.icon_all_suspended_n);
+                textDown.setText("全部暂停");
+            } else {
+                drawable = mContext.getResources().getDrawable(R.drawable.icon_all_started_n);
+                textDown.setText("全部下载");
+            }
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            textDown.setCompoundDrawables(drawable, null, null, null);
         }
     }
 

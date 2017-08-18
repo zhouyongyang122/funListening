@@ -213,7 +213,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
     void refreshProgress(int currentPosition, int totalPosition) {
         if (textStartTime != null && mData != null) {
             textStartTime.setText(stringForTime(currentPosition / 1000));
-            textEndTime.setText(stringForTime(mData.audio.audioTimeLength));
+            textEndTime.setText(stringForTime(totalPosition / 1000));
             float progress = ((float) currentPosition / (float) totalPosition) * 1000;
             seekBar.setProgress((int) progress);
         }

@@ -76,7 +76,7 @@ public class ZYAlbumAudiosHeaderVH extends ZYBaseViewHolder<Object> {
             Drawable drawable =  mContext.getResources().getDrawable(R.drawable.btn_sorting_n);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             textSort.setCompoundDrawables(drawable, null, null, null);
-            textSort.setText("反序");
+            textSort.setText("倒序");
         }
     }
 

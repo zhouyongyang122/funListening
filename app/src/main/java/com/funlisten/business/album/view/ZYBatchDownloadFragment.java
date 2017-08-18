@@ -34,10 +34,10 @@ import java.util.ArrayList;
  */
 
 public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment<ZYABatchDownContract.IPresenter> implements
-        ZYBatchDownloadItemVH.OnItemSelectAudio ,ZYBatchDownFooterVH.AllSelectListen,ZYAlbumHomeEpisodeVH.AlbumHomeEpisodeListener,
-        ZYBatchDownHeaderVH.AudioSelectionsListener , ZYABatchDownContract.IView{
+        ZYBatchDownloadItemVH.OnItemSelectAudio, ZYBatchDownFooterVH.AllSelectListen, ZYAlbumHomeEpisodeVH.AlbumHomeEpisodeListener,
+        ZYBatchDownHeaderVH.AudioSelectionsListener, ZYABatchDownContract.IView {
 
-   protected ZYBaseRecyclerAdapter mAdapter;
+    protected ZYBaseRecyclerAdapter mAdapter;
 
     ArrayList<ZYAudio> selectList = new ArrayList<>();
 
@@ -54,35 +54,35 @@ public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment<ZYABatchDown
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  super.onCreateView(inflater, container, savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         albumDetail = mPresenter.getAlbumDetail();
         footerVH = new ZYBatchDownFooterVH(this);
         footerVH.attachTo(mRootView);
-        footerVH.updateView(null,0);
+        footerVH.updateView(null, 0);
         episodeVH = new ZYAlbumHomeEpisodeVH(this);
         episodeVH.attachTo(mRootView);
-        episodeVH.updateView(albumDetail,0);
+        episodeVH.updateView(albumDetail, 0);
         episodeVH.hide();
         init();
         return view;
     }
 
-    public void init(){
+    public void init() {
         ArrayList<ZYAudio> list = mPresenter.getDatas();
-        for(ZYAudio audio:list){//过滤已下载的
-            if(!ZYDownloadEntity.audioIsDown(audio)) noList.add(audio);
+        for (ZYAudio audio : list) {//过滤已下载的
+            if (!ZYDownloadEntity.audioIsDown(audio)) noList.add(audio);
         }
-        mAdapter  = createAdapter(noList);
-        albumDetail.audioCount = noList.size();
+        mAdapter = createAdapter(noList);
+//        albumDetail.audioCount = noList.size();
         mRefreshRecyclerView.getRecyclerView().setLayoutManager(new LinearLayoutManager(mActivity));
         mRefreshRecyclerView.getRecyclerView().setAdapter(mAdapter);
         headerVH = new ZYBatchDownHeaderVH(this);
         mAdapter.addHeader(headerVH);
-        headerVH.updateView(new ZYBatchDownHeaderInfo(noList.size()),0);
+        headerVH.updateView(new ZYBatchDownHeaderInfo(noList.size()), 0);
         mRefreshRecyclerView.setRefreshEnable(false);
-        ZYSwipeRefreshRecyclerView refreshRecyclerView = (ZYSwipeRefreshRecyclerView)mRefreshRecyclerView;
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)refreshRecyclerView.getLayoutParams();
-        layoutParams.bottomMargin = ZYScreenUtils.dp2px(mActivity,50);
+        ZYSwipeRefreshRecyclerView refreshRecyclerView = (ZYSwipeRefreshRecyclerView) mRefreshRecyclerView;
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) refreshRecyclerView.getLayoutParams();
+        layoutParams.bottomMargin = ZYScreenUtils.dp2px(mActivity, 50);
         refreshRecyclerView.setLayoutParams(layoutParams);
         showList(false);
     }
@@ -96,14 +96,14 @@ public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment<ZYABatchDown
         };
     }
 
-    protected  ZYBaseViewHolder createViewHolder(){
+    protected ZYBaseViewHolder createViewHolder() {
         return new ZYBatchDownloadItemVH(this);
     }
 
     @Override
     public void onSelect(ZYAudio audio) {
-        if(selectList.contains(audio)){
-            audio.isSelect =false;
+        if (selectList.contains(audio)) {
+            audio.isSelect = false;
             selectList.remove(audio);
             footerVH.isSelectAll(false);
         } else {
@@ -114,11 +114,11 @@ public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment<ZYABatchDown
 
     @Override
     public void onSelectAll(boolean isSelectAll) {
-        for(ZYAudio audio:noList)audio.isSelect = isSelectAll;
-        if(isSelectAll){
+        for (ZYAudio audio : noList) audio.isSelect = isSelectAll;
+        if (isSelectAll) {
             selectList.clear();
             selectList.addAll(noList);
-        }else{
+        } else {
             selectList.clear();
         }
         mAdapter.notifyDataSetChanged();
@@ -126,18 +126,32 @@ public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment<ZYABatchDown
 
     @Override
     public void onAllDown() {
-        if(selectList.size() <=0 ){
-            ZYToast.show(mActivity,"请选择下载项");
+        if (selectList.size() <= 0) {
+            ZYToast.show(mActivity, "请选择下载项");
             return;
         }
-        ZYToast.show(mActivity,"下载开始...");
-        ArrayList<ZYIDownBase> arrayList = new ArrayList<>();
-        for(ZYAudio audio :selectList){
-            ZYDownloadEntity downloadEntity = ZYDownloadEntity.createEntityByAudio(albumDetail, audio);
-            arrayList.add(downloadEntity);
-        }
-        ZYDownloadManager.getInstance().addAudios(arrayList);
-        mActivity.finish();
+        showProgress();
+
+        new Thread() {
+            @Override
+            public void run() {
+                ArrayList<ZYIDownBase> arrayList = new ArrayList<>();
+                for (ZYAudio audio : selectList) {
+                    ZYDownloadEntity downloadEntity = ZYDownloadEntity.createEntityByAudio(albumDetail, audio);
+                    arrayList.add(downloadEntity);
+                }
+                ZYDownloadManager.getInstance().addAudios(arrayList);
+
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideProgress();
+                        ZYToast.show(mActivity, "下载开始...");
+                        mActivity.finish();
+                    }
+                });
+            }
+        }.start();
     }
 
     @Override
@@ -158,10 +172,10 @@ public class ZYBatchDownloadFragment extends ZYBaseRecyclerFragment<ZYABatchDown
     @Override
     public void showDatas(ArrayList<ZYAudio> datas) {
         noList.clear();
-        for(ZYAudio audio:datas){//过滤已下载的
-            if(!ZYDownloadEntity.audioIsDown(audio)) noList.add(audio);
+        for (ZYAudio audio : datas) {//过滤已下载的
+            if (!ZYDownloadEntity.audioIsDown(audio)) noList.add(audio);
         }
-        headerVH.updateView(new ZYBatchDownHeaderInfo(noList.size()),0);
+        headerVH.updateView(new ZYBatchDownHeaderInfo(noList.size()), 0);
         mAdapter.notifyDataSetChanged();
     }
 }

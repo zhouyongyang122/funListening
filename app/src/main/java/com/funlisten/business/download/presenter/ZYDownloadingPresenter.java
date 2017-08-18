@@ -5,6 +5,7 @@ import com.funlisten.business.download.contract.ZYDownloadedContract;
 import com.funlisten.business.download.model.ZYDownloadModel;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 import com.funlisten.business.main.model.ZYMainModel;
+import com.funlisten.service.downNet.down.ZYDownState;
 
 import java.util.List;
 
@@ -23,8 +24,18 @@ public class ZYDownloadingPresenter extends ZYListDataPresenter<ZYDownloadedCont
         mDataList.clear();
         List<ZYDownloadEntity> resutls = mModel.queryAudiosByNotFinishedState();
         if (resutls != null && resutls.size() > 0) {
+
+            boolean hasPauseEntity = false;
+
+            for (ZYDownloadEntity entity : resutls) {
+                if (entity.getState() == ZYDownState.ERROR || entity.getState() == ZYDownState.PAUSE) {
+                    hasPauseEntity = true;
+                    break;
+                }
+            }
             mDataList.addAll(resutls);
             mView.showList(false);
+            mView.refreshDownloadAllState(hasPauseEntity);
         } else {
             mView.showEmpty();
         }

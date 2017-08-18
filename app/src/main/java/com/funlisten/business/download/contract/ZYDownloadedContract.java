@@ -10,7 +10,7 @@ import com.funlisten.business.download.model.bean.ZYDownloadEntity;
 public interface ZYDownloadedContract {
 
     interface IView extends ZYListDataContract.View<IPresenter> {
-
+        void refreshDownloadAllState(boolean hasPaseedEntity);
     }
 
     interface IPresenter extends ZYListDataContract.Presenter<ZYDownloadEntity> {

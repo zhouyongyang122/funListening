@@ -33,7 +33,6 @@ public class ZYDownloadingFragment extends ZYListDateFragment<ZYDownloadedContra
     @Override
     protected void onItemClick(View view, int position) {
         ZYDownloadEntity downloadEntity = mAdapter.getItem(position);
-//        ZYPlayActivity.toPlayActivity(mActivity, downloadEntity.albumId, downloadEntity.audioId);
         if (downloadEntity.getState() == ZYDownState.FINISH) {
             return;
         }
@@ -45,6 +44,11 @@ public class ZYDownloadingFragment extends ZYListDateFragment<ZYDownloadedContra
             ZYDownloadManager.getInstance().addAudio(downloadEntity);
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void refreshDownloadAllState(boolean hasPaseedEntity) {
+        headerVH.refreshDownloadAllState(hasPaseedEntity);
     }
 
     @Override

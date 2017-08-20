@@ -56,6 +56,9 @@ public class ZYAudioItemVH extends ZYBaseViewHolder<ZYAudio> {
     @Bind(R.id.textAuditon)
     TextView textAuditon;
 
+    @Bind(R.id.imgLock)
+    ImageView imgLock;
+
     ZYAudio mData;
 
     ZYDownloadEntity mDownloadEntity;
@@ -84,6 +87,8 @@ public class ZYAudioItemVH extends ZYBaseViewHolder<ZYAudio> {
     private void refreshView() {
         if (listener.canDownload()) {
             layoutDownload.setVisibility(View.VISIBLE);
+            textAuditon.setVisibility(View.GONE);
+            imgLock.setVisibility(View.GONE);
             if (mDownloadEntity != null) {
                 if (mDownloadEntity.getState() == ZYDownState.FINISH) {
                     progressBar.setVisibility(View.GONE);
@@ -106,8 +111,10 @@ public class ZYAudioItemVH extends ZYBaseViewHolder<ZYAudio> {
             layoutDownload.setVisibility(View.GONE);
             if (mData.isAudition()) {
                 textAuditon.setVisibility(View.VISIBLE);
+                imgLock.setVisibility(View.GONE);
             } else {
                 textAuditon.setVisibility(View.GONE);
+                imgLock.setVisibility(View.VISIBLE);
             }
         }
     }

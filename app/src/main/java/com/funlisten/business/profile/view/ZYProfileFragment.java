@@ -11,6 +11,7 @@ import com.funlisten.R;
 import com.funlisten.base.mvp.ZYListDateFragment;
 import com.funlisten.business.album.activity.ZYAlbumHomeActivity;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
+import com.funlisten.business.login.model.bean.ZYUser;
 import com.funlisten.business.photo.activity.ZYPhotoActivity;
 import com.funlisten.business.profile.contract.ZYProfileContract;
 import com.funlisten.business.profile.contract.ZYProfileFollowPhoto;
@@ -23,9 +24,10 @@ import com.funlisten.utils.ZYResourceUtils;
  * Created by gd on 2017/7/16.
  */
 
-public class ZYProfileFragment extends ZYListDateFragment<ZYProfileContract.IPresenter,ZYAlbumDetail>implements ZYProfileContract.IView {
+public class ZYProfileFragment extends ZYListDateFragment<ZYProfileContract.IPresenter, ZYAlbumDetail> implements ZYProfileContract.IView {
 
     ZYProfileHeader profileHeader;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,15 +48,24 @@ public class ZYProfileFragment extends ZYListDateFragment<ZYProfileContract.IPre
         @Override
         public void intoPhoto(String userId) {
             Intent intent = new Intent(mActivity, ZYPhotoActivity.class);
-            intent.putExtra("userId",userId);
+            intent.putExtra("userId", userId);
             mActivity.startActivity(intent);
+        }
+
+        @Override
+        public void onUnFollow(String userId) {
+            mPresenter.unFollow(userId);
         }
     };
 
+    @Override
+    public void refreshFollow(ZYUser user) {
+        profileHeader.refreshFollow(user);
+    }
 
     @Override
     protected void onItemClick(View view, int position) {
-        mActivity.startActivity(ZYAlbumHomeActivity.createIntent(mActivity,mPresenter.getDataList().get(position).id));
+        mActivity.startActivity(ZYAlbumHomeActivity.createIntent(mActivity, mPresenter.getDataList().get(position).id));
     }
 
 
@@ -66,6 +77,6 @@ public class ZYProfileFragment extends ZYListDateFragment<ZYProfileContract.IPre
     @Override
     public void refreshView() {
         mAdapter.notifyDataSetChanged();
-        profileHeader.updateView(new ZYProfileHeaderInfo(mPresenter.getUser(),mPresenter.getZyPhotoList(),mPresenter.getTotalCount()),0);
+        profileHeader.updateView(new ZYProfileHeaderInfo(mPresenter.getUser(), mPresenter.getZyPhotoList(), mPresenter.getTotalCount()), 0);
     }
 }

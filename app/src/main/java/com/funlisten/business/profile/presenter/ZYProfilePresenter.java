@@ -48,6 +48,7 @@ public class ZYProfilePresenter extends ZYListDataPresenter<ZYProfileContract.IV
                     @Override
                     public ZYResponse<ZYListResponse<ZYAlbumDetail>> call(ZYResponse<ZYUser> zyUserZYResponse, ZYResponse<ZYListResponse<ZYPhoto>> zyListResponseZYResponse, ZYResponse<ZYListResponse<ZYAlbumDetail>> zyListResponseZYResponse2) {
                         user = zyUserZYResponse.data;
+                        followState();
                         zyPhotoList = zyListResponseZYResponse.data;
                         return zyListResponseZYResponse2;
                     }
@@ -108,6 +109,21 @@ public class ZYProfilePresenter extends ZYListDataPresenter<ZYProfileContract.IV
                 ZYLog.d(message);
             }
 
+        }));
+    }
+
+    public void followState() {
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.isFollowStatus(Integer.parseInt(userId)), new ZYNetSubscriber<ZYResponse<String>>() {
+            @Override
+            public void onSuccess(ZYResponse<String> response) {
+                super.onSuccess(response);
+                user.followSate = response.data;
+                mView.refreshFollow(user);
+            }
+
+            @Override
+            public void onFail(String message) {
+            }
         }));
     }
 

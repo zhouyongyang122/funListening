@@ -13,7 +13,7 @@
         android:layout_marginTop="15dp"
         android:drawableLeft="@drawable/zy_bg_play_type"
         android:gravity="center"
-        android:text="循环"
+        android:text="顺序"
         android:textColor="@color/c3"
         android:textSize="@dimen/f4" />
 

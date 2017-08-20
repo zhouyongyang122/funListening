@@ -18,6 +18,7 @@ import com.funlisten.base.event.ZYEventUpdateUserInfo;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.view.ZYPicSelect;
 import com.funlisten.business.accountmanage.activity.ZYAccountManageActivity;
+import com.funlisten.business.album.activity.ZYMyAlbumListActivity;
 import com.funlisten.business.download.activity.ZYDownloadHomeActivity;
 import com.funlisten.business.followfans.activity.ZYFansActivity;
 import com.funlisten.business.followfans.activity.ZYFollowActivity;
@@ -131,7 +132,7 @@ public class ZYMeFragment extends ZYBaseFragment<ZYMeContract.IPresenter> implem
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;
                 }
-                mActivity.startActivity(new Intent(ZYProFlieActivity.createIntent(mActivity, ZYUserManager.getInstance().getUser().userId)));
+                mActivity.startActivity(ZYMyAlbumListActivity.createIntent(mActivity));
                 break;
             case R.id.layoutLove:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {

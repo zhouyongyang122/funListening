@@ -16,6 +16,7 @@ public interface ZYProfileContract {
 
     interface IView extends ZYListDataContract.View<IPresenter> {
         void refreshView();
+        void refreshFollow(ZYUser user);
     }
 
     interface IPresenter extends ZYListDataContract.Presenter<ZYAlbumDetail> {

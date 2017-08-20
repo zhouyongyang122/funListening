@@ -6,5 +6,6 @@ package com.funlisten.business.profile.contract;
 
 public interface ZYProfileFollowPhoto {
     void onFollow(String userId);
+    void onUnFollow(String userId);
     void intoPhoto(String userId);
 }

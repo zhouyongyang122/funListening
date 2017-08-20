@@ -1,5 +1,6 @@
 package com.funlisten.business.login.model.bean;
 
+import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.service.db.ZYDBManager;
 import com.funlisten.service.db.entity.ZYBaseEntity;
 import com.funlisten.service.db.entity.ZYUserDao;
@@ -7,6 +8,7 @@ import com.funlisten.service.db.entity.ZYUserDao;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Transient;
 
 /**
  * Created by ZY on 17/4/2.
@@ -47,6 +49,9 @@ public class ZYUser extends ZYBaseEntity {
     public String areaName;
 
     public boolean isLoginUser;
+
+    @Transient
+    public String followSate = ZYBaseModel.FOLLOW_NO_STATE;
 
     @Generated(hash = 193195294)
     public ZYUser() {

@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
+import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.login.model.bean.ZYUser;
 import com.funlisten.business.photo.ZYPhoto;
@@ -39,6 +40,9 @@ public class ZYProfileHeader extends ZYBaseViewHolder<ZYProfileHeaderInfo> {
 
     @Bind(R.id.textFollows)
     TextView textFollows;
+
+    @Bind(R.id.follow_tv)
+    TextView follow_tv;
 
     @Bind(R.id.textFans)
     TextView textFans;
@@ -70,31 +74,32 @@ public class ZYProfileHeader extends ZYBaseViewHolder<ZYProfileHeaderInfo> {
 
     @Override
     public void updateView(ZYProfileHeaderInfo data, int position) {
-        if(data != null){
+        if (data != null) {
             mData = data;
         }
-        if(mData != null && album_count != null) {
+        if (mData != null && album_count != null) {
             showUserInfo(mData.user);
-            if(mData.response.totalCount >0)
-            showPhoto(mData.response.data);
+            if (mData.response.totalCount > 0)
+                showPhoto(mData.response.data);
 
-            photoCount.setText("相册 ("+mData.response.totalCount+")");
+            photoCount.setText("相册 (" + mData.response.totalCount + ")");
             showAlbum(mData.totalCount);
+            refreshFollow(mData.user);
         }
     }
 
     public void showUserInfo(ZYUser user) {
-        ZYImageLoadHelper.getImageLoader().loadCircleImage(mContext,imageHeader,user.avatarUrl,R.drawable.def_avatar,R.drawable.def_avatar);
+        ZYImageLoadHelper.getImageLoader().loadCircleImage(mContext, imageHeader, user.avatarUrl, R.drawable.def_avatar, R.drawable.def_avatar);
         textName.setText(user.nickname);
-        textFollows.setText(user.follow+" 关注");
-        textFans.setText(user.fans+"粉丝");
-        textBreviary.setText(user.intro= TextUtils.isEmpty(user.intro) ?  "这个人很懒 什么都没写!":user.intro);
+        textFollows.setText(user.follow + " 关注");
+        textFans.setText(user.fans + "粉丝");
+        textBreviary.setText(user.intro = TextUtils.isEmpty(user.intro) ? "这个人很懒 什么都没写!" : user.intro);
         details.setText(user.intro);
     }
 
-    @OnClick({R.id.breviary_btn,R.id.details_btn,R.id.follow_tv,R.id.into_photo})
-    public  void OnClick(View view){
-        switch (view.getId()){
+    @OnClick({R.id.breviary_btn, R.id.details_btn, R.id.follow_tv, R.id.into_photo})
+    public void OnClick(View view) {
+        switch (view.getId()) {
             case R.id.breviary_btn:
                 breviary_line.setVisibility(View.GONE);
                 details_line.setVisibility(View.VISIBLE);
@@ -104,27 +109,45 @@ public class ZYProfileHeader extends ZYBaseViewHolder<ZYProfileHeaderInfo> {
                 details_line.setVisibility(View.GONE);
                 break;
             case R.id.follow_tv:
-                if(followPhoto != null) followPhoto.onFollow(mData.user.id);
+                if (followPhoto != null) {
+                    if (mData.user.followSate != null && (mData.user.followSate.equals(ZYBaseModel.FOLLOW_NO_STATE) || mData.user.followSate.equals(ZYBaseModel.FOLLOW_BE_STATE))) {
+                        followPhoto.onFollow(mData.user.id);
+                        mData.user.followSate = ZYBaseModel.FOLLOW_HAS_STATE;
+                    }else {
+                        followPhoto.onUnFollow(mData.user.id);
+                        mData.user.followSate = ZYBaseModel.FOLLOW_NO_STATE;
+                    }
+                    refreshFollow(mData.user);
+                }
                 break;
             case R.id.into_photo:
-                if(followPhoto != null) followPhoto.intoPhoto(mData.user.id);
+                if (followPhoto != null) followPhoto.intoPhoto(mData.user.id);
                 break;
         }
     }
 
     public void showPhoto(List<ZYPhoto> list) {
         image_line.removeAllViews();
-        for (ZYPhoto photo:list){
+        for (ZYPhoto photo : list) {
             ImageView view = createImage();
             image_line.addView(view);
-            ZYImageLoadHelper.getImageLoader().loadImage(mContext,view,photo.photoUrl);
+            ZYImageLoadHelper.getImageLoader().loadImage(mContext, view, photo.photoUrl);
         }
     }
 
     public void showAlbum(int count) {
-        album_count.setText("专辑("+count+")");
+        album_count.setText("专辑(" + count + ")");
     }
 
+    public void refreshFollow(ZYUser user) {
+        if (follow_tv != null) {
+            if (user.followSate != null && (user.followSate.equals(ZYBaseModel.FOLLOW_NO_STATE) || user.followSate.equals(ZYBaseModel.FOLLOW_BE_STATE))) {
+                follow_tv.setText("+ 关注");
+            } else {
+                follow_tv.setText("已关注");
+            }
+        }
+    }
 
     @Override
     public int getLayoutResId() {
@@ -135,11 +158,11 @@ public class ZYProfileHeader extends ZYBaseViewHolder<ZYProfileHeaderInfo> {
         // 获取屏幕宽度
         int W = ZYScreenUtils.getScreenWidth(mContext);
         // 设置图片大小
-        int cricleRadius = (W-ZYScreenUtils.dp2px(mContext,38))/ 4;
+        int cricleRadius = (W - ZYScreenUtils.dp2px(mContext, 38)) / 4;
         ImageView circleImageView = new ImageView(mContext);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(cricleRadius, cricleRadius);
-        int margin = ZYScreenUtils.dp2px(mContext,2);
-        params.setMargins(margin,0,0,0);
+        int margin = ZYScreenUtils.dp2px(mContext, 2);
+        params.setMargins(margin, 0, 0, 0);
         circleImageView.setLayoutParams(params);
         return circleImageView;
     }

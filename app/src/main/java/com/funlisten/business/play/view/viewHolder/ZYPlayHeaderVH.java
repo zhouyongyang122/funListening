@@ -138,7 +138,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         Drawable drawable = null;
         if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_LOOP_TYPE) {
             drawable = mContext.getResources().getDrawable(R.drawable.btn_change_or_cycle_n);
-            textPlayType.setText("循环");
+            textPlayType.setText("顺序");
         } else if (ZYPlayManager.getInstance().getPlayType() == ZYPlayService.PLAY_SINTANCE_TYPE) {
             textPlayType.setText("单曲");
             drawable = mContext.getResources().getDrawable(R.drawable.icon_single_cycle);

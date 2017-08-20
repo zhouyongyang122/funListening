@@ -94,6 +94,10 @@
             android:name=".business.user.activity.ZYSetActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".business.album.activity.ZYMyAlbumListActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".business.play.ZYPlayService" />
 
         <activity

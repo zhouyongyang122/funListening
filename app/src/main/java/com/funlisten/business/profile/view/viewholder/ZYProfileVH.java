@@ -31,6 +31,9 @@ public class ZYProfileVH extends ZYBaseViewHolder<ZYAlbumDetail> {
     @Bind(R.id.title)
     TextView title;
 
+    @Bind(R.id.textSubTitle)
+    TextView textSubTitle;
+
     @Bind(R.id.play_count)
     TextView playCount;
 
@@ -51,7 +54,8 @@ public class ZYProfileVH extends ZYBaseViewHolder<ZYAlbumDetail> {
         }
         ZYImageLoadHelper.getImageLoader().loadImage(mContext,coverUrl,data.coverUrl);
         showPay("paid".equals(data.costType));
-        title.setText(data.title);
+        title.setText(data.name);
+        textSubTitle.setText(data.title);
         playCount.setText(data.playCount+"");
         audioCount.setText("更新至"+data.audioCount+"集");
         intoDetail.setTag(data);

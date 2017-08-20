@@ -153,7 +153,7 @@ public class ZYAlbumAudiosFragment extends ZYListDateFragment<ZYAlbumAudiosContr
 
     @Override
     public boolean canDownload() {
-        if (!albumDetail.isBuy && albumDetail.isNeedBuy()) {
+        if (albumDetail != null && !albumDetail.isBuy && albumDetail.isNeedBuy()) {
             return false;
         }
         return true;

@@ -81,7 +81,7 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/btn_change_or_cycle_n"
                 android:gravity="center"
-                android:text="循环"
+                android:text="顺序"
                 android:textColor="@color/c4"
                 android:textSize="@dimen/f9" />
 

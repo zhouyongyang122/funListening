@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.funlisten.R;
 import com.funlisten.base.mvp.ZYListDateFragment;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
+import com.funlisten.business.album.activity.ZYAlbumHomeActivity;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.profile.view.viewholder.ZYProfileVH;
 import com.funlisten.business.search.contract.ZYSearchContract;
@@ -35,7 +36,8 @@ public class ZYSearchAlbumListFragment extends ZYListDateFragment<ZYSearchContra
 
     @Override
     protected void onItemClick(View view, int position) {
-
+        ZYAlbumDetail detail =  mPresenter.getDataList().get(position).album;
+        startActivity(ZYAlbumHomeActivity.createIntent(mActivity,detail.id));
     }
 
     @Override

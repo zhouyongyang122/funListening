@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c1"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+
+    <EditText
+        android:id="@+id/textMsg"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/sr_bg_corner4dp_c5_solid"
+        android:gravity="left|top"
+        android:hint="请输入反馈内容(最多200字)"
+        android:padding="15dp"
+        android:textColor="@color/c6"
+        android:textSize="@dimen/f3" />
+
+    <TextView
+        android:id="@+id/textOk"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/sr_bg_corner360dp_yellow_solid"
+        android:gravity="center"
+        android:text="提交反馈"
+        android:textColor="@color/white"
+        android:textSize="@dimen/f2" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="邀请你加入官方QQ群\n322968274\n我们想更好的为你服务"
+        android:textColor="@color/white"
+        android:textSize="@dimen/f2" />
+</LinearLayout>

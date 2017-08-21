@@ -65,8 +65,8 @@ public class ZYSearchAlbumVH extends ZYBaseViewHolder<ZYAudioAndAlbumInfo> {
 
         switch (view.getId()){
             case R.id.into_album_detail://进入album详情页
-                ZYAlbumDetail data = (ZYAlbumDetail) view.getTag();
-                mContext.startActivity(ZYAlbumHomeActivity.createIntent(mContext,data.id));
+                ZYAlbumDetail detail = (ZYAlbumDetail) view.getTag();
+//                mContext.startActivity(ZYAlbumHomeActivity.createIntent(mContext,data.id));
                 break;
         }
 

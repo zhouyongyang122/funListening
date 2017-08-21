@@ -3,19 +3,11 @@ package com.funlisten.business.myorder.presenter;
 import com.funlisten.base.bean.ZYListResponse;
 import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.base.mvp.ZYListDataPresenter;
-import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.favorite.ZYFavorite;
-import com.funlisten.business.login.model.bean.ZYUser;
 import com.funlisten.business.myorder.contract.ZYMyOrderContract;
 import com.funlisten.business.myorder.model.ZYMyOrderModel;
-import com.funlisten.business.order.ZYOrder;
-import com.funlisten.business.play.model.bean.ZYAudio;
-import com.funlisten.business.user.model.ZYUserList;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 

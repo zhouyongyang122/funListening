@@ -4,7 +4,7 @@ import android.widget.TextView;
 
 import com.funlisten.R;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
-import com.funlisten.business.user.model.ZYProvince;
+import com.funlisten.business.set.model.bean.ZYProvince;
 
 import butterknife.Bind;
 

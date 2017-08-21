@@ -1,13 +1,12 @@
 package com.funlisten.business.persondata.presenter;
 
 import com.funlisten.ZYApplication;
-import com.funlisten.base.bean.ZYListResponse;
 import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.base.event.ZYEventUpdateUserInfo;
 import com.funlisten.base.mvp.ZYBasePresenter;
 import com.funlisten.business.persondata.contract.ZYPersonContract;
 import com.funlisten.business.persondata.model.ZYPersonModel;
-import com.funlisten.business.user.model.ZYProvince;
+import com.funlisten.business.set.model.bean.ZYProvince;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 import com.funlisten.utils.ZYToast;

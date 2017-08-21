@@ -3,10 +3,9 @@ package com.funlisten.business.followfans.model;
 import com.funlisten.base.bean.ZYListResponse;
 import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.base.mvp.ZYBaseModel;
-import com.funlisten.business.user.model.ZYUserList;
+import com.funlisten.business.set.model.bean.ZYUserList;
 
 
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**

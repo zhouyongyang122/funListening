@@ -9,12 +9,10 @@ import com.funlisten.business.photo.ZYPhoto;
 import com.funlisten.business.profile.contract.ZYProfileContract;
 import com.funlisten.business.profile.model.ZYProfileModel;
 import com.funlisten.business.profile.view.viewholder.ZYProfileVH;
-import com.funlisten.business.user.model.ZYUserList;
 import com.funlisten.service.net.ZYNetManager;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 import com.funlisten.utils.ZYLog;
-import com.funlisten.utils.ZYToast;
 
 import java.util.ArrayList;
 import java.util.List;

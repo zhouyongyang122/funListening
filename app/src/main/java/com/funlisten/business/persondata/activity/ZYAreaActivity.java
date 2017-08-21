@@ -14,7 +14,7 @@ import com.funlisten.base.view.ZYSwipeRefreshRecyclerView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.persondata.view.viewholder.ZYCityVH;
 import com.funlisten.business.persondata.view.viewholder.ZYProvinceVH;
-import com.funlisten.business.user.model.ZYProvince;
+import com.funlisten.business.set.model.bean.ZYProvince;
 import com.funlisten.utils.ZYScreenUtils;
 
 import java.util.ArrayList;

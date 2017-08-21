@@ -1,9 +1,8 @@
 package com.funlisten.business.persondata.model;
 
-import com.funlisten.base.bean.ZYListResponse;
 import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.base.mvp.ZYBaseModel;
-import com.funlisten.business.user.model.ZYProvince;
+import com.funlisten.business.set.model.bean.ZYProvince;
 
 import java.io.File;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.Map;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**

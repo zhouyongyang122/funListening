@@ -13,17 +13,16 @@ import com.funlisten.business.login.model.bean.ZYUser;
 import com.funlisten.business.main.model.bean.ZYHome;
 import com.funlisten.business.main.model.bean.ZYVersion;
 import com.funlisten.business.order.ZYAlipayBack;
-import com.funlisten.business.order.ZYOrder;
 import com.funlisten.business.photo.ZYPhoto;
 import com.funlisten.business.search.model.bean.ZYAudioAndAlbumInfo;
-import com.funlisten.business.user.model.ZYProvince;
-import com.funlisten.business.user.model.ZYUserList;
+import com.funlisten.business.set.model.bean.ZYProvince;
+import com.funlisten.business.set.model.bean.ZYUserList;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -377,4 +376,7 @@ public interface ZYRequestApi {
 
     @POST("audio/addDownloadCount")
     Observable<ZYResponse> reportDownload(@Query("id") int audioId);
+
+    @POST("feedback/insert")
+    Observable<ZYResponse> feedBack(@Body HashMap<String, String> params);
 }

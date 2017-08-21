@@ -1,5 +1,6 @@
-package com.funlisten.business.main.activity;
+package com.funlisten.business.set.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputFilter;
@@ -40,8 +41,15 @@ public class ZYFeedBackActivity extends ZYBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sr_activity_feedback);
 
-        mActionBar.showTitle("反馈");
-        textMsg.setFilters(new InputFilter[]{new InputFilter.LengthFilter(240)});
+        mActionBar.showTitle("问题反馈");
+        textMsg.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
+
+        showActionRightTitle("反馈记录", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ZYFeedBackActivity.this, ZYMsgActivity.class));
+            }
+        });
 
         textOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,21 +62,21 @@ public class ZYFeedBackActivity extends ZYBaseActivity {
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("content", msg);
                 showProgress();
-//                subscription.add(ZYNetSubscription.subscription(ZYNetManager.shareInstance().getApi().feedBack(params), new ZYNetSubscriber<ZYResponse>() {
-//                    @Override
-//                    public void onSuccess(ZYResponse response) {
-//                        super.onSuccess(response);
-//                        hideProgress();
-//                        ZYToast.show(ZYFeedBackActivity.this, "反馈成功!");
-//                        finish();
-//                    }
-//
-//                    @Override
-//                    public void onFail(String message) {
-//                        super.onFail(message);
-//                        hideProgress();
-//                    }
-//                }));
+                subscription.add(ZYNetSubscription.subscription(ZYNetManager.shareInstance().getApi().feedBack(params), new ZYNetSubscriber<ZYResponse>() {
+                    @Override
+                    public void onSuccess(ZYResponse response) {
+                        super.onSuccess(response);
+                        hideProgress();
+                        ZYToast.show(ZYFeedBackActivity.this, "反馈成功!");
+                        finish();
+                    }
+
+                    @Override
+                    public void onFail(String message) {
+                        super.onFail(message);
+                        hideProgress();
+                    }
+                }));
             }
         });
     }

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/c2"
+    android:background="@color/c8"
     android:orientation="vertical"
     android:padding="15dp">
 
@@ -10,13 +10,13 @@
     <EditText
         android:id="@+id/textMsg"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="180dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/sr_bg_corner4dp_c5_solid"
+        android:background="@drawable/fz_bg_boder_c5_solid_c7"
         android:gravity="left|top"
-        android:hint="请输入反馈内容(最多200字)"
+        android:hint="输入问题,并留下联系方式,我们会尽快回复(最多200字)"
         android:padding="15dp"
-        android:textColor="@color/c6"
+        android:textColor="@color/c5"
         android:textSize="@dimen/f3" />
 
     <TextView
@@ -24,9 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/sr_bg_corner360dp_c7_solid"
+        android:background="@drawable/sr_bg_corner6dp_c1_solid"
         android:gravity="center"
         android:text="提交反馈"
-        android:textColor="@color/white"
+        android:textColor="@color/c8"
         android:textSize="@dimen/f2" />
 </LinearLayout>

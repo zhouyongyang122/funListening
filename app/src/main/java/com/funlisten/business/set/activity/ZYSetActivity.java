@@ -1,4 +1,4 @@
-package com.funlisten.business.user.activity;
+package com.funlisten.business.set.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.funlisten.base.mvp.ZYBaseFragmentActivity;
-import com.funlisten.business.user.view.ZYSetFragment;
+import com.funlisten.business.set.view.ZYSetFragment;
 
 /**
  * Created by ZY on 17/7/21.

@@ -1,4 +1,4 @@
-package com.funlisten.business.user.activity;
+package com.funlisten.business.set.activity;
 
 import android.content.Context;
 import android.content.Intent;

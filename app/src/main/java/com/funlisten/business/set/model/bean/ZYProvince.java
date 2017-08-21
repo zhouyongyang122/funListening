@@ -1,4 +1,4 @@
-package com.funlisten.business.user.model;
+package com.funlisten.business.set.model.bean;
 
 import com.funlisten.base.bean.ZYIBaseBean;
 

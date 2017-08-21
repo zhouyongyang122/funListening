@@ -2,10 +2,8 @@ package com.funlisten.business.search.contract;
 
 import com.funlisten.base.mvp.ZYListDataContract;
 import com.funlisten.business.album.model.bean.ZYAlbumDetail;
-import com.funlisten.business.dailylisten.contract.ZYDailyListenContract;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.search.model.bean.ZYAudioAndAlbumInfo;
-import com.funlisten.business.user.model.ZYUserList;
 
 import java.util.List;
 

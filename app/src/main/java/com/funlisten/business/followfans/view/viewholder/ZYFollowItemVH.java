@@ -8,8 +8,7 @@ import android.widget.TextView;
 import com.funlisten.R;
 import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
-import com.funlisten.business.user.model.ZYUserList;
-import com.funlisten.thirdParty.image.ZYGlideImageLoader;
+import com.funlisten.business.set.model.bean.ZYUserList;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 
 import butterknife.Bind;

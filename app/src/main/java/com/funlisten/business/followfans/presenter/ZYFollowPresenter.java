@@ -6,7 +6,7 @@ import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.mvp.ZYListDataPresenter;
 import com.funlisten.business.followfans.contract.ZYFollowContract;
 import com.funlisten.business.followfans.model.ZYFollowModel;
-import com.funlisten.business.user.model.ZYUserList;
+import com.funlisten.business.set.model.bean.ZYUserList;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 

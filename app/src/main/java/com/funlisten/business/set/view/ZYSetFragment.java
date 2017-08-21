@@ -1,4 +1,4 @@
-package com.funlisten.business.user.view;
+package com.funlisten.business.set.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,7 +21,7 @@ import com.funlisten.base.view.SlipButton;
 import com.funlisten.base.view.ZYSlipButton;
 import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.business.persondata.activity.ZYPersonDataActivity;
-import com.funlisten.business.user.activity.ZYAboutActivity;
+import com.funlisten.business.set.activity.ZYAboutActivity;
 import com.funlisten.utils.ZYFileUtils;
 import com.funlisten.utils.ZYSystemUtils;
 import com.funlisten.utils.ZYToast;
@@ -33,8 +33,6 @@ import java.io.File;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.tencent.open.utils.Global.getPackageName;
 
 /**
  * Created by ZY on 17/7/21.

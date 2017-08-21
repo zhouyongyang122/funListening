@@ -16,10 +16,10 @@
             android:id="@+id/textName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="第1期 | 梦想小城"
             android:ellipsize="end"
             android:maxEms="14"
             android:maxLines="1"
+            android:text="第1期 | 梦想小城"
             android:textColor="@color/c1"
             android:textSize="@dimen/f3" />
 
@@ -86,12 +86,15 @@
 
     <TextView
         android:id="@+id/textAuditon"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/zy_bg_border_c1_trans"
         android:gravity="center"
         android:text="试听"
-        android:textColor="@color/c9"
+        android:textColor="@color/c1"
         android:textSize="@dimen/f4"
         android:visibility="gone" />
 
@@ -102,8 +105,8 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
-        android:visibility="gone"
-        android:src="@drawable/lock" />
+        android:src="@drawable/lock"
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"

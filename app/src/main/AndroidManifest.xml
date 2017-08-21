@@ -91,7 +91,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".business.user.activity.ZYSetActivity"
+            android:name=".business.set.activity.ZYSetActivity"
             android:screenOrientation="portrait" />
 
         <activity
@@ -224,9 +224,14 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".business.user.activity.ZYAboutActivity"
+            android:name=".business.set.activity.ZYAboutActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".business.main.activity.ZYFeedBackActivity"
+        <activity
+            android:name=".business.set.activity.ZYFeedBackActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".business.set.activity.ZYMsgActivity"
             android:screenOrientation="portrait" />
 
     </application>

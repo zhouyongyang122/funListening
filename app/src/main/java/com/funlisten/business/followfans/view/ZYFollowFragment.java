@@ -7,17 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.funlisten.R;
-import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.base.mvp.ZYListDateFragment;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.followfans.contract.ZYFollowContract;
 import com.funlisten.business.followfans.view.viewholder.ZYFollowItemVH;
 import com.funlisten.business.profile.activity.ZYProFlieActivity;
-import com.funlisten.business.user.model.ZYUserList;
-import com.funlisten.service.net.ZYNetManager;
-import com.funlisten.service.net.ZYNetSubscriber;
-import com.funlisten.service.net.ZYNetSubscription;
-import com.funlisten.utils.ZYLog;
+import com.funlisten.business.set.model.bean.ZYUserList;
 import com.funlisten.utils.ZYResourceUtils;
 import com.funlisten.utils.ZYScreenUtils;
 

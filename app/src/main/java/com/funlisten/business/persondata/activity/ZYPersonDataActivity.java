@@ -20,7 +20,7 @@ import com.funlisten.business.persondata.contract.ZYPersonContract;
 import com.funlisten.business.persondata.model.ZYPersonModel;
 import com.funlisten.business.persondata.presenter.ZYPersonPresenter;
 import com.funlisten.business.persondata.view.ZYEditDialog;
-import com.funlisten.business.user.model.ZYProvince;
+import com.funlisten.business.set.model.bean.ZYProvince;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.utils.ZYUtils;
 

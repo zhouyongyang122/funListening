@@ -3,24 +3,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/c2"
+    android:background="@color/c8"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/c2"
+        android:background="@color/c8"
         android:orientation="vertical"
         android:padding="15dp">
-
-        <TextView
-            android:id="@+id/textTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="消息标题"
-            android:textColor="@color/white"
-            android:textSize="@dimen/f2" />
 
         <TextView
             android:id="@+id/textMsg"
@@ -28,24 +19,51 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容"
-            android:textColor="@color/white"
+            android:textColor="@color/c2"
             android:textSize="@dimen/f4" />
 
         <TextView
             android:id="@+id/textTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="right"
+            android:layout_marginTop="15dp"
+            android:gravity="left"
             android:singleLine="true"
             android:text="2017-02-03 12:30"
-            android:textColor="@color/white"
-            android:textSize="@dimen/f4" />
+            android:textColor="@color/c4"
+            android:textSize="@dimen/f8" />
+
+        <LinearLayout
+            android:id="@+id/layoutReply"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/textReply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="10dp"
+                android:text="内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容"
+                android:textColor="@color/c2"
+                android:textSize="@dimen/f4" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="right"
+                android:singleLine="true"
+                android:text="客服回复"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/f6" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_marginLeft="15dp"
-        android:background="@color/c1" />
+        android:layout_marginRight="15dp"
+        android:background="@color/c3" />
 </LinearLayout>

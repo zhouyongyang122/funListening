@@ -15,6 +15,7 @@ import com.funlisten.business.main.model.bean.ZYVersion;
 import com.funlisten.business.order.ZYAlipayBack;
 import com.funlisten.business.photo.ZYPhoto;
 import com.funlisten.business.search.model.bean.ZYAudioAndAlbumInfo;
+import com.funlisten.business.set.model.bean.ZYMsg;
 import com.funlisten.business.set.model.bean.ZYProvince;
 import com.funlisten.business.set.model.bean.ZYUserList;
 
@@ -379,4 +380,7 @@ public interface ZYRequestApi {
 
     @POST("feedback/insert")
     Observable<ZYResponse> feedBack(@Body HashMap<String, String> params);
+
+    @POST("feedback/listByUser")
+    Observable<ZYResponse<ZYListResponse<ZYMsg>>> getFeedBacks(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 }

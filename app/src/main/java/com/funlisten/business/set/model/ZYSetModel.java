@@ -16,7 +16,6 @@ import rx.Observable;
 public class ZYSetModel extends ZYBaseModel {
 
     public Observable<ZYResponse<ZYListResponse<ZYMsg>>> getSysMsgs(int pageIndex, int rows) {
-//        return mApi.getSysMsgs(start,rows);
-        return null;
+        return mApi.getFeedBacks(pageIndex, rows);
     }
 }

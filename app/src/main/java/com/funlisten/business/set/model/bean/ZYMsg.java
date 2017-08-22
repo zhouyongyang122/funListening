@@ -10,11 +10,11 @@ public class ZYMsg implements ZYIBaseBean {
 
     public int id;
 
-    public String title;
+    public String nickname;
 
     public String content;
 
-    public long create_time;
+    public String gmtCreate;
 
-    public String url;
+    public String reply;//客服回复
 }

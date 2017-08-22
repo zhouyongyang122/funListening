@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.funlisten.R;
 import com.funlisten.ZYAppConstants;
 import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
 import com.funlisten.base.event.ZYEventDowloadUpdate;
+import com.funlisten.base.event.ZYEventPaySuc;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.view.ZYLoadingView;
@@ -26,6 +28,7 @@ import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
 import com.funlisten.business.comment.activity.ZYCommentActivity;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
+import com.funlisten.business.pay.activity.ZYPayActivity;
 import com.funlisten.business.play.ZYPlayService;
 import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.business.play.contract.ZYPlayContract;
@@ -131,6 +134,10 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textDown:
+                if (TextUtils.isEmpty(mPresenter.getCurPlayAudio().fileUrl)) {
+                    ZYToast.show(mActivity, "收费音频，先购买才能下载哦!");
+                    return;
+                }
                 ZYAudio audio = mPresenter.getCurPlayAudio();
                 ZYDownloadEntity downloadEntitys = ZYDownloadEntity.queryById(audio.id, audio.albumId);
                 isCheckDown(downloadEntitys, audio);
@@ -389,6 +396,11 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     }
 
     @Override
+    public void onBuyClick() {
+        mActivity.startActivity(ZYPayActivity.createIntent(mActivity, mPresenter.getAlbumDetail()));
+    }
+
+    @Override
     public void onSubscribeClick(ZYAlbumDetail detail) {
         if (detail.isFavorite) {
             mPresenter.favoriteCancel(ZYBaseModel.ALBUM_TYPE, detail.id);
@@ -451,5 +463,11 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
                 refreshDown((ZYDownloadEntity) dowloadUpdate.downloadEntity);
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ZYEventPaySuc paySuc) {
+        mPresenter.subscribe();
+        headerVH.hideBuy();
     }
 }

@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,12 @@ public class ZYSearchAudioItemVH extends ZYBaseViewHolder<ZYAudioAndAlbumInfo> {
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
 
+    @Bind(R.id.layoutDownload)
+    RelativeLayout layoutDownload;
+
+    @Bind(R.id.imgLock)
+    ImageView imgLock;
+
     ZYAudio mData;
 
 
@@ -63,13 +70,20 @@ public class ZYSearchAudioItemVH extends ZYBaseViewHolder<ZYAudioAndAlbumInfo> {
 
     @Override
     public void updateView(ZYAudioAndAlbumInfo data, int position) {
-        if (data != null &&  data.audio != null) {
+        if (data != null && data.audio != null) {
             mData = data.audio;
             textName.setText("第 " + mData.sort + " 期 | " + mData.title);
             textPlayNum.setText(mData.playCount + "");
             textTimeDay.setText(ZYDateUtils.getTimeString(mData.gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.YYMMDDHH));
             textTimeHours.setText(ZYDateUtils.getTimeString(mData.gmtCreate, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.HHMM24));
             mDownloadEntity = ZYDownloadEntity.queryById(mData.id, mData.albumId);
+            if(TextUtils.isEmpty(data.audio.fileUrl)){
+                layoutDownload.setVisibility(View.GONE);
+                imgLock.setVisibility(View.VISIBLE);
+            }else {
+                layoutDownload.setVisibility(View.VISIBLE);
+                imgLock.setVisibility(View.GONE);
+            }
             refreshView();
         }
     }
@@ -106,8 +120,8 @@ public class ZYSearchAudioItemVH extends ZYBaseViewHolder<ZYAudioAndAlbumInfo> {
             case R.id.layoutDownload:
                 if (!imgDownload.isSelected()) {
                     ZYToast.show(mContext, "开始下载!");
-                    if(TextUtils.isEmpty(mData.fileUrl)){
-                        ZYToast.show(mContext,"下载URL为null");
+                    if (TextUtils.isEmpty(mData.fileUrl)) {
+                        ZYToast.show(mContext, "收费音频,需要先购买哦!");
                         return;
                     }
                     mDownloadEntity = listener.onDownloadClick(mData);

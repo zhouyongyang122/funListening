@@ -17,6 +17,7 @@ import com.funlisten.business.pay.model.bean.PayInfo;
 import com.funlisten.business.pay.presenter.ZYPayPresenter;
 import com.funlisten.business.pay.view.viewholder.ZYPayFooterVH;
 import com.funlisten.business.pay.view.viewholder.ZYPayHeaderDetails;
+import com.funlisten.business.play.activity.ZYPlayActivity;
 import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.utils.ZYToast;
 import com.google.gson.Gson;
@@ -53,6 +54,17 @@ public class ZYPayActivity extends ZYBaseActivity implements ZYPayFooterVH.PayLi
         Intent intent  = new Intent(context,ZYPayActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("album",zyAlbum);
+        index = 1;
+        type = "album";
+        intent.putExtras(bundle);
+        return intent;
+    }
+
+    public static Intent createIntent(Context context, ZYAlbumDetail zyAlbum,boolean backToPlay){
+        Intent intent  = new Intent(context,ZYPayActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("album",zyAlbum);
+        bundle.putBoolean("isBackToPlay",backToPlay);
         index = 1;
         type = "album";
         intent.putExtras(bundle);
@@ -101,6 +113,14 @@ public class ZYPayActivity extends ZYBaseActivity implements ZYPayFooterVH.PayLi
             payPresenter.getSignALiAudio(gson);
         }else if(payType ==2){
             payPresenter.getWeChatSign(gson);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (getIntent().getBooleanExtra("isBackToPlay", false)) {
+            ZYPlayActivity.toPlayActivity(mActivity,true);
         }
     }
 

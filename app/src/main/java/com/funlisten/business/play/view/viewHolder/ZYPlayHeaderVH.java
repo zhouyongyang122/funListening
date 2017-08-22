@@ -3,6 +3,8 @@ package com.funlisten.business.play.view.viewHolder;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -80,6 +82,8 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
     @Bind(R.id.textComment)
     TextView textComment;
 
+    @Bind(R.id.layoutBuy)
+    LinearLayout layoutBuy;
 
     ZYPlay mData;
 
@@ -150,7 +154,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         textPlayType.setCompoundDrawables(null, drawable, null, null);
     }
 
-    @OnClick({R.id.imgPre, R.id.imgPlay, R.id.imgNext, R.id.textPlayList, R.id.textPlayType, R.id.textSubscribe})
+    @OnClick({R.id.imgPre, R.id.imgPlay, R.id.imgNext, R.id.textPlayList, R.id.textPlayType, R.id.textSubscribe, R.id.textBuy})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgPre:
@@ -179,6 +183,9 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
             case R.id.textSubscribe:
                 headerListener.onSubscribeClick(mData.albumDetail);
                 break;
+            case R.id.textBuy:
+                headerListener.onBuyClick();
+                break;
         }
     }
 
@@ -188,6 +195,12 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
             textSubscribe.setText("已订阅");
         } else {
             textSubscribe.setText("订阅");
+        }
+    }
+
+    public void hideBuy(){
+        if(layoutBuy != null){
+            layoutBuy.setVisibility(View.GONE);
         }
     }
 
@@ -223,19 +236,21 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         if (imgPlay == null || mData == null) {
             return;
         }
-
         if (playEvent.state == STATE_ERROR) {
             imgPlay.setImageResource(R.drawable.play);
         } else if (playEvent.state == STATE_PREPARING) {
             imgPlay.setImageResource(R.drawable.suspend);
+            layoutBuy.setVisibility(View.GONE);
         } else if (playEvent.state == STATE_PREPARED) {
             imgPlay.setImageResource(R.drawable.suspend);
+            layoutBuy.setVisibility(View.GONE);
         } else if (playEvent.state == STATE_PLAYING) {
             imgPlay.setImageResource(R.drawable.suspend);
         } else if (playEvent.state == STATE_PAUSED) {
             imgPlay.setImageResource(R.drawable.play);
         } else if (playEvent.state == STATE_NEED_BUY_PAUSED) {
             imgPlay.setImageResource(R.drawable.play);
+            layoutBuy.setVisibility(View.VISIBLE);
         } else if (playEvent.state == STATE_BUFFERING_START) {
 
         } else if (playEvent.state == STATE_BUFFERING_END) {
@@ -279,6 +294,8 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         void onPlayTypeClick();
 
         void onSubscribeClick(ZYAlbumDetail detail);
+
+        void onBuyClick();
 
     }
 }

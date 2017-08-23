@@ -16,7 +16,7 @@
         android:gravity="left|top"
         android:hint="输入问题,并留下联系方式,我们会尽快回复(最多200字)"
         android:padding="15dp"
-        android:textColor="@color/c5"
+        android:textColor="@color/c2"
         android:textSize="@dimen/f3" />
 
     <TextView

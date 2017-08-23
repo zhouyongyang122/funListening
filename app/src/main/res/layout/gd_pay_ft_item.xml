@@ -24,7 +24,7 @@
             android:layout_marginLeft="15dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/dubbing_icon_weixin"
+            android:background="@drawable/dubbing_icon_zhifubao"
            />
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:background="@drawable/dubbing_icon_zhifubao" />
+            android:background="@drawable/dubbing_icon_weixin" />
 
         <TextView
             android:layout_width="wrap_content"

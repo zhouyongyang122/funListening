@@ -1,9 +1,11 @@
 package com.funlisten.business.album.view.viewHolder;
 
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
@@ -15,6 +17,7 @@ import com.funlisten.business.persondata.activity.ZYPersonDataActivity;
 import com.funlisten.business.profile.activity.ZYProFlieActivity;
 import com.funlisten.thirdParty.image.ZYImageLoadHelper;
 import com.funlisten.utils.ZYToast;
+import com.zzhoujay.markdown.parser.Line;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -58,6 +61,15 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
     @Bind(R.id.textFollow)
     TextView textFollow;
 
+    @Bind(R.id.layoutPrice)
+    LinearLayout layoutPrice;
+
+    @Bind(R.id.textPrice)
+    TextView textPrice;
+
+    @Bind(R.id.textPriceOld)
+    TextView textPriceOld;
+
     ZYAlbumDetail mData;
 
     HeaderListener mListener;
@@ -82,6 +94,16 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
             textFans.setText(mData.publisher.fans + " 粉丝");
 
             updateFollowState();
+
+            if (data.isNeedBuy()) {
+                layoutPrice.setVisibility(View.VISIBLE);
+                if (data.originPrice > 0) {
+                    textPriceOld.setVisibility(View.VISIBLE);
+                    textPriceOld.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                    textPriceOld.setText("¥" + data.originPrice + "");
+                }
+                textPrice.setText("¥" + data.sellPrice + "");
+            }
         }
     }
 

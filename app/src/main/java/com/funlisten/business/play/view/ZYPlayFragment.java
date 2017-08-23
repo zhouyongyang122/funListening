@@ -436,7 +436,8 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             } else if (playEvent.state == STATE_PAUSED) {
 
             } else if (playEvent.state == STATE_NEED_BUY_PAUSED) {
-                ZYToast.show(mActivity, "音频需要购买哦!");
+//                ZYToast.show(mActivity, "音频需要购买哦!");
+                hideProgress();
             } else if (playEvent.state == STATE_BUFFERING_START) {
 
             } else if (playEvent.state == STATE_BUFFERING_END) {

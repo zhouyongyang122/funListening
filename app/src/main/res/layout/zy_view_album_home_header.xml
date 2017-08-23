@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/layoutInfo"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/c1"
@@ -49,18 +50,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="76dp"
                 android:layout_marginLeft="154dp"
-                android:paddingTop="10dp"
                 android:layout_marginRight="110dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="10dp">
 
                 <TextView
                     android:id="@+id/textCate"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:text="类别: 情感"
-                    android:gravity="center_vertical"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
+                    android:text="类别: 情感"
                     android:textColor="@color/c3"
                     android:textSize="@dimen/f7" />
 
@@ -68,10 +69,10 @@
                     android:id="@+id/textAnchor"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:text="主播: 咏炀"
-                    android:gravity="center_vertical"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
+                    android:text="主播: 咏炀"
                     android:textColor="@color/c3"
                     android:textSize="@dimen/f7" />
 
@@ -79,10 +80,10 @@
                     android:id="@+id/textPlayNum"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:text="播放: 1万"
-                    android:gravity="center_vertical"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
+                    android:text="播放: 1万"
                     android:textColor="@color/c3"
                     android:textSize="@dimen/f7" />
 
@@ -92,16 +93,15 @@
                 android:id="@+id/textSubscribe"
                 android:layout_width="88dp"
                 android:layout_height="30dp"
-                android:text="订阅"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="15dp"
+                android:background="@drawable/zy_bg_corner360_c1"
                 android:gravity="center"
                 android:singleLine="true"
-                android:background="@drawable/zy_bg_corner360_c1"
+                android:text="订阅"
                 android:textColor="@color/white"
                 android:textSize="@dimen/f2" />
-
         </RelativeLayout>
 
         <ImageView
@@ -114,49 +114,86 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/layoutPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/layoutInfo"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="-25dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:visibility="visible"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textPrice"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="¥198"
+            android:textColor="@color/c1"
+            android:textSize="@dimen/f1" />
+
+        <TextView
+            android:id="@+id/textPriceOld"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:text="¥198"
+            android:textColor="@color/c4"
+            android:textSize="@dimen/f4" />
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_below="@+id/layoutInfo"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="30dp"
         android:background="@color/c5" />
 
     <RelativeLayout
+        android:id="@+id/layoutUser"
         android:layout_width="match_parent"
-        android:paddingRight="15dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/layoutInfo"
+        android:layout_marginTop="31dp"
         android:paddingLeft="15dp"
-        android:layout_height="70dp">
-        
+        android:paddingRight="15dp">
+
         <ImageView
             android:id="@+id/imgAvatar"
-            android:src="@drawable/def_avatar"
             android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_height="40dp" />
+            android:src="@drawable/def_avatar" />
 
         <TextView
             android:id="@+id/textName"
-            android:layout_toRightOf="@+id/imgAvatar"
             android:layout_width="match_parent"
-            android:layout_alignTop="@+id/imgAvatar"
             android:layout_height="wrap_content"
-            android:text="标题标题"
-            android:singleLine="true"
-            android:layout_marginRight="40dp"
+            android:layout_alignTop="@+id/imgAvatar"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="40dp"
+            android:layout_toRightOf="@+id/imgAvatar"
+            android:singleLine="true"
+            android:text="标题标题"
             android:textColor="@color/c2"
             android:textSize="@dimen/f4" />
 
         <TextView
             android:id="@+id/textFans"
-            android:layout_toRightOf="@+id/imgAvatar"
             android:layout_width="match_parent"
-            android:layout_alignBottom="@+id/imgAvatar"
             android:layout_height="wrap_content"
-            android:text="粉丝: 899"
-            android:layout_marginRight="40dp"
-            android:singleLine="true"
+            android:layout_alignBottom="@+id/imgAvatar"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="40dp"
+            android:layout_toRightOf="@+id/imgAvatar"
+            android:singleLine="true"
+            android:text="粉丝: 899"
             android:textColor="@color/c3"
             android:textSize="@dimen/f7" />
 
@@ -164,12 +201,12 @@
             android:id="@+id/textFollow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="加关注"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:gravity="center_horizontal"
-            android:drawableTop="@drawable/zy_selector_follow"
             android:drawablePadding="4dp"
+            android:drawableTop="@drawable/zy_selector_follow"
+            android:gravity="center_horizontal"
+            android:text="加关注"
             android:textColor="@color/c4"
             android:textSize="@dimen/f7" />
 
@@ -178,6 +215,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
+        android:layout_below="@+id/layoutUser"
         android:background="@color/c7" />
 
-</LinearLayout>
+</RelativeLayout>

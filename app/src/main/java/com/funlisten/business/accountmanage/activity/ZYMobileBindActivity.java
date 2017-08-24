@@ -65,7 +65,7 @@ public class ZYMobileBindActivity extends ZYBaseActivity implements ZYAccountMan
                     ZYToast.show(this,"请输入正确的手机号!");
                     break;
                 }
-                presenter.getCode(phone,"userRegister");
+                presenter.getCode(phone,"bindPhone");
                 restart();
                 verifyTime.setEnabled(false);
                 verifyTime.setBackgroundResource(R.color.c4);

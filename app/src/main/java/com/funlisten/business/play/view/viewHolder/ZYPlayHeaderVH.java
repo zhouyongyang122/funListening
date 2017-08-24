@@ -196,6 +196,7 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         } else {
             textSubscribe.setText("订阅");
         }
+        textInfo.setText(mData.albumDetail.favoriteCount + "人订阅 | " + mData.albumDetail.playCount + "播放");
     }
 
     public void hideBuy(){

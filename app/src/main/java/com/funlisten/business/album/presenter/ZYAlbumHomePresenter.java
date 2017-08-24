@@ -1,6 +1,7 @@
 package com.funlisten.business.album.presenter;
 
 import com.funlisten.base.bean.ZYResponse;
+import com.funlisten.base.event.ZYEventFavoriteAlbum;
 import com.funlisten.base.mvp.ZYBaseModel;
 import com.funlisten.base.mvp.ZYBasePresenter;
 import com.funlisten.business.album.contract.ZYAlbumHomeContract;
@@ -9,6 +10,8 @@ import com.funlisten.business.album.model.bean.ZYAlbumDetail;
 import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
+
+import org.greenrobot.eventbus.EventBus;
 
 import rx.Observable;
 
@@ -96,7 +99,8 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
             @Override
             public void onSuccess(ZYResponse<Object> response) {
                 mAlbumDetail.isFavorite = true;
-                mView.refreshFavorite(mAlbumDetail);
+//                mView.refreshFavorite(mAlbumDetail);
+                EventBus.getDefault().post(new ZYEventFavoriteAlbum(true, mAlbumId));
             }
 
             @Override
@@ -112,7 +116,8 @@ public class ZYAlbumHomePresenter extends ZYBasePresenter implements ZYAlbumHome
             @Override
             public void onSuccess(ZYResponse<Object> response) {
                 mAlbumDetail.isFavorite = false;
-                mView.refreshFavorite(mAlbumDetail);
+//                mView.refreshFavorite(mAlbumDetail);
+                EventBus.getDefault().post(new ZYEventFavoriteAlbum(false, mAlbumId));
             }
 
             @Override

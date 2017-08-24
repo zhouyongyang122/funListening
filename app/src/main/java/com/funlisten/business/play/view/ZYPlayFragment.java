@@ -18,6 +18,7 @@ import com.funlisten.R;
 import com.funlisten.ZYAppConstants;
 import com.funlisten.base.adapter.ZYBaseRecyclerAdapter;
 import com.funlisten.base.event.ZYEventDowloadUpdate;
+import com.funlisten.base.event.ZYEventFavoriteAlbum;
 import com.funlisten.base.event.ZYEventPaySuc;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.mvp.ZYBaseModel;
@@ -185,8 +186,6 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     @Override
     public void refreshView() {
         ZYAudio audio = mPresenter.getCurPlayAudio();
-        mPresenter.isFavorite("audio", audio.id);
-
         ZYDownloadEntity downloadEntity = ZYDownloadEntity.queryById(audio.id, audio.albumId);
         if (downloadEntity != null) refreshDown(downloadEntity);
 
@@ -420,6 +419,16 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
     @Override
     public void onPlayOrPauseClick(ZYPlay play) {
         ZYPlayManager.getInstance().startOrPuase();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ZYEventFavoriteAlbum event) {
+        if (event != null) {
+            if (event.albumId == mPresenter.getAlbumDetail().id) {
+                mPresenter.getAlbumDetail().isFavorite = event.isFavorite;
+                refreshFavorite(mPresenter.getAlbumDetail().isFavorite);
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

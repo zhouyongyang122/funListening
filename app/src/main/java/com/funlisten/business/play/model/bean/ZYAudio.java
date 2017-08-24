@@ -50,6 +50,8 @@ public class ZYAudio implements ZYIBaseBean {
 
     public boolean isSelect = false;
 
+    public boolean isFavorite;
+
     public boolean isBuy;
 
     public boolean needBuy() {

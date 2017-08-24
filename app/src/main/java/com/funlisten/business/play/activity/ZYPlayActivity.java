@@ -72,12 +72,6 @@ public class ZYPlayActivity extends ZYBaseFragmentActivity<ZYPlayFragment> {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mPresenter.isFavorite(ZYBaseModel.ALBUM_TYPE, mAlbumId);
-    }
-
-    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         int mAlbumId = intent.getIntExtra(ALBUM_ID, 0);

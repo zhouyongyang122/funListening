@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.funlisten.R;
 import com.funlisten.base.adapter.ZYFragmentAdapter;
+import com.funlisten.base.event.ZYEventFavoriteAlbum;
 import com.funlisten.base.event.ZYEventLoginSuc;
 import com.funlisten.base.event.ZYEventPaySuc;
 import com.funlisten.base.mvp.ZYBaseFragment;
@@ -225,6 +226,16 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
         if (isShow) {
             footerVH.show();
             setMargin(50);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ZYEventFavoriteAlbum event) {
+        if (event != null) {
+            if (event.albumId == mPresenter.getAlbumDetail().id) {
+                mPresenter.getAlbumDetail().isFavorite = event.isFavorite;
+                refreshFavorite(mPresenter.getAlbumDetail());
+            }
         }
     }
 

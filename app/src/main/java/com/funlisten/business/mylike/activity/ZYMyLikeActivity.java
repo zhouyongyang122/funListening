@@ -18,7 +18,7 @@ public class ZYMyLikeActivity extends ZYBaseFragmentActivity<ZYMyLikeFragment> {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showTitle("我喜欢的");
+        showTitle("我的收藏");
         new ZYMylikePresenter(mFragment,new ZYMyLikeModel());
     }
 

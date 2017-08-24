@@ -15,10 +15,12 @@ public interface ZYRegistContract {
     interface IView extends ZYIBaseView<IPresenter> {
         void codeSuc();
         void registSuc(ZYUser user);
+        void isShowPwd(boolean isShow);
     }
 
     interface IPresenter extends ZYIBasePresenter {
         void sendCode(String phone);
         void regUser(Map<String, String> paramas);
+        void checkPhoneIsExists(String phone);
     }
 }

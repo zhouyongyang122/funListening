@@ -73,13 +73,17 @@ public class ZYRegistMobileVH extends ZYBaseViewHolder<ZYRegistUpload> implement
                     ZYToast.show(mContext, "手机号码不正确!");
                     return;
                 }
+                mData.phone = mobile;
+                if (editPwd.getVisibility() == View.GONE){
+                    mListener.checkPhoneIsExists();
+                    return;
+                }
 
                 if (TextUtils.isEmpty(pwd)) {
                     ZYToast.show(mContext, "密码不能为空!");
                     return;
                 }
 
-                mData.phone = mobile;
                 mData.password = pwd;
                 mListener.completeMobile();
 
@@ -109,6 +113,11 @@ public class ZYRegistMobileVH extends ZYBaseViewHolder<ZYRegistUpload> implement
 
     }
 
+    public void isShowPwd(boolean isShow){
+        if(isShow){
+            editPwd.setVisibility(View.VISIBLE);
+        }else editPwd.setVisibility(View.GONE);
+    }
     public void show(){
         mItemView.setVisibility(View.VISIBLE);
     }

@@ -7,6 +7,7 @@ import com.funlisten.service.net.ZYNetSubscription;
 import com.funlisten.business.login.contract.ZYRegistContract;
 import com.funlisten.business.login.model.ZYLoginModel;
 import com.funlisten.business.login.model.bean.ZYUser;
+import com.funlisten.utils.ZYToast;
 
 import java.util.Map;
 
@@ -52,6 +53,25 @@ public class ZYRegistPresenter extends ZYBasePresenter implements ZYRegistContra
                 mView.hideProgress();
                 super.onSuccess(response);
                 mView.registSuc(null);
+            }
+
+            @Override
+            public void onFail(String message) {
+                mView.hideProgress();
+                super.onFail(message);
+            }
+        }));
+    }
+
+    @Override
+    public void checkPhoneIsExists(String phone) {
+        mView.showProgress();
+        mSubscriptions.add(ZYNetSubscription.subscription(mModel.checkPhoneIsExists(phone), new ZYNetSubscriber<ZYResponse<Boolean>>() {
+            @Override
+            public void onSuccess(ZYResponse<Boolean> response) {
+                mView.hideProgress();
+                super.onSuccess(response);
+                mView.isShowPwd(!response.data);
             }
 
             @Override

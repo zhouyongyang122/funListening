@@ -75,6 +75,9 @@ public interface ZYRequestApi {
     @POST("user/queryById")
     Observable<ZYResponse<ZYUser>> getUserInfo(@Query("userId") String userId);
 
+    @POST("user/checkPhoneIsExists")
+    Observable<ZYResponse<Boolean>> checkPhoneIsExists(@Query("phone") String phone);
+
     /**
      * 第三方绑定注册
      *

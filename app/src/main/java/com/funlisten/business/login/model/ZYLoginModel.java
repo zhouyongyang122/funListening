@@ -10,6 +10,7 @@ import java.util.Map;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -31,6 +32,11 @@ public class ZYLoginModel extends ZYBaseModel {
     public Observable<ZYResponse> regUser(Map<String, String> paramas) {
         return mApi.regUser(paramas);
     }
+
+    public Observable<ZYResponse<Boolean>> checkPhoneIsExists(String phone){
+        return mApi.checkPhoneIsExists(phone);
+    }
+
 
     public Observable<ZYResponse<ZYLoginUser>> login(String phone, String password) {
         Map<String, String> paramas = new HashMap<String, String>();

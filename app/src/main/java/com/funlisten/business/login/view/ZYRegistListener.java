@@ -5,6 +5,7 @@ package com.funlisten.business.login.view;
  */
 
 public interface ZYRegistListener {
+    void checkPhoneIsExists();
     void completeMobile();
     void completeCode();
     void completeName();

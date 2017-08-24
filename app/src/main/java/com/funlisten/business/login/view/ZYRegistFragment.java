@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.funlisten.R;
 import com.funlisten.base.mvp.ZYBaseFragment;
+import com.funlisten.base.view.ZYRegistDialog;
 import com.funlisten.business.login.contract.ZYRegistContract;
 import com.funlisten.business.login.model.bean.ZYRegistUpload;
 import com.funlisten.business.login.model.bean.ZYUser;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by ZY on 17/7/1.
  */
 
-public class ZYRegistFragment extends ZYBaseFragment<ZYRegistContract.IPresenter> implements ZYRegistContract.IView, ZYRegistListener {
+public class ZYRegistFragment extends ZYBaseFragment<ZYRegistContract.IPresenter> implements ZYRegistContract.IView, ZYRegistListener,ZYRegistDialog.CancelAndFinishListener {
 
     @Bind(R.id.rootLayout)
     RelativeLayout rootLayout;
@@ -67,6 +68,11 @@ public class ZYRegistFragment extends ZYBaseFragment<ZYRegistContract.IPresenter
     }
 
     @Override
+    public void checkPhoneIsExists() {
+        mPresenter.checkPhoneIsExists(mData.phone);
+    }
+
+    @Override
     public void completeMobile() {
         codeVH.show();
     }
@@ -85,6 +91,25 @@ public class ZYRegistFragment extends ZYBaseFragment<ZYRegistContract.IPresenter
     public void completeGender() {
         //发送注册请求
         mPresenter.regUser(mData.getParams());
+    }
+
+    @Override
+    public void isShowPwd(boolean isShow) {
+        if(isShow)
+        mobileVH.isShowPwd(isShow);
+        else {
+            new ZYRegistDialog(mActivity,this).show();
+        }
+    }
+
+    @Override
+    public void onCancel() {
+        mobileVH.isShowPwd(false);
+    }
+
+    @Override
+    public void onFinish() {
+        mActivity.finish();
     }
 
     @Override

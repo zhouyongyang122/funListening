@@ -3,6 +3,9 @@ package com.funlisten.base.player;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.PowerManager;
+
+import com.funlisten.ZYApplication;
 
 /**
  * Created by zhouyongyang on 16/11/10.
@@ -30,8 +33,44 @@ public class FZAudioPlayer extends FZBasePlayer {
         release();
         try {
             AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-            am.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+            am.requestAudioFocus(new AudioManager.OnAudioFocusChangeListener() {
+                @Override
+                public void onAudioFocusChange(int focusChange) {
+                    try {
+                        switch (focusChange) {
+                            case AudioManager.AUDIOFOCUS_GAIN:
+                                // 获得音频焦点
+                                if (!mMediaPlayer.isPlaying()) {
+                                    mMediaPlayer.start();
+                                }
+                                // 还原音量
+                                mMediaPlayer.setVolume(1.0f, 1.0f);
+                                break;
+
+                            case AudioManager.AUDIOFOCUS_LOSS:
+                                // 长久的失去音频焦点，释放MediaPlayer
+                                stop();
+                                break;
+
+                            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                                // 展示失去音频焦点，暂停播放等待重新获得音频焦点
+                                if (mMediaPlayer.isPlaying())
+                                    mMediaPlayer.pause();
+                                break;
+                            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                                // 失去音频焦点，无需停止播放，降低声音即可
+                                if (mMediaPlayer.isPlaying()) {
+                                    mMediaPlayer.setVolume(0.1f, 0.1f);
+                                }
+                                break;
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
+            }, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
             mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setWakeMode(ZYApplication.getInstance().getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mMediaPlayer.setOnInfoListener(this);
             mMediaPlayer.setOnPreparedListener(this);

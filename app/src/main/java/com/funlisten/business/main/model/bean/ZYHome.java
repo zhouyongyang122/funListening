@@ -16,14 +16,14 @@ public class ZYHome implements ZYIBaseBean {
 
     public List<Module> moduleDtoList;//模块集合
 
-    public static class Banner {
+    public static class Banner implements ZYIBaseBean{
         public String type;//专辑(album)audio(音频)h5（h5地址)
         public String imageFileUrl;//图片地址
         public String id;
         public String url;
     }
 
-    public static class Module {
+    public static class Module implements ZYIBaseBean{
         public int id;//模块id
         public String location;//模块位置
         public String moduleCode;//模块code
@@ -33,7 +33,7 @@ public class ZYHome implements ZYIBaseBean {
         public List<ModuleItem> moduleDetailDtoList;//模块数据集合
     }
 
-    public static class ModuleItem {
+    public static class ModuleItem implements ZYIBaseBean{
         public String coverUrl;//背景地址
         public int id;//对象id
         public String name;//名称
@@ -41,7 +41,7 @@ public class ZYHome implements ZYIBaseBean {
         public String costType;//付费  free  paid
     }
 
-    public static class DayListening {
+    public static class DayListening implements ZYIBaseBean{
 
         public List<DayListenAudio> everyDayAudioListeningDtoList;
 
@@ -52,7 +52,7 @@ public class ZYHome implements ZYIBaseBean {
         public String name;//专辑名称
     }
 
-    public static class DayListenAudio {
+    public static class DayListenAudio implements ZYIBaseBean{
         public int id;//音频id
         public String title;//音频标题
     }

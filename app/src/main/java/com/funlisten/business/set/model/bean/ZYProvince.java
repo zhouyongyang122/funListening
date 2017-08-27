@@ -19,7 +19,7 @@ public class ZYProvince implements ZYIBaseBean {
 
     public String provinceName;
 
-    public class City implements Serializable {
+    public class City implements ZYIBaseBean {
         public String cityCode;
         public String cityName;
         public int id;

@@ -1,5 +1,6 @@
 package com.funlisten.business.login.view.viewHolder;
 
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,6 +15,7 @@ import com.funlisten.base.view.ZYClearEditView;
 import com.funlisten.base.viewHolder.ZYBaseViewHolder;
 import com.funlisten.business.login.model.bean.ZYRegistUpload;
 import com.funlisten.business.login.view.ZYRegistListener;
+import com.funlisten.business.set.activity.ZYAgreementActivity;
 import com.funlisten.utils.ZYToast;
 import com.funlisten.utils.ZYUtils;
 
@@ -63,7 +65,7 @@ public class ZYRegistMobileVH extends ZYBaseViewHolder<ZYRegistUpload> implement
         return R.layout.zy_view_regist_mobile;
     }
 
-    @OnClick({R.id.textNext})
+    @OnClick({R.id.textNext, R.id.textProtocol})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textNext:
@@ -74,7 +76,7 @@ public class ZYRegistMobileVH extends ZYBaseViewHolder<ZYRegistUpload> implement
                     return;
                 }
                 mData.phone = mobile;
-                if (editPwd.getVisibility() == View.GONE){
+                if (editPwd.getVisibility() == View.GONE) {
                     mListener.checkPhoneIsExists();
                     return;
                 }
@@ -88,6 +90,9 @@ public class ZYRegistMobileVH extends ZYBaseViewHolder<ZYRegistUpload> implement
                 mListener.completeMobile();
 
                 ZYUtils.hideInput(editMobile);
+                break;
+            case R.id.textProtocol:
+                mContext.startActivity(new Intent(mContext, ZYAgreementActivity.class));
                 break;
         }
     }
@@ -113,16 +118,17 @@ public class ZYRegistMobileVH extends ZYBaseViewHolder<ZYRegistUpload> implement
 
     }
 
-    public void isShowPwd(boolean isShow){
-        if(isShow){
+    public void isShowPwd(boolean isShow) {
+        if (isShow) {
             editPwd.setVisibility(View.VISIBLE);
-        }else editPwd.setVisibility(View.GONE);
+        } else editPwd.setVisibility(View.GONE);
     }
-    public void show(){
+
+    public void show() {
         mItemView.setVisibility(View.VISIBLE);
     }
 
-    public void hide(){
+    public void hide() {
         mItemView.setVisibility(View.GONE);
     }
 }

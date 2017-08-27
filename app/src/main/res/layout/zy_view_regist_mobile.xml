@@ -73,11 +73,12 @@
             android:checked="true" />
 
         <TextView
+            android:id="@+id/textProtocol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="同意 (今日想听协议)"
-            android:textColor="@color/c3"
+            android:text="同意 (听谁说用户协议)"
+            android:textColor="@color/c1"
             android:textSize="@dimen/f7" />
     </LinearLayout>
 

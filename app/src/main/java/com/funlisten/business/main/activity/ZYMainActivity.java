@@ -1,5 +1,6 @@
 package com.funlisten.business.main.activity;
 
+import android.animation.Animator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,6 +21,7 @@ import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.business.login.model.bean.ZYUser;
 import com.funlisten.business.main.presenter.ZYMePresenter;
 import com.funlisten.business.play.activity.ZYPlayActivity;
+import com.funlisten.business.play.model.FZAudionPlayEvent;
 import com.funlisten.business.play.model.ZYPlayManager;
 import com.funlisten.business.play.model.bean.ZYPlayHistory;
 import com.funlisten.service.ZYUpdateService;
@@ -32,9 +36,23 @@ import com.funlisten.utils.ZYStatusBarUtils;
 import com.funlisten.utils.ZYToast;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
+
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_BUFFERING_END;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_BUFFERING_START;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_COMPLETED;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_ERROR;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_NEED_BUY_PAUSED;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_PAUSED;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_PLAYING;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_PREPARED;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_PREPARING;
+import static com.funlisten.business.play.model.ZYPlayManager.STATE_PREPARING_NEXT;
 
 /**
  * Created by ZY on 17/4/27.
@@ -78,6 +96,8 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
     @Bind(R.id.imgPlayer)
     ImageView imgPlayer;
 
+    Animation playAnima;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +113,8 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
         }
 
         SQLiteStudioService.instance().start(this);
+
+        playAnima = AnimationUtils.loadAnimation(mActivity, R.anim.play_rotate);
     }
 
     private void initView() {
@@ -245,5 +267,31 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
     protected void onDestroy() {
         super.onDestroy();
         SQLiteStudioService.instance().stop();
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FZAudionPlayEvent playEvent) {
+        try {
+            if (playEvent != null) {
+                if (playEvent.state == STATE_ERROR) {
+                } else if (playEvent.state == STATE_PREPARING) {
+                } else if (playEvent.state == STATE_PREPARED) {
+                    imgAvatar.clearAnimation();
+                    imgAvatar.startAnimation(playAnima);
+                } else if (playEvent.state == STATE_PLAYING) {
+                } else if (playEvent.state == STATE_PAUSED) {
+                    imgAvatar.clearAnimation();
+                } else if (playEvent.state == STATE_NEED_BUY_PAUSED) {
+                } else if (playEvent.state == STATE_BUFFERING_START) {
+                } else if (playEvent.state == STATE_BUFFERING_END) {
+                } else if (playEvent.state == STATE_PREPARING_NEXT) {
+                } else if (playEvent.state == STATE_COMPLETED) {
+                    imgAvatar.clearAnimation();
+                }
+            }
+        } catch (Exception e) {
+
+        }
     }
 }

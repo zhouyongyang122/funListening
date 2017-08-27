@@ -241,6 +241,10 @@
             android:name=".business.set.activity.ZYMsgActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".business.set.activity.ZYAgreementActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

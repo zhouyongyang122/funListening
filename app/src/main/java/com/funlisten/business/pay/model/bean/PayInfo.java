@@ -1,10 +1,12 @@
 package com.funlisten.business.pay.model.bean;
 
+import com.funlisten.base.bean.ZYIBaseBean;
+
 /**
  * Created by Administrator on 2017/7/29.
  */
 
-public class PayInfo {
+public class PayInfo implements ZYIBaseBean {
     public String productId;
     public String productType;
 

@@ -1,6 +1,7 @@
 package com.funlisten.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -24,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -241,5 +243,28 @@ public class ZYUtils {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(pwd);
         return isNum.matches();
+    }
+
+    public static String getRawContent(Context context, int rawResId) {
+        String content;
+        Resources resources = context.getResources();
+        InputStream is = null;
+        try {
+            is = resources.openRawResource(rawResId);
+            byte buffer[] = new byte[is.available()];
+            is.read(buffer);
+            content = new String(buffer);
+            return content;
+        } catch (IOException e) {
+        } catch (OutOfMemoryError e) {
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        return null;
     }
 }

@@ -22,6 +22,7 @@ import com.funlisten.base.view.ZYSlipButton;
 import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.business.persondata.activity.ZYPersonDataActivity;
 import com.funlisten.business.set.activity.ZYAboutActivity;
+import com.funlisten.business.set.activity.ZYAgreementActivity;
 import com.funlisten.utils.ZYFileUtils;
 import com.funlisten.utils.ZYSystemUtils;
 import com.funlisten.utils.ZYToast;
@@ -103,9 +104,12 @@ public class ZYSetFragment extends ZYBaseFragment {
         textCacheSize.setText(ZYFileUtils.formatFileSize(0));
     }
 
-    @OnClick({R.id.layoutUserInfo, R.id.layoutCache, R.id.layoutSuport, R.id.layoutAbout, R.id.layoutLoginOut})
+    @OnClick({R.id.layoutAgreement,R.id.layoutUserInfo, R.id.layoutCache, R.id.layoutSuport, R.id.layoutAbout, R.id.layoutLoginOut})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.layoutAgreement:
+                mActivity.startActivity(new Intent(mActivity, ZYAgreementActivity.class));
+                break;
             case R.id.layoutUserInfo:
                 if (ZYUserManager.getInstance().isGuesterUser(true)) {
                     return;

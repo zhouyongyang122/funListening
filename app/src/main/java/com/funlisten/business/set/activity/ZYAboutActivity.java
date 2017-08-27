@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.funlisten.R;
 import com.funlisten.base.mvp.ZYBaseActivity;
+import com.funlisten.utils.ZYUtils;
 
 import butterknife.Bind;
 
@@ -30,6 +31,6 @@ public class ZYAboutActivity extends ZYBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.zy_activity_about);
         showTitle("关于我们");
-        textAbout.setText("产品最后提供文字就好");
+        textAbout.setText(ZYUtils.getRawContent(mActivity, R.raw.about));
     }
 }

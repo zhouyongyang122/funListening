@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.funlisten.R;
 import com.funlisten.base.activity.ZYWebViewActivity;
+import com.funlisten.base.bean.ZYResponse;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.view.ZYLoadingView;
 import com.funlisten.business.album.activity.ZYAlbumHomeActivity;
@@ -23,8 +24,14 @@ import com.funlisten.business.main.model.bean.ZYHome;
 import com.funlisten.business.main.view.viewHolder.ZYHomeBannerVH;
 import com.funlisten.business.main.view.viewHolder.ZYHomeDayListenVH;
 import com.funlisten.business.main.view.viewHolder.ZYHomeModulVH;
+import com.funlisten.business.play.activity.ZYPlayActivity;
+import com.funlisten.business.play.model.ZYPlayModel;
+import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.business.search.activity.ZYSearchActivity;
+import com.funlisten.service.net.ZYNetSubscriber;
+import com.funlisten.service.net.ZYNetSubscription;
 import com.funlisten.utils.ZYStatusBarUtils;
+import com.funlisten.utils.ZYToast;
 
 import java.util.List;
 
@@ -142,9 +149,19 @@ public class ZYHomeFragment extends ZYBaseFragment<ZYHomeContract.IPresenter> im
                 @Override
                 public void onBanner(ZYHome.Banner banner) {
                     if (banner.type.equals("album")) {
-                        mActivity.startActivity(ZYAlbumHomeActivity.createIntent(mActivity,Integer.parseInt(banner.objectId)));
+                        mActivity.startActivity(ZYAlbumHomeActivity.createIntent(mActivity, Integer.parseInt(banner.objectId)));
                     } else if (banner.type.equals("audio")) {
+                        ZYNetSubscription.subscription(new ZYPlayModel().getAudio(banner.objectId), new ZYNetSubscriber<ZYResponse<ZYAudio>>() {
+                            @Override
+                            public void onSuccess(ZYResponse<ZYAudio> response) {
+                                ZYPlayActivity.toPlayActivity(mActivity, response.data.albumId, response.data.id);
+                            }
 
+                            @Override
+                            public void onFail(String message) {
+                                ZYToast.show(mActivity, "进入播放页出错,请重新尝试!");
+                            }
+                        });
                     } else if (banner.type.equals("h5")) {
                         mActivity.startActivity(ZYWebViewActivity.createIntent(mActivity, banner.url, ""));
                     }

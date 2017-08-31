@@ -80,39 +80,43 @@ public class TencentManager {
 
                 loginParamas.setAuth_url(auth_url);
 
-                info.getUserInfo(new IUiListener() {
-                    public void onComplete(final Object response) {
-                        JSONObject json = (JSONObject) response;
-                        // 获取用户信息
-                        try {
-                            loginParamas.setAvatar(json.getString("figureurl_qq_2"));
-                            loginParamas.setNickname(json.getString("nickname"));
-                            loginParamas.setSex(json.getString("gender").equals("男") ? 1 : 2);
-                            if (mLoginListener != null) {
-                                mLoginListener.onSuccess(loginParamas);
-                            }
-                        } catch (Exception e) {
-                            ZYLog.e(TencentManager.class.getSimpleName(), "login-erro: " + e.getMessage());
-                            if (mLoginListener != null) {
-                                mLoginListener.onError("QQ登录失败,请重新尝试!");
-                            }
-                        }
-                    }
+                if (mLoginListener != null) {
+                    mLoginListener.onSuccess(loginParamas);
+                }
 
-                    public void onCancel() {
-                        if (mLoginListener != null) {
-                            mLoginListener.onCancel("QQ登录取消");
-                        }
-                    }
-
-                    public void onError(UiError uiError) {
-                        ZYLog.e(TencentManager.class.getSimpleName(), "login-erro: " + uiError.errorDetail);
-                        if (mLoginListener != null) {
-                            mLoginListener.onError("QQ登录失败,请重新尝试!");
-                        }
-                    }
-
-                });
+//                info.getUserInfo(new IUiListener() {
+//                    public void onComplete(final Object response) {
+//                        JSONObject json = (JSONObject) response;
+//                        // 获取用户信息
+//                        try {
+//                            loginParamas.setAvatar(json.getString("figureurl_qq_2"));
+//                            loginParamas.setNickname(json.getString("nickname"));
+//                            loginParamas.setSex(json.getString("gender").equals("男") ? 1 : 2);
+//                            if (mLoginListener != null) {
+//                                mLoginListener.onSuccess(loginParamas);
+//                            }
+//                        } catch (Exception e) {
+//                            ZYLog.e(TencentManager.class.getSimpleName(), "login-erro: " + e.getMessage());
+//                            if (mLoginListener != null) {
+//                                mLoginListener.onError("QQ登录失败,请重新尝试!");
+//                            }
+//                        }
+//                    }
+//
+//                    public void onCancel() {
+//                        if (mLoginListener != null) {
+//                            mLoginListener.onCancel("QQ登录取消");
+//                        }
+//                    }
+//
+//                    public void onError(UiError uiError) {
+//                        ZYLog.e(TencentManager.class.getSimpleName(), "login-erro: " + uiError.errorDetail);
+//                        if (mLoginListener != null) {
+//                            mLoginListener.onError("QQ登录失败,请重新尝试!");
+//                        }
+//                    }
+//
+//                });
 
             } catch (Exception e) {
                 ZYLog.e(TencentManager.class.getSimpleName(), "login-erro: " + e.getMessage());

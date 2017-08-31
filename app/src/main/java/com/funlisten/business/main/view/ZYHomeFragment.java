@@ -17,6 +17,7 @@ import com.funlisten.R;
 import com.funlisten.base.activity.ZYWebViewActivity;
 import com.funlisten.base.mvp.ZYBaseFragment;
 import com.funlisten.base.view.ZYLoadingView;
+import com.funlisten.business.album.activity.ZYAlbumHomeActivity;
 import com.funlisten.business.main.contract.ZYHomeContract;
 import com.funlisten.business.main.model.bean.ZYHome;
 import com.funlisten.business.main.view.viewHolder.ZYHomeBannerVH;
@@ -132,7 +133,7 @@ public class ZYHomeFragment extends ZYBaseFragment<ZYHomeContract.IPresenter> im
                             break;
                         case MotionEvent.ACTION_UP:
                         case MotionEvent.ACTION_CANCEL:
-                            layout_refresh.setEnabled(false);
+                            layout_refresh.setEnabled(true);
                             break;
                     }
                     return false;
@@ -140,7 +141,13 @@ public class ZYHomeFragment extends ZYBaseFragment<ZYHomeContract.IPresenter> im
             }, new ZYHomeBannerVH.OnHomeBannerListener() {
                 @Override
                 public void onBanner(ZYHome.Banner banner) {
-                    mActivity.startActivity(ZYWebViewActivity.createIntent(mActivity, banner.url, ""));
+                    if (banner.type.equals("album")) {
+                        mActivity.startActivity(ZYAlbumHomeActivity.createIntent(mActivity,Integer.parseInt(banner.objectId)));
+                    } else if (banner.type.equals("audio")) {
+
+                    } else if (banner.type.equals("h5")) {
+                        mActivity.startActivity(ZYWebViewActivity.createIntent(mActivity, banner.url, ""));
+                    }
                 }
             });
             bannerVH.bindView(LayoutInflater.from(mActivity).inflate(bannerVH.getLayoutResId(), layout_module_root, false));

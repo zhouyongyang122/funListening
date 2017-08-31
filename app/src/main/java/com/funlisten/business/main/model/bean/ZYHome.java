@@ -19,7 +19,7 @@ public class ZYHome implements ZYIBaseBean {
     public static class Banner implements ZYIBaseBean{
         public String type;//专辑(album)audio(音频)h5（h5地址)
         public String imageFileUrl;//图片地址
-        public String id;
+        public String objectId;
         public String url;
     }
 

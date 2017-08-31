@@ -124,8 +124,8 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:gravity="right"
-        android:visibility="visible"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/textPrice"
@@ -141,10 +141,10 @@
             android:layout_width="88dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:visibility="invisible"
             android:text="¥198"
             android:textColor="@color/c4"
-            android:textSize="@dimen/f4" />
+            android:textSize="@dimen/f4"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <View

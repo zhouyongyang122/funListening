@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -148,9 +149,20 @@ public class ZYHomeFragment extends ZYBaseFragment<ZYHomeContract.IPresenter> im
             }, new ZYHomeBannerVH.OnHomeBannerListener() {
                 @Override
                 public void onBanner(ZYHome.Banner banner) {
+
+                    if (TextUtils.isEmpty(banner.type)) {
+                        return;
+                    }
+
                     if (banner.type.equals("album")) {
+                        if (TextUtils.isEmpty(banner.objectId)) {
+                            return;
+                        }
                         mActivity.startActivity(ZYAlbumHomeActivity.createIntent(mActivity, Integer.parseInt(banner.objectId)));
                     } else if (banner.type.equals("audio")) {
+                        if (TextUtils.isEmpty(banner.objectId)) {
+                            return;
+                        }
                         ZYNetSubscription.subscription(new ZYPlayModel().getAudio(banner.objectId), new ZYNetSubscriber<ZYResponse<ZYAudio>>() {
                             @Override
                             public void onSuccess(ZYResponse<ZYAudio> response) {
@@ -163,6 +175,9 @@ public class ZYHomeFragment extends ZYBaseFragment<ZYHomeContract.IPresenter> im
                             }
                         });
                     } else if (banner.type.equals("h5")) {
+                        if (TextUtils.isEmpty(banner.url)) {
+                            return;
+                        }
                         mActivity.startActivity(ZYWebViewActivity.createIntent(mActivity, banner.url, ""));
                     }
                 }

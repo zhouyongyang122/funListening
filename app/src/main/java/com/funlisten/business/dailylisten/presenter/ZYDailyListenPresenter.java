@@ -148,7 +148,6 @@ class TimeComparator implements Comparator {
     public int compare(Object lhs, Object rhs) {
         ZYAudio zyAudio = (ZYAudio) lhs;
         ZYAudio zyAudios = (ZYAudio) rhs;
-
         return zyAudios.gmtCreate.compareTo(zyAudio.gmtCreate);
     }
 }

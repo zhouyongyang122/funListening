@@ -15,11 +15,14 @@ import com.funlisten.business.play.model.bean.ZYAudio;
 import com.funlisten.service.net.ZYNetSubscriber;
 import com.funlisten.service.net.ZYNetSubscription;
 import com.funlisten.utils.ZYDateUtils;
+import com.funlisten.utils.ZYLog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,6 +55,7 @@ public class ZYDailyListenPresenter extends ZYBasePresenter implements ZYDailyLi
                 super.onSuccess(response);
                 List<ZYAudio> list = response.data.data;
                 mDatas.add(new ZYHeaderInfo(response.data.totalCount));
+                Collections.sort(list,new TimeComparator());
                 sortTime(list);
                 iView.showDatas(mDatas);
             }
@@ -80,27 +84,19 @@ public class ZYDailyListenPresenter extends ZYBasePresenter implements ZYDailyLi
     }
 
     private void sortTime(List<ZYAudio> list) {
-        for (ZYAudio audio : list) {
-            String time = getTodayOrYesterday(audio.gmtCreate);
-            ArrayList<Object> arrayList = hashMap.get(time);
-            if (arrayList == null) {
-                ArrayList<Object> array = new ArrayList<Object>();
-                array.add(audio);
-                hashMap.put(time, array);
-            } else {
-                arrayList.add(audio);
+        if( list.size() <= 0) return;
+        String tempStr="";
+        for (int i= 0;i< list.size();i++) {
+           String time = getTodayOrYesterday(list.get(i).gmtCreate);
+            if(tempStr.equals(time)){
+                mDatas.add(list.get(i));
+            }else {
+                tempStr = time;
+                mDatas.add(new ZYTimeInfo(tempStr));
+                mDatas.add(list.get(i));
             }
-        }
 
-        Iterator iter = hashMap.entrySet().iterator();
-        while (iter.hasNext()){
-            Map.Entry entry = (Map.Entry) iter.next();
-            ArrayList<Object> array = (ArrayList<Object>) entry.getValue();
-            String time = (String) entry.getKey();
-            mDatas.add(new ZYTimeInfo(time));
-            mDatas.addAll(array);
         }
-        mDatas.addAll(list);
     }
 
     @Override
@@ -143,5 +139,16 @@ public class ZYDailyListenPresenter extends ZYBasePresenter implements ZYDailyLi
             strDes = ZYDateUtils.getTimeString(time, ZYDateUtils.YYMMDDHHMM24, ZYDateUtils.YYMMDDHH);
         }
         return strDes;
+    }
+}
+
+class TimeComparator implements Comparator {
+
+    @Override
+    public int compare(Object lhs, Object rhs) {
+        ZYAudio zyAudio = (ZYAudio) lhs;
+        ZYAudio zyAudios = (ZYAudio) rhs;
+
+        return zyAudios.gmtCreate.compareTo(zyAudio.gmtCreate);
     }
 }

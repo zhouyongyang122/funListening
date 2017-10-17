@@ -89,7 +89,7 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
             textPlayNum.setText("播放: " + mData.playCount);
 
             ZYImageLoadHelper.getImageLoader().loadImage(this, imgBg, mData.coverUrl);
-            ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, mData.publisher.avatarUrl);
+            ZYImageLoadHelper.getImageLoader().loadImage(this, imgAvatar, mData.publisher.avatarUrl,R.drawable.def_avatar,R.drawable.def_avatar);
             textName.setText(mData.publisher.nickname);
             textFans.setText(mData.publisher.fans + " 粉丝");
 
@@ -147,7 +147,7 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
         }
         if (mData.followSate != null && (mData.followSate.equals(ZYBaseModel.FOLLOW_NO_STATE) || mData.followSate.equals(ZYBaseModel.FOLLOW_BE_STATE))) {
             textFollow.setSelected(false);
-            textFollow.setText("关注");
+            textFollow.setText("加关注");
         } else {
             textFollow.setSelected(true);
             textFollow.setText("已关注");

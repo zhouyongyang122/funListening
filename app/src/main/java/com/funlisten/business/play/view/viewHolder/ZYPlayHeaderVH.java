@@ -199,8 +199,8 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
         textInfo.setText(mData.albumDetail.favoriteCount + "人订阅 | " + mData.albumDetail.playCount + "播放");
     }
 
-    public void hideBuy(){
-        if(layoutBuy != null){
+    public void hideBuy() {
+        if (layoutBuy != null) {
             layoutBuy.setVisibility(View.GONE);
         }
     }
@@ -226,10 +226,16 @@ public class ZYPlayHeaderVH extends ZYBaseViewHolder<ZYPlay> implements SeekBar.
 
     void refreshProgress(int currentPosition, int totalPosition) {
         if (textStartTime != null && mData != null) {
-            textStartTime.setText(stringForTime(currentPosition / 1000));
-            textEndTime.setText(stringForTime(totalPosition / 1000));
-            float progress = ((float) currentPosition / (float) totalPosition) * 1000;
-            seekBar.setProgress((int) progress);
+            if (totalPosition <= 0) {
+                textStartTime.setText(stringForTime(0));
+                textEndTime.setText(stringForTime(0));
+                seekBar.setProgress(0);
+            } else {
+                textStartTime.setText(stringForTime(currentPosition / 1000));
+                textEndTime.setText(stringForTime(totalPosition / 1000));
+                float progress = ((float) currentPosition / (float) totalPosition) * 1000;
+                seekBar.setProgress((int) progress);
+            }
         }
     }
 

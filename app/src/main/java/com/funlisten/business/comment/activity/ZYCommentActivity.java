@@ -9,6 +9,7 @@ import com.funlisten.base.mvp.ZYBaseFragmentActivity;
 import com.funlisten.business.comment.model.ZYCommentModel;
 import com.funlisten.business.comment.presenter.ZYCommentPresenter;
 import com.funlisten.business.comment.view.ZYCommentFragment;
+import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.business.play.activity.ZYPlayActivity;
 
 /**
@@ -36,6 +37,7 @@ public class ZYCommentActivity extends ZYBaseFragmentActivity<ZYCommentFragment>
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         new ZYCommentPresenter(mFragment, new ZYCommentModel(), getIntent().getStringExtra("type"), getIntent().getStringExtra("objectId"));
         showTitle("评论");
     }
@@ -54,7 +56,7 @@ public class ZYCommentActivity extends ZYBaseFragmentActivity<ZYCommentFragment>
     public void onBackPressed() {
         super.onBackPressed();
         if (getIntent().getBooleanExtra("isBackToPlay", false)) {
-            ZYPlayActivity.toPlayActivity(mActivity,true);
+            ZYPlayActivity.toPlayActivity(mActivity, true);
         }
     }
 }

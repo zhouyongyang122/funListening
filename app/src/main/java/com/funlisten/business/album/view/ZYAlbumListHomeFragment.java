@@ -57,10 +57,10 @@ public class ZYAlbumListHomeFragment extends ZYBaseFragment<ZYAlbumListHomeContr
     }
 
     @Override
-    public void refreshCategorys(List<ZYCategory> Categorys) {
+    public void refreshCategorys(List<ZYCategory> categorys) {
         ZYFragmentAdapter fragmentAdapter = new ZYFragmentAdapter(getChildFragmentManager());
         ZYAlbumListFragment ablumListFragment;
-        for (ZYCategory category : Categorys) {
+        for (ZYCategory category : categorys) {
             ablumListFragment = new ZYAlbumListFragment();
             new ZYAlbumListPresenter(ablumListFragment, new ZYAlbumModel(), category.id);
             fragmentAdapter.addFragment(ablumListFragment, category.name);
@@ -83,7 +83,11 @@ public class ZYAlbumListHomeFragment extends ZYBaseFragment<ZYAlbumListHomeContr
             }
         });
         viewPager.setOffscreenPageLimit(4);
-        tabLayout.setupWithViewPager(viewPager);
+        if (categorys.size() <= 1) {
+            tabLayout.setVisibility(View.GONE);
+        } else {
+            tabLayout.setupWithViewPager(viewPager);
+        }
     }
 
     private void initLoadingView() {

@@ -143,7 +143,9 @@ public class ZYSearchActivity extends ZYBaseActivity<ZYSearchContract.IPresenter
                 }else {
                     String key = keyword.getText().toString();
                     String userId = ZYUserManager.getInstance().getUser().userId;
-                    if(TextUtils.isEmpty(userId))break;
+                    if(TextUtils.isEmpty(userId)){
+                        userId = "0";
+                    }
                     ZYSearchHistoryManager.getInsatnce().save(new ZYSearchHistory(userId,key));
                     if(searchType == 0){
                         hideView(false);

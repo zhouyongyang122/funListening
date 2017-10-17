@@ -19,6 +19,7 @@ import com.funlisten.business.album.view.viewHolder.ZYAlbumDetailItemVH;
 import com.funlisten.business.album.view.viewHolder.ZYAlbumDetailTitleVH;
 import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
 import com.funlisten.business.comment.activity.ZYCommentActivity;
+import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.utils.ZYScreenUtils;
 
 import java.util.ArrayList;
@@ -118,6 +119,9 @@ public class ZYAlbumDetailFragment extends ZYBaseRecyclerFragment<ZYAlbumDetailC
 
     @Override
     public void moreComment() {
+        if (ZYUserManager.getInstance().isGuesterUser(true)) {
+            return;
+        }
         mActivity.startActivity(ZYCommentActivity.createIntent(mActivity, "album", mPresenter.getAlbumId() + ""));
     }
 }

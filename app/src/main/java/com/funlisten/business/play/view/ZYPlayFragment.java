@@ -29,6 +29,7 @@ import com.funlisten.business.album.model.bean.ZYComment;
 import com.funlisten.business.album.view.viewHolder.ZYCommentItemVH;
 import com.funlisten.business.comment.activity.ZYCommentActivity;
 import com.funlisten.business.download.model.bean.ZYDownloadEntity;
+import com.funlisten.business.login.model.ZYUserManager;
 import com.funlisten.business.pay.activity.ZYPayActivity;
 import com.funlisten.business.play.ZYPlayService;
 import com.funlisten.business.play.activity.ZYPlayActivity;
@@ -177,6 +178,9 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
                 }
                 break;
             case R.id.textComment:
+                if (ZYUserManager.getInstance().isGuesterUser(true)) {
+                    return;
+                }
                 mActivity.startActivity(ZYCommentActivity.createIntent(mActivity, "audio", mPresenter.getCurPlayAudio().id + "", true));
                 break;
         }
@@ -289,6 +293,9 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
 
     @Override
     public void moreComment() {
+        if (ZYUserManager.getInstance().isGuesterUser(true)) {
+            return;
+        }
         mActivity.startActivity(ZYCommentActivity.createIntent(mActivity, "audio", mPresenter.getCurPlayAudio().id + "", true));
     }
 
@@ -437,22 +444,22 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
             if (playEvent.state == STATE_ERROR) {
                 ZYToast.show(mActivity, "播放出错,请重新尝试!");
             } else if (playEvent.state == STATE_PREPARING) {
-                showProgress();
+//                showProgress();
             } else if (playEvent.state == STATE_PREPARED) {
-                hideProgress();
+//                hideProgress();
             } else if (playEvent.state == STATE_PLAYING) {
 
             } else if (playEvent.state == STATE_PAUSED) {
 
             } else if (playEvent.state == STATE_NEED_BUY_PAUSED) {
 //                ZYToast.show(mActivity, "音频需要购买哦!");
-                hideProgress();
+//                hideProgress();
             } else if (playEvent.state == STATE_BUFFERING_START) {
 
             } else if (playEvent.state == STATE_BUFFERING_END) {
 
             } else if (playEvent.state == STATE_PREPARING_NEXT) {
-                showProgress();
+//                showProgress();
             } else if (playEvent.state == STATE_COMPLETED) {
 
             }

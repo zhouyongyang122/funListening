@@ -1,6 +1,7 @@
 package com.funlisten.business.main.activity;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.funlisten.R;
+import com.funlisten.ZYApplication;
 import com.funlisten.base.adapter.ZYFragmentAdapter;
 import com.funlisten.base.mvp.ZYBaseActivity;
 import com.funlisten.business.login.model.ZYUserManager;
@@ -247,6 +249,7 @@ public class ZYMainActivity extends ZYBaseActivity<ZYMainContract.IPresenter> im
                         MobclickAgent.onKillProcess(mActivity);
                         ZYPlayManager.getInstance().clearNotification();
                         finish();
+                        ZYApplication.getInstance().finisedAllActivities();
                         System.exit(0);
                     }
                 })

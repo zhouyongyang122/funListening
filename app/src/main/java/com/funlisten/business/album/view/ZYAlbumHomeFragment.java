@@ -75,9 +75,9 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
 
         ButterKnife.bind(this, view);
 
-        initPager();
-
         initTopBar();
+
+        initPager();
 
         initHeaderView();
 
@@ -159,6 +159,8 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
             public void onPageScrollStateChanged(int state) {
             }
         });
+        viewPager.setCurrentItem(1);
+        topBar.setDefSelected(1);
     }
 
     @Override
@@ -167,6 +169,7 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
         if ("free".equals(albumDetail.costType)) {
             footerVH.hide();
         } else {
+            footerVH.show();
             mPresenter.isOrder(albumDetail.id + "");
         }
         ((ZYAlbumDetailFragment) adapter.getItem(0)).loadComments(albumDetail.details);

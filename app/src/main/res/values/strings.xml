@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">听谁说</string>
+    <string name="app_name">大学听谁说</string>
     <string name="default_loading_error">加载出错,请重试尝试</string>
 
     <string name="default_no_more">没有更多数据了</string>

@@ -229,6 +229,9 @@ public class ZYAlbumHomeFragment extends ZYBaseFragment<ZYAlbumHomeContract.IPre
         if (isShow) {
             footerVH.show();
             setMargin(50);
+        } else {
+            footerVH.hide();
+            setMargin(0);
         }
     }
 

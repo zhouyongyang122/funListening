@@ -1,6 +1,7 @@
 package com.funlisten.business.album.view.viewHolder;
 
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,11 +147,15 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
             return;
         }
         if (mData.followSate != null && (mData.followSate.equals(ZYBaseModel.FOLLOW_NO_STATE) || mData.followSate.equals(ZYBaseModel.FOLLOW_BE_STATE))) {
-            textFollow.setSelected(false);
             textFollow.setText("加关注");
+            Drawable drawable = mContext.getResources().getDrawable(R.drawable.icon_attention_pre_n);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            textFollow.setCompoundDrawables(null, drawable, null, null);
         } else {
-            textFollow.setSelected(true);
             textFollow.setText("已关注");
+            Drawable drawable = mContext.getResources().getDrawable(R.drawable.icon_attention_n);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            textFollow.setCompoundDrawables(null, drawable, null, null);
         }
     }
 

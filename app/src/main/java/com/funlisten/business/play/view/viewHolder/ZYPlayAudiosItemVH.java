@@ -32,7 +32,7 @@ public class ZYPlayAudiosItemVH extends ZYBaseViewHolder<ZYAudio> {
     public void updateView(ZYAudio data, int position) {
         if (data != null) {
             mData = data;
-            textTitle.setText(mData.title);
+            textTitle.setText("第 " + mData.sort + " 期 | " + mData.title);
             if (mData.isPlaying) {
                 imgPlayIcon.setVisibility(View.VISIBLE);
             } else {

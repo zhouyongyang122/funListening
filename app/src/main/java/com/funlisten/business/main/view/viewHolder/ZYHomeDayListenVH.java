@@ -60,9 +60,9 @@ public class ZYHomeDayListenVH extends ZYBaseViewHolder<ZYHome.DayListening> imp
         }
     }
 
-    @OnClick({R.id.layoutTitle})
+    @OnClick({R.id.layoutTitle,R.id.imgBg})
     public void onClick(View v) {
-        if (v.getId() == R.id.layoutTitle) {
+        if (v.getId() == R.id.layoutTitle || v.getId() == R.id.imgBg) {
             Intent intent = new Intent(ZYApplication.getInstance().getCurrentActivity(), ZYDailyListenActivity.class);
             intent.putExtra("albumId", albumId);
             ZYApplication.getInstance().getCurrentActivity().startActivity(intent);

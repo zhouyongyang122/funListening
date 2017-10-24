@@ -91,7 +91,10 @@ public class ZYUserManager {
         if (needIntentToLogin && isGuester) {
             //跳到登录
             ZYPlayManager.getInstance().puase();
-            ZYApplication.getInstance().getCurrentActivity().startActivity(ZYLoginActivity.createIntent(ZYApplication.getInstance().getCurrentActivity()));
+
+            if (!(ZYApplication.getInstance().getCurrentActivity() instanceof ZYLoginActivity)) {
+                ZYApplication.getInstance().getCurrentActivity().startActivity(ZYLoginActivity.createIntent(ZYApplication.getInstance().getCurrentActivity()));
+            }
         }
         return isGuester;
     }

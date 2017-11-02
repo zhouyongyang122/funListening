@@ -17,6 +17,8 @@ public class FZAudioPlayer extends FZBasePlayer {
 
     private boolean canStart = true;
 
+    private boolean isPauseed = false;
+
     private static boolean isRequestAudioFoucus = false;
 
     public FZAudioPlayer(Context context, String tag) {
@@ -30,6 +32,7 @@ public class FZAudioPlayer extends FZBasePlayer {
             return;
         }
         canStart = true;
+        isPauseed = false;
         currentPosition = seekTo;
         this.url = url;
         release();
@@ -44,7 +47,7 @@ public class FZAudioPlayer extends FZBasePlayer {
                             switch (focusChange) {
                                 case AudioManager.AUDIOFOCUS_GAIN:
                                     // 获得音频焦点
-                                    if (!mMediaPlayer.isPlaying()) {
+                                    if (!isPauseed && !mMediaPlayer.isPlaying()) {
                                         mMediaPlayer.start();
                                     }
                                     // 还原音量
@@ -104,6 +107,7 @@ public class FZAudioPlayer extends FZBasePlayer {
                     mMediaPlayer.seekTo(currentPosition);
                 }
                 mMediaPlayer.start();
+                isPauseed = false;
                 mCurrentState = STATE_PLAYING;
             }
         } catch (Exception e) {
@@ -119,6 +123,7 @@ public class FZAudioPlayer extends FZBasePlayer {
         try {
             if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                 mMediaPlayer.pause();
+                isPauseed = true;
                 mCurrentState = STATE_PAUSED;
             }
         } catch (Exception e) {

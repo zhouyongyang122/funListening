@@ -12,8 +12,8 @@ android {
         applicationId "com.funlisten"
         targetSdkVersion 22
         minSdkVersion 18
-        versionCode 6
-        versionName "1.0.5"
+        versionCode 9
+        versionName "1.0.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters 'armeabi'
@@ -65,8 +65,8 @@ greendao {
 //Bugtags 插件配置
 bugtags {
     //自动上传符号表功能配置，如果需要根据 build varint 配置，请参考帮助中心->符号表->Android 符号表->配置自动上传符号表
-    appKey "4ce5faa31620a5fe2a5e0d32886ff7eb"  //这里是你的 appKey
-    appSecret "2ee389e32e04c40c7dd4b0dfbd412fcd"    //这里是你的 appSecret，管理员在设置页可以查看
+    appKey "2822fed353401211e4b1925337032876"  //这里是你的 appKey
+    appSecret "92e8b5e38cd80045a6df47bb66aedf89"    //这里是你的 appSecret，管理员在设置页可以查看
     mappingUploadEnabled true
 
     //网络跟踪功能配置(企业版)

@@ -54,6 +54,8 @@ public class ZYAudio implements ZYIBaseBean {
 
     public boolean isBuy;
 
+    public String shareUrl;
+
     public boolean needBuy() {
         return costType != null && costType.equals("paid");
     }

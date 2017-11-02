@@ -24,7 +24,7 @@ public class ZYAppConstants {
     public static final String TENCENT_APP_ID = "1106127950";
 
     //bugtags
-    public static final String BUGTAGS_KEY = "4ce5faa31620a5fe2a5e0d32886ff7eb";
+    public static final String BUGTAGS_KEY = "2822fed353401211e4b1925337032876";
 
     public static String getShareUrl(int albumId) {
         return "http://tingshuishuo.cn/album/album.html?id=" + albumId;

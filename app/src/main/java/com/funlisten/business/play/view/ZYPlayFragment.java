@@ -152,15 +152,16 @@ public class ZYPlayFragment extends ZYBaseFragment<ZYPlayContract.IPresenter> im
                             @Override
                             public void run() {
                                 ShareEntity shareEntity = new ShareEntity();
-                                shareEntity.avatarUrl = mPresenter.getAlbumDetail().coverUrl;
+                                ZYAudio audio = mPresenter.getCurPlayAudio();
+                                shareEntity.avatarUrl = audio.coverUrl;
                                 if (bitmap != null) {
                                     shareEntity.avatarBitmap = bitmap;
                                 } else {
                                     shareEntity.avatarBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
                                 }
-                                shareEntity.webUrl = ZYAppConstants.getShareUrl(mPresenter.getAlbumDetail().id);
-                                shareEntity.title = mPresenter.getAlbumDetail().name;
-                                shareEntity.text = mPresenter.getAlbumDetail().title;
+                                shareEntity.webUrl = audio.shareUrl;//ZYAppConstants.getShareUrl(mPresenter.getAlbumDetail().id);
+                                shareEntity.title = audio.title;
+                                shareEntity.text = mPresenter.getAlbumDetail().name;
                                 new SRShareUtils(mActivity, shareEntity).share();
                             }
                         });

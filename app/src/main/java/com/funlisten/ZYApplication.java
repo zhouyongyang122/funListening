@@ -110,7 +110,7 @@ public class ZYApplication extends Application implements ZYUncaughtExceptionHan
             BugtagsOptions options = new BugtagsOptions.Builder()
                     .trackingLocation(true)
                     .trackingCrashLog(true).build();
-            Bugtags.start(ZYAppConstants.BUGTAGS_KEY, this, Bugtags.BTGInvocationEventShake, options);
+            Bugtags.start(ZYAppConstants.BUGTAGS_KEY, this, Bugtags.BTGInvocationEventBubble, options);
         } else {
             Bugtags.start(ZYAppConstants.BUGTAGS_KEY, this, Bugtags.BTGInvocationEventNone);
         }

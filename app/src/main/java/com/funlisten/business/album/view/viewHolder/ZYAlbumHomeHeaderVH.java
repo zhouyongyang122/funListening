@@ -162,8 +162,10 @@ public class ZYAlbumHomeHeaderVH extends ZYBaseViewHolder<ZYAlbumDetail> {
     public void updateSubscribeState() {
         if (mData.isFavorite) {
             textSubscribe.setText("已订阅");
+            textSubscribe.setBackgroundResource(R.drawable.zy_bg_corner360_c8_solid);
         } else {
             textSubscribe.setText("订阅");
+            textSubscribe.setBackgroundResource(R.drawable.zy_bg_corner360_c1);
         }
     }
 
